@@ -1,0 +1,54 @@
+@import 'variables';
+
+:host {
+  width: 100%;
+
+}
+
+.button {
+  border: none;
+  background: $turnex-primary-800;
+  width: 100%;
+  display: flex;
+  background: $turnex-primary-800;
+  border-radius: $turnex-spacing-8;
+  padding: $turnex-spacing-14 $turnex-spacing-24;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  cursor: pointer;
+  &:hover {
+    background: $turnex-primary-900;
+  }
+
+  &__text {
+    color: $turnex-white-50;
+    font-family: Rubik;
+    font-size: $turnex-spacing-16;
+    font-style: normal;
+    font-weight: 500;
+    line-height: $turnex-spacing-24;
+  }
+
+  &__disabled {
+    background: $turnex-alabaster-100;
+    cursor: not-allowed;
+  }
+
+  &__disabled_text {
+    color: $turnex-alabaster-400;
+  }
+
+  &__reset {
+    border: 1px solid $turnex-alabaster-100;
+    color: $turnex-alabaster-800;
+    background-color: $turnex-alabaster-100;
+    &:hover {
+      background: $turnex-alabaster-200;
+    }
+  }
+
+  &__reset-text {
+    color: $turnex-alabaster-800;
+  }
+}

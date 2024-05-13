@@ -1,1 +1,29 @@
-<p>shifts works!</p>
+
+<div class="shifts">
+<turnex-title [text]="'Turnos'"></turnex-title>
+<div class="shifts__sub-title">
+  <span>Pack activo: </span>
+  <span>4 clases al mes</span>
+</div>
+
+<div class="shifts__box">
+<div class="shifts__filters-box">
+  <div class="shifts__button" [ngClass]="{'shifts__selected' : filterSelected === typeShifts.NEXT}" (click)="onSelected(typeShifts.NEXT)">
+    <span class="shifts__text">Próximos</span>
+  </div>
+  <div class="shifts__button" [ngClass]="{'shifts__selected' : filterSelected === typeShifts.COMPLETED}" (click)="onSelected(typeShifts.COMPLETED)">
+    <span class="shifts__text">Completados</span>
+  </div>
+  <div class="shifts__button" [ngClass]="{'shifts__selected' : filterSelected === typeShifts.CANCELED}" (click)="onSelected(typeShifts.CANCELED)">
+    <span class="shifts__text">Cancelados</span>
+  </div>
+</div>
+
+<div class="shifts__list">
+  <turnex-shift-card></turnex-shift-card>
+
+</div>
+
+</div>
+
+</div>

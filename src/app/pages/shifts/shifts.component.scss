@@ -1,0 +1,57 @@
+@import 'variables';
+
+.shifts {
+
+  display: flex;
+  flex-direction: column;
+  padding: $turnex-spacing-6 104px;
+
+  &__button {
+    border: none;
+    color: $turnex-alabaster-500;
+    width: 100%;
+    display: flex;
+    border-radius: $turnex-spacing-8;
+    padding: $turnex-spacing-14 $turnex-spacing-24;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    cursor: pointer;
+
+    &:hover {
+      background: $turnex-primary-900;
+      color: #fff;
+    }
+  }
+
+  &__selected {
+    background: $turnex-primary-800;
+    color: #fff;
+  }
+
+  &__sub-title {
+    color: $turnex-alabaster-600;
+    font-family: Rubik;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 32px;
+  }
+
+  &__filters-box {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    width: 328px;
+    margin: $turnex-spacing-40 0 $turnex-spacing-36 0;
+  }
+
+  &__text {
+
+    font-family: Rubik;
+    font-size: $turnex-spacing-16;
+    font-style: normal;
+    font-weight: 500;
+    line-height: $turnex-spacing-24;
+  }
+}
