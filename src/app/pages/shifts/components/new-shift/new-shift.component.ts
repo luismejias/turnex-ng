@@ -10,6 +10,8 @@ import { NewShiftStateService } from './new-shift.state.service';
 import { SelectHourComponent } from '../select-hour/select-hour.component';
 import { NewShiftSummaryComponent } from '../new-shift-summary/new-shift-summary.component';
 import { NewShiftState } from '../../models/new-shift-state.interface';
+import { Router } from '@angular/router';
+import { SelectDayComponent } from '../select-day/select-day.component';
 
 
 @Component({
@@ -17,7 +19,7 @@ import { NewShiftState } from '../../models/new-shift-state.interface';
   standalone: true,
   imports: [
     CommonModule, TitleComponent, ButtonComponent, SelectableCardComponent,
-    SelectItemsComponent, SelectHourComponent, NewShiftSummaryComponent, NgFor, NgClass, NgIf
+    SelectItemsComponent, SelectDayComponent, SelectHourComponent, NewShiftSummaryComponent, NgFor, NgClass, NgIf
   ],
   templateUrl: './new-shift.component.html',
   styleUrl: './new-shift.component.scss',
@@ -27,7 +29,8 @@ export class NewShiftComponent {
   title: string = '';
   subTitle: string = '';
   nextButtonText: string = 'Siguiente';
-
+  previousButtonText: string = 'Anterior';
+  errorOnSave: boolean = false;
   step = step;
   isNextButtonDisabled: boolean = true;
   daysOfWeek: Day[] = daysOfWeek;
@@ -47,7 +50,7 @@ export class NewShiftComponent {
     { id: '4', description: ' Clase suelta', isSelected: false },
   ]; //TODO realizar servicio e integrar con back para data real
 
-  constructor(private newShiftStateService: NewShiftStateService) {
+  constructor(private newShiftStateService: NewShiftStateService, private router: Router) {
     this.updateStep(1);
     effect(() => {
       console.log('CAMBIO EL ESTADO => ', this.newShiftStateService.state());
@@ -63,6 +66,10 @@ export class NewShiftComponent {
 
   get $step() {
     return this.newShiftStateService.state().step;
+  }
+
+  goToShifts() {
+    this.router.navigate(["/shifts"]);
   }
 
   validateNextButton(): void {
@@ -114,16 +121,18 @@ export class NewShiftComponent {
         this.subTitle = 'Confirma los datos de tu solicitud y, si está todo bien, presiona el botón “Agendar”.';
         this.nextButtonText = 'Agendar';
         break;
-
       case 6:
-        this.title = '¡Has agendado tus clases de Pilates con éxito!';
-        this.subTitle = 'Puedes cancelar o re-agendar tus clases siempre que lo necesites desde la sección “Turnos” con un mínimo de 24 hs de anticipación. ';
-        this.nextButtonText = 'Ver mis Turnos';
+        this.getShiftSchedulingResult();
         break;
       default:
         this.title = 'Agenda un nuevo turno';
         this.subTitle = 'Elige la especialidad de tu nuevo turno.';
     }
+  }
+
+  setInitialState() {
+    this.newShiftStateService.setInitialState();
+    this.daysOfWeek.map(day => day.isSelected = false);
   }
 
   onNextButton() {
@@ -144,13 +153,19 @@ export class NewShiftComponent {
         }
         break;
       case 4:
-        if (this._day) {
+        if (this.hours) {
           this.updateStep(5);
         }
         break;
       case 5:
-        if (this._day) {
-          this.updateStep(6);
+        this.updateStep(6);
+        break;
+      case 6:
+        if (this.errorOnSave) {
+          this.updateStep(1);
+        } else {
+          this.setInitialState();
+          this.goToShifts();
         }
         break;
       default:
@@ -164,18 +179,6 @@ export class NewShiftComponent {
     if (previousState > 0) {
       this.updateStep(previousState);
     }
-  }
-
-  onDaySelect(day: Day) {
-    this.isNextButtonDisabled = false;
-    day.isSelected = !day.isSelected;
-    this.selectedDays = this._selectedDays;
-    this.newShiftStateService.set(this.step.DAYS, this.selectedDays);
-  }
-
-  onHourSelect(daysWithTimesSelected: Record<string, Hour[]>) {
-    this.isNextButtonDisabled = false;
-    this.newShiftStateService.set(this.step.HOURS, daysWithTimesSelected);
   }
 
   toggleSelection(itemType: 'pack' | 'specialty', item: Pack | Specialty): void {
@@ -205,6 +208,20 @@ export class NewShiftComponent {
     }
   }
 
+  getShiftSchedulingResult() {
+    if (this.errorOnSave) {
+      this.title = '¡Hubo un error al agendar tus turnos de Pilates!';
+      this.subTitle = 'Por favor intenta de nuevo más tarde.';
+      this.nextButtonText = 'Volver al inicio'
+    } else {
+      this.title = '¡Has agendado tus turnos de Pilates con éxito!';
+      this.subTitle = 'Puedes cancelar o re-agendar tus clases siempre que lo necesites desde la sección “Turnos” con un mínimo de 24 hs de anticipación.';
+      this.nextButtonText = 'Ver mis Turnos';
+      this.previousButtonText = 'Volver al inicio';
+
+    }
+  }
+
   private get _specialty(): Specialty | undefined {
     return this.specialties.find(specialty => specialty.isSelected);
   }
@@ -217,9 +234,6 @@ export class NewShiftComponent {
     return this.daysOfWeek.find(day => day.isSelected);
   }
 
-  private get _selectedDays(): Day[] {
-    return this.daysOfWeek.filter(day => day.isSelected);
-  }
 
   private get _selectedDaysWithSelectedTimes(): boolean {
     const days = this.newShiftStateService.state().hours;
@@ -230,7 +244,5 @@ export class NewShiftComponent {
     }
     return false;
   }
-
-
 }
 

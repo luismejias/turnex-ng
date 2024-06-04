@@ -1,1 +1,10 @@
-<p>select-day works!</p>
+<div class="select-day">
+  <div class="select-day__card-day" *ngFor="let day of daysOfWeek"
+  aria-disabled="true"
+  [ngClass]="{'select-day__card-day-selected': day.isSelected}"
+  (click)="onDaySelect(day)"
+  (keypress)="onDaySelect(day)">
+    <span class="fi-rr-check" *ngIf="day.isSelected"></span>
+    <span class="select-day__day-text">{{day.description}}</span>
+  </div>
+</div>
