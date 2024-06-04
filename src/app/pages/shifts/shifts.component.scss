@@ -2,9 +2,24 @@
 
 .shifts {
 
-  display: flex;
-  flex-direction: column;
-  padding: $turnex-spacing-6 104px;
+  &__principal-box {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__new-shift-button {
+    display: flex;
+    padding: 12px 20px;
+    gap: 8px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background: #FF8CA0;
+    color: #fff;
+    &:hover {
+      background: #FE6E8A
+    }
+  }
 
   &__button {
     border: none;
@@ -12,7 +27,7 @@
     width: 100%;
     display: flex;
     border-radius: $turnex-spacing-8;
-    padding: $turnex-spacing-14 $turnex-spacing-24;
+    padding: $turnex-spacing-8 $turnex-spacing-24;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
@@ -31,27 +46,52 @@
 
   &__sub-title {
     color: $turnex-alabaster-600;
-    font-family: Rubik;
+    @include Rubik();
     font-size: 24px;
     font-style: normal;
-    font-weight: 500;
     line-height: 32px;
+    margin-top: $turnex-spacing-12;
   }
 
   &__filters-box {
     display: flex;
     gap: 4px;
     align-items: center;
-    width: 328px;
+    max-width: 328px;
     margin: $turnex-spacing-40 0 $turnex-spacing-36 0;
   }
 
-  &__text {
+  &__list {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
 
-    font-family: Rubik;
+  &__text {
+    @include Rubik();
     font-size: $turnex-spacing-16;
     font-style: normal;
-    font-weight: 500;
     line-height: $turnex-spacing-24;
+  }
+
+  &__pack-detail {
+    font-weight: bold;
+  }
+}
+
+@media (max-width: $turnex-breakpoint-xs) {
+
+  .shifts {
+    &__button {
+      padding: $turnex-spacing-12 $turnex-spacing-16;
+    }
+
+    &__text {
+      font-size: $turnex-spacing-14;
+    }
+
+    &__filters-box {
+      gap: 0;
+    }
   }
 }

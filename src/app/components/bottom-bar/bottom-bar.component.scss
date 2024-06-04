@@ -1,0 +1,52 @@
+@import 'variables';
+
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #ffffff;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  height: 80px;
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $turnex-spacing-4;
+  }
+
+  &__link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-items: center;
+    border-radius:  $turnex-spacing-16;
+    padding: $turnex-spacing-4 $turnex-spacing-20;
+  }
+
+  &__text {
+    color: $turnex-alabaster-950;
+    text-align: center;
+    @include Rubik();
+    font-weight: bold;
+    font-size: 12px;
+    font-style: normal;
+    line-height: 16px;
+    text-decoration: none;
+  }
+
+  a {
+    text-decoration: none;
+  }
+}
+
+.active {
+  background: $turnex-primary-200;
+}

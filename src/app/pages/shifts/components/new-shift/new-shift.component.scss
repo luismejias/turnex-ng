@@ -1,0 +1,161 @@
+@import 'variables';
+
+
+.new-shift {
+  &__success {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__success-img {
+    background-image: url('../../../../../assets/images/check.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 80px 80px;
+    height: 80px;
+    width: 80px;
+    margin-bottom: 40px;
+  }
+
+  &__error-img {
+    background-image: url('../../../../../assets/images/crossed.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 80px 80px;
+    height: 80px;
+    width: 80px;
+    margin-bottom: 40px;
+  }
+
+  &__success-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    max-width: 816px;
+  }
+
+  &__sub-title {
+    color: $turnex-alabaster-600;
+    @include Rubik();
+    font-size: 24px;
+    font-style: normal;
+    line-height: $turnex-spacing-32;
+    margin-top: $turnex-spacing-12;
+    max-width: 1232px;
+  }
+
+  &__specialities {
+    display: flex;
+    gap: $turnex-spacing-16;
+    margin-top: $turnex-spacing-40;
+  }
+
+  &__specialty {
+    display: flex;
+    width: 192px;
+    padding: 32px 16px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    border: 1px solid $turnex-alabaster-100;
+    background: $turnex-alabaster-50;
+    cursor: pointer;
+
+    &:hover {
+      border-radius: $turnex-spacing-16;
+      border: 1px solid $turnex-primary-800;
+      background: var(--Primary-50, #F5F5FD);
+    }
+
+    &__selected {
+      border-radius: $turnex-spacing-16;
+      border: 1px solid $turnex-primary-800;
+      background: var(--Primary-50, #F5F5FD);
+    }
+  }
+
+  &__specialty-selected {
+    border-radius: $turnex-spacing-16;
+    border: 1px solid $turnex-primary-800;
+    background: $turnex-primary-50;
+  }
+
+  &__description {
+    color: $turnex-alabaster-950;
+    text-align: center;
+    @include Rubik();
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 28px;
+  }
+
+  &__button-box {
+    display: flex;
+    gap: $turnex-spacing-16;
+    justify-content: center;
+    margin-top: 60px;
+  }
+
+  &__button {
+    width: 198px;
+  }
+
+  &__car-day-box {
+    display: flex;
+    gap: $turnex-spacing-16;
+    margin-top: 40px;
+  }
+
+  &__card-day {
+    display: flex;
+    padding: $turnex-spacing-16;
+    align-items: center;
+    border-radius: 4px;
+    border: 1px solid $turnex-alabaster-100;
+    background: $turnex-alabaster-50;
+    cursor: pointer;
+    gap: 4px;
+
+    &:hover {
+      border-radius: $turnex-spacing-4;
+      border: 1px solid $turnex-primary-800;
+      background: var(--Primary-50, #F5F5FD);
+      color: $turnex-primary-800;
+    }
+
+    &-selected {
+      border-radius: $turnex-spacing-4;
+      border: 1px solid $turnex-primary-800;
+      background: var(--Primary-50, #F5F5FD);
+      color: $turnex-primary-800;
+    }
+
+  }
+
+  &__day-text {
+    text-align: center;
+    @include Rubik();
+    font-size: $turnex-spacing-18;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 28px;
+  }
+
+
+}
+
+@media (max-width: $turnex-breakpoint-xs) {
+  .new-shift {
+    &__button-box {
+      position: absolute;
+      bottom: 18px;
+      left: 10%;
+      right: 10%;
+    }
+  }
+}

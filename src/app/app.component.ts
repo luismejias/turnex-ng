@@ -1,18 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgSwitch, NgSwitchDefault, NgSwitchCase } from '@angular/common';
 import { ShiftsComponent } from './pages/shifts/shifts.component';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
+import { BottomBarComponent, NavbarComponent } from './components';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   standalone: true,
-  imports: [NgSwitch, NgSwitchDefault, NgSwitchCase, ShiftsComponent, RouterOutlet, RouterLink]
+  imports: [NgSwitch, NgSwitchDefault, NgSwitchCase, ShiftsComponent, RouterOutlet, NavbarComponent, BottomBarComponent]
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'turnex';
-  ngOnInit() {
-  }
 
 }

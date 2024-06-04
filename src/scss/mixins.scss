@@ -1,0 +1,14 @@
+@mixin Rubik {
+	font-family: 'Rubik';
+	font-weight: 500;
+}
+
+@mixin Rubik-Light {
+	font-family: 'Rubik';
+	font-weight: 300;
+}
+
+@mixin Rubik-Bold {
+	font-family: 'Rubik';
+	font-weight: bold;
+}

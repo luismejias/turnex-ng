@@ -1,18 +1,15 @@
 @import 'variables';
 
-:host {
-  width: 100%;
-
-}
 
 .button {
   border: none;
   background: $turnex-primary-800;
   width: 100%;
+  max-width: 198px;
   display: flex;
   background: $turnex-primary-800;
   border-radius: $turnex-spacing-8;
-  padding: $turnex-spacing-14 $turnex-spacing-24;
+  padding: $turnex-spacing-8 $turnex-spacing-24;
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
@@ -23,16 +20,18 @@
 
   &__text {
     color: $turnex-white-50;
-    font-family: Rubik;
+    @include Rubik();;
     font-size: $turnex-spacing-16;
     font-style: normal;
-    font-weight: 500;
     line-height: $turnex-spacing-24;
   }
 
   &__disabled {
     background: $turnex-alabaster-100;
     cursor: not-allowed;
+    &:hover {
+      background: $turnex-alabaster-100;
+    }
   }
 
   &__disabled_text {

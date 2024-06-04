@@ -1,0 +1,31 @@
+<div class="new-shift-summary" *ngIf="state">
+  <div>
+    <span class="new-shift-summary__detail-box-title">Especialidad seleccionada: </span>
+    <span class="new-shift-summary__detail-box-sub-title">{{ state.specialty }} </span>
+  </div>
+
+  <div>
+    <span class="new-shift-summary__detail-box-title">Pack seleccionado: </span>
+    <span class="new-shift-summary__detail-box-sub-title">{{ state.pack }} </span>
+  </div>
+
+  <div>
+    <span class="new-shift-summary__detail-box-title">Días y horarios seleccionados: </span>
+  <div class="new-shift-summary__detail-box-sub-titles">
+    <div class="new-shift-summary__detail-box-sub-title" *ngFor="let day of state.days">
+      <span>{{ day.description }}</span>
+      <div>
+        <span *ngFor="let hour of state.hours[day.description]">
+          {{ hour.isSelected ? hour.description+ ' hs': '' }}
+        </span>
+      </div>,
+    </div>
+  </div>
+  </div>
+
+  <div class="new-shift-summary__info-message-box">
+  <span class="new-shift-summary__info-message-title">¡Importante!</span>
+
+  <span class="new-shift-summary__info-message-text">Tu próxima clase comenzará el Miércoles 10/10/2023 a las 17:00 hs.</span>
+  </div>
+</div>

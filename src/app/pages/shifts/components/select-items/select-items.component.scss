@@ -1,0 +1,7 @@
+@import 'variables';
+
+.select-items {
+    display: flex;
+    gap: $turnex-spacing-16;
+    margin-top: $turnex-spacing-40;
+}

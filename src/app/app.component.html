@@ -1,12 +1,8 @@
 
-<nav>
-  <ul>
-    <li>
-      <a routerLink="/home">Inicio</a>
-      <a routerLink="/shifts">Turnos</a>
-    </li>
-  </ul>
-</nav>
-<div class="app__principal-content">
-  <router-outlet></router-outlet>
+<div class="app">
+  <turnex-navbar class="app__navbar"></turnex-navbar>
+  <div class="app__principal-content">
+    <router-outlet></router-outlet>
+  </div>
+  <turnex-bottom-bar class="app__bottom-bar"></turnex-bottom-bar>
 </div>

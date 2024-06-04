@@ -1,0 +1,49 @@
+@import 'variables';
+.select-hour {
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+
+  &__day {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid $turnex-alabaster-200;
+    margin-bottom: $turnex-spacing-24;
+
+    &--title {
+      color: $turnex-primary-800;
+      font-size: $turnex-spacing-20;
+      @include Rubik-Bold();
+    }
+  }
+
+  &__hourList {
+    display: flex;
+    gap: $turnex-spacing-8;
+    margin: $turnex-spacing-24 0 $turnex-spacing-16 0;
+    flex-wrap: wrap;
+    max-width: 1300px;
+  }
+
+  &__hour-detail {
+    display: flex;
+    width: 144px;
+    cursor: pointer;
+    height: $turnex-spacing-28;
+    gap: $turnex-spacing-16;
+    border-radius: $turnex-spacing-4;
+    align-items: center;
+    justify-content: center;
+    @include Rubik-Bold();
+    font-size: $turnex-spacing-18;
+  }
+
+  &--selected {
+    background:  $turnex-primary-800;
+    color: #fff;
+  }
+
+  &__icon {
+    font-size: $turnex-spacing-12;
+  }
+}

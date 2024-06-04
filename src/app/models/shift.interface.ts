@@ -1,3 +1,4 @@
+import { TypeShifts } from "../pages/shifts/shift.enum";
 
 export interface Shift {
   id: number,
@@ -5,7 +6,6 @@ export interface Shift {
   date: Date,
   clientId: number,
   specialityID: number,
+  status: TypeShifts;
   active: Boolean,
-  createAt: Date,
-  updatedAt: Date,
 }

@@ -1,29 +1,31 @@
 
 <div class="shifts">
-<turnex-title [text]="'Turnos'"></turnex-title>
+  <div class="shifts__principal-box">
+    <turnex-title [text]="'Turnos'"></turnex-title>
+
+    <button class="shifts__new-shift-button"  [routerLink]="['newShift']"><i class="fi-rr-plus-small"></i> Nuevo turno</button>
+  </div>
+
 <div class="shifts__sub-title">
   <span>Pack activo: </span>
-  <span>4 clases al mes</span>
+  <span class="shifts__pack-detail">4 clases al mes</span>
 </div>
 
 <div class="shifts__box">
 <div class="shifts__filters-box">
-  <div class="shifts__button" [ngClass]="{'shifts__selected' : filterSelected === typeShifts.NEXT}" (click)="onSelected(typeShifts.NEXT)">
+  <div class="shifts__button" [ngClass]="{'shifts__selected' : filterSelected === typeShifts.NEXT}" (click)="onFilterSelected(typeShifts.NEXT)">
     <span class="shifts__text">Próximos</span>
   </div>
-  <div class="shifts__button" [ngClass]="{'shifts__selected' : filterSelected === typeShifts.COMPLETED}" (click)="onSelected(typeShifts.COMPLETED)">
+  <div class="shifts__button" [ngClass]="{'shifts__selected' : filterSelected === typeShifts.COMPLETED}" (click)="onFilterSelected(typeShifts.COMPLETED)">
     <span class="shifts__text">Completados</span>
   </div>
-  <div class="shifts__button" [ngClass]="{'shifts__selected' : filterSelected === typeShifts.CANCELED}" (click)="onSelected(typeShifts.CANCELED)">
+  <div class="shifts__button" [ngClass]="{'shifts__selected' : filterSelected === typeShifts.CANCELED}" (click)="onFilterSelected(typeShifts.CANCELED)">
     <span class="shifts__text">Cancelados</span>
   </div>
 </div>
 
-<div class="shifts__list">
-  <turnex-shift-card></turnex-shift-card>
-
+<div class="shifts__list" >
+  <turnex-shift-card *ngFor="let shift of filteredShifts;" [date]="shift.date.toISOString()" [status]="shift.status"></turnex-shift-card>
 </div>
-
 </div>
-
 </div>

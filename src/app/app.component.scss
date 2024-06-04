@@ -1,8 +1,32 @@
+@import 'variables';
 .app {
+  display: flex;
+  flex-direction: column;
+  padding: $turnex-spacing-6 104px;
   &__principal-content {
 		margin-top: 90px;
-		overflow: hidden !important;
 		background-color: #fff !important;
 		min-height: 100vh;
 	}
+
+  &__bottom-bar {
+    display: none;
+  }
+}
+
+@media (max-width: $turnex-breakpoint-xs) {
+  .app {
+    padding: 0;
+    &__principal-content {
+      margin-top: 0px;
+      padding: $turnex-spacing-18;
+    }
+    &__navbar {
+      display: none;
+    }
+
+    &__bottom-bar {
+      display: flex;
+    }
+  }
 }

@@ -1,0 +1,92 @@
+@import 'variables';
+
+ul {
+  list-style: none;
+
+}
+
+a {
+  text-decoration: none;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &__first-section{
+    display: flex;
+    align-items: center;
+  }
+
+  &__title-box {
+    display: flex;
+    align-items: center;
+    margin-right: 64px;
+    gap: $turnex-spacing-12;
+    cursor: pointer;
+  }
+
+  &__title {
+    color: $turnex-alabaster-900;
+    @include Rubik();
+    font-size: $turnex-spacing-36;
+    font-style: normal;
+    font-weight: 600;
+    line-height: $turnex-spacing-40;
+  }
+
+  &__client-name {
+    color: $turnex-alabaster-900;
+    @include Rubik-Light();
+    font-size: $turnex-spacing-36;
+    font-style: normal;
+    line-height: $turnex-spacing-40;
+  }
+
+  &__menu {
+    display: flex;
+    gap: $turnex-spacing-32
+  }
+
+  &__ul {
+    display: flex;
+    align-items: center;
+    gap: $turnex-spacing-24;
+    align-self: stretch;
+  }
+
+  &__text {
+    color: $turnex-alabaster-900;
+    text-align: center;
+    @include Rubik();
+    font-size: $turnex-spacing-16;
+    font-style: normal;
+    font-weight: bold;
+    line-height: $turnex-spacing-24;
+  }
+
+  &__active {
+    color: $turnex-primary-800;
+  }
+
+  &__logout-button {
+    display: flex;
+    padding: $turnex-spacing-12 $turnex-spacing-20;
+    gap: 8px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background: $turnex-alabaster-100;
+    color: $turnex-alabaster-800;
+    @include Rubik();;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 24px;
+
+    &:hover {
+      background: $turnex-alabaster-200
+    }
+  }
+}

@@ -1,0 +1,43 @@
+<div [ngClass]="{'new-shift__success': $step === 6}">
+  <div [ngClass]="{'new-shift__success-box': $step === 6}">
+    <div class="new-shift__success-img" [ngClass]="{'new-shift__success-box': $step === 6}"  *ngIf="$step === 6"></div>
+    <turnex-title [text]="title"></turnex-title>
+    <div class="new-shift__sub-title">
+      <span>{{subTitle}} </span>
+    </div>
+  </div>
+
+
+    <ng-container *ngIf="$step === 1">
+      <turnex-select-items [items]="specialties" (itemSelected)="toggleSelection(this.step.SPECIALTY, $event)"></turnex-select-items>
+    </ng-container>
+
+    <ng-container *ngIf="$step === 2">
+        <turnex-select-items [items]="packs" (itemSelected)="toggleSelection(this.step.PACK, $event)"></turnex-select-items>
+    </ng-container>
+
+    <ng-container *ngIf="$step === 3">
+      <div class="new-shift__car-day-box">
+        <div class="new-shift__card-day" *ngFor="let day of daysOfWeek"
+        [ngClass]="{'new-shift__card-day-selected': day.isSelected}"
+        (click)="onDaySelect(day)">
+          <span class="fi-rr-check" *ngIf="day.isSelected"></span>
+          <span class="new-shift__day-text">{{day.description}}</span>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="$step === 4">
+      <turnex-select-hour [hoursCount]="3" [interval]="60" [startTime]="'11:00'" [selectedDays]="selectedDays" (hoursSelected)="onHourSelect($event)"></turnex-select-hour>
+    </ng-container>
+
+    <ng-container *ngIf="$step === 5">
+      <turnex-new-shift-summary></turnex-new-shift-summary>
+    </ng-container>
+
+    <div class="new-shift__button-box">
+      <turnex-button text="Anterior" [type]="'reset'" class="new-shift__button" (click)="onPreviousButton()" *ngIf="$step > 1"></turnex-button>
+      <turnex-button [text]="nextButtonText"  class="new-shift__button" (click)="onNextButton()" [disabled]="isNextButtonDisabled"></turnex-button>
+    </div>
+
+</div>

@@ -1,12 +1,18 @@
 <div class="shift-card">
   <span class="shift-card__title">Clases de pilates</span>
   <div class="shift-card__date">
-    <span> calendario Lunes 01/01/2023</span>
-    <span>hora 07:00 hs</span>
-  </div>
+    <div class="shift-card__date-hour">
+    <span class="fi-rr-calendar"></span>
+    <span> {{ day }}</span>
+    </div>
+    <div class="shift-card__date-hour">
+      <i class="fi-rr-clock-nine"></i>
+      <span>hora {{ hour }} hs</span>
+    </div>
 
-  <div class="shift-card__buttons-box">
-    <turnex-button text="Cancelar" type="reset"></turnex-button>
-    <turnex-button text="Reagendar">Reagendar</turnex-button>
+  </div>
+  <div class="shift-card__buttons-box" *ngIf="status !== typeShift.COMPLETED">
+    <turnex-button text="Cancelar" type="reset" *ngIf="status !== typeShift.CANCELED" class="shift-card__button"></turnex-button>
+    <turnex-button text="Reagendar" class="shift-card__button"></turnex-button>
   </div>
 </div>

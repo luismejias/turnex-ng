@@ -1,0 +1,235 @@
+import { CommonModule, NgClass, NgFor, NgIf } from '@angular/common';
+import { Component, effect } from '@angular/core';
+import { ButtonComponent, TitleComponent } from 'src/app/components';
+import { daysOfWeek } from 'src/app/pages/constants';
+import { SelectableCardComponent } from '../selectable-card/selectable-card.component';
+import { SelectItemsComponent } from '../select-items/select-items.component';
+import { Specialty, Pack, Day, Hour } from '../../models';
+import { step } from 'src/app/models';
+import { NewShiftState } from './new-shift.state.service';
+import { SelectHourComponent } from '../select-hour/select-hour.component';
+import { NewShiftSummaryComponent } from '../new-shift-summary/new-shift-summary.component';
+
+
+@Component({
+  selector: 'turnex-new-shift',
+  standalone: true,
+  imports: [
+    CommonModule, TitleComponent, ButtonComponent, SelectableCardComponent,
+    SelectItemsComponent, SelectHourComponent, NewShiftSummaryComponent, NgFor, NgClass, NgIf
+  ],
+  templateUrl: './new-shift.component.html',
+  styleUrl: './new-shift.component.scss',
+  providers: [NewShiftState]
+})
+export class NewShiftComponent {
+  title: string = '';
+  subTitle: string = '';
+  nextButtonText: string = 'Siguiente';
+
+  step = step;
+  isNextButtonDisabled: boolean = true;
+  daysOfWeek: Day[] = daysOfWeek;
+  selectedDays!: Day[];
+  selectedDaysWithSelectedTimes!: Record<string, Hour[]>;
+  hours: Hour[] = [];
+  state!: NewShiftState;
+  specialties: Specialty[] = [
+    { id: '1', description: 'Pilates', isSelected: false },
+    { id: '2', description: 'Osteopatía', isSelected: false }
+  ]; //TODO realizar servicio e integrar con back para data real
+
+  packs: Pack[] = [
+    { id: '1', description: '4 clases al mes', isSelected: false },
+    { id: '2', description: '8 clases al mes', isSelected: false },
+    { id: '3', description: '12 clases al mes', isSelected: false },
+    { id: '4', description: ' Clase suelta', isSelected: false },
+  ]; //TODO realizar servicio e integrar con back para data real
+
+  constructor(private newShiftState: NewShiftState) {
+    this.updateStep(1);
+    effect(() => {
+      console.log('CAMBIO EL ESTADO => ', this.newShiftState.state());
+      this.state = this.newShiftState.state();
+      this.setTitleSubtitle();
+      this.validateNextButton();
+    })
+  }
+
+  updateStep(step: number): void {
+    this.newShiftState.set('step', step);
+  }
+
+  get $step() {
+    return this.newShiftState.state().step;
+  }
+
+  validateNextButton(): void {
+    switch (this.$step) {
+      case 1:
+        this.isNextButtonDisabled = !this._specialty;
+        break;
+      case 2:
+        this.isNextButtonDisabled = !this._pack;
+        break;
+      case 3:
+        this.isNextButtonDisabled = !this._day;
+        break;
+      case 4:
+        this.isNextButtonDisabled = !this._selectedDaysWithSelectedTimes;
+        break;
+      case 5:
+        this.isNextButtonDisabled = false;
+        break;
+      case 6:
+        this.isNextButtonDisabled = false;
+        break;
+      default:
+        this.isNextButtonDisabled = true;
+    }
+  }
+
+  setTitleSubtitle(): void {
+    switch (this.$step) {
+      case 1:
+        this.title = 'Agenda un nuevo turno';
+        this.subTitle = 'Elige la especialidad de tu nuevo turno.';
+        this.nextButtonText = 'Siguiente';
+        break;
+      case 2:
+        this.title = 'Elige tu pack de clases';
+        this.subTitle = 'Podrás cambiar de pack siempre que lo necesites. Al solicitar el cambio de pack se verá reflejado al mes siguiente. En caso de requerir clases adicionales, siempre podrás adquirir clases sueltas.';
+        break;
+      case 3:
+        this.title = 'Elige los días de tus turnos';
+        this.subTitle = 'Tienes el Pack de 4 clases activo, elige los días de la semana que más te convengan.';
+        break;
+      case 4:
+        this.title = 'Te mostramos los horarios disponibles para cada día seleccionado, elige los que más te convengan.';
+        this.subTitle = 'Podrás cancelar, reagendar o pedir un turno nuevo siempre que lo necesites con un mínimos de 24hs de antelación.';
+        break;
+      case 5:
+        this.title = '¡Ya casi estamos!';
+        this.subTitle = 'Confirma los datos de tu solicitud y, si está todo bien, presiona el botón “Agendar”.';
+        this.nextButtonText = 'Agendar';
+        break;
+
+      case 6:
+        this.title = '¡Has agendado tus clases de Pilates con éxito!';
+        this.subTitle = 'Puedes cancelar o re-agendar tus clases siempre que lo necesites desde la sección “Turnos” con un mínimo de 24 hs de anticipación. ';
+        this.nextButtonText = 'Ver mis Turnos';
+        break;
+      default:
+        this.title = 'Agenda un nuevo turno';
+        this.subTitle = 'Elige la especialidad de tu nuevo turno.';
+    }
+  }
+
+  onNextButton() {
+    switch (this.$step) {
+      case 1:
+        if (this._specialty) {
+          this.updateStep(2);
+        }
+        break;
+      case 2:
+        if (this._pack) {
+          this.updateStep(3);
+        }
+        break;
+      case 3:
+        if (this._day) {
+          this.updateStep(4);
+        }
+        break;
+      case 4:
+        if (this._day) {
+          this.updateStep(5);
+        }
+        break;
+      case 5:
+        if (this._day) {
+          this.updateStep(6);
+        }
+        break;
+      default:
+        this.updateStep(1)
+        break;
+    }
+  }
+
+  onPreviousButton() {
+    const previousState = this.$step - 1;
+    if (previousState > 0) {
+      this.updateStep(previousState);
+    }
+  }
+
+  onDaySelect(day: Day) {
+    this.isNextButtonDisabled = false;
+    day.isSelected = !day.isSelected;
+    this.selectedDays = this._selectedDays;
+    this.newShiftState.set(this.step.DAYS, this.selectedDays);
+  }
+
+  onHourSelect(daysWithTimesSelected: Record<string, Hour[]>) {
+    this.isNextButtonDisabled = false;
+    this.newShiftState.set(this.step.HOURS, daysWithTimesSelected);
+  }
+
+  toggleSelection(itemType: 'pack' | 'specialty', item: Pack | Specialty): void {
+    const itemId = item.id;
+    const items = itemType === 'pack' ? this.packs : this.specialties;
+    const updatedItems = items.map(item => {
+      if (item.id === itemId) {
+        return { ...item, isSelected: !item.isSelected };
+      } else {
+        return { ...item, isSelected: false };
+      }
+    });
+    if (itemType === 'pack') {
+      this.packs = updatedItems as Pack[];
+      if (this._pack) {
+        this.newShiftState.set(this.step.PACK, this._pack.description);
+      } else {
+        this.newShiftState.set(this.step.PACK, '');
+      }
+    } else {
+      this.specialties = updatedItems as Specialty[];
+      if (this._specialty) {
+        this.newShiftState.set(this.step.SPECIALTY, this._specialty.description);
+      } else {
+        this.newShiftState.set(this.step.SPECIALTY, '');
+      }
+    }
+  }
+
+  private get _specialty(): Specialty | undefined {
+    return this.specialties.find(specialty => specialty.isSelected);
+  }
+
+  private get _pack(): Pack | undefined {
+    return this.packs.find(pack => pack.isSelected);
+  }
+
+  private get _day(): Day | undefined {
+    return this.daysOfWeek.find(day => day.isSelected);
+  }
+
+  private get _selectedDays(): Day[] {
+    return this.daysOfWeek.filter(day => day.isSelected);
+  }
+
+  private get _selectedDaysWithSelectedTimes(): Boolean {
+    const days = this.newShiftState.state().hours;
+    for (const day in days) {
+      if (days[day].some(hour => hour.isSelected)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+
+}
+

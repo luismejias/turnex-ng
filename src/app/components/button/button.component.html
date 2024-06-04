@@ -1,4 +1,4 @@
 
-<button class="button" [disabled]="disabled"  [ngClass]="{'button__reset': type === 'reset'}" >
+<button class="button" [disabled]="disabled"  [ngClass]="{'button__reset': type === 'reset', 'button__disabled': disabled }" >
   <span class="button__text" [ngClass]="{'button__reset-text': type === 'reset'}">{{text}}</span>
 </button>
