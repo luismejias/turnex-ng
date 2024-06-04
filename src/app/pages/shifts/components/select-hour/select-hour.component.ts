@@ -1,8 +1,8 @@
 import { NgClass, NgFor, NgIf } from '@angular/common';
-import { Component, effect, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Day, Hour } from '../../models';
 import { step } from 'src/app/models';
-import { NewShiftState } from '../new-shift/new-shift.state.service';
+import { NewShiftStateService } from '../new-shift/new-shift.state.service';
 export interface TimesByDay {
   [key: string]: Hour[];
 }
@@ -23,7 +23,7 @@ export class SelectHourComponent implements OnInit {
   hours!: Hour[];
   step = step;
 
-  constructor(private newShiftState: NewShiftState) { }
+  constructor(private newShiftStateService: NewShiftStateService) { }
 
   ngOnInit(): void {
     this.hours = this._generateTimes();
@@ -35,7 +35,7 @@ export class SelectHourComponent implements OnInit {
   }
 
   private get $hours() {
-    return this.newShiftState.state().hours;
+    return this.newShiftStateService.state().hours;
   }
 
   onHourSelect(hour: Hour) {
@@ -89,7 +89,7 @@ export class SelectHourComponent implements OnInit {
 
     for (const day in timesByDay) {
       // Verifica si la misma clave existe en hours.
-      if (hours.hasOwnProperty(day)) {
+      if (Object.prototype.hasOwnProperty.call(hours, day)) {
         filteredHours[day] = hours[day];
       }
     }

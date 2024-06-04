@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-packs',
+  selector: 'turnex-packs',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './packs.component.html',

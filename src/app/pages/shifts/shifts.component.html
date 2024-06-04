@@ -13,13 +13,13 @@
 
 <div class="shifts__box">
 <div class="shifts__filters-box">
-  <div class="shifts__button" [ngClass]="{'shifts__selected' : filterSelected === typeShifts.NEXT}" (click)="onFilterSelected(typeShifts.NEXT)">
+  <div class="shifts__button" [ngClass]="{'shifts__selected' : filterSelected === typeShifts.NEXT}" (click)="onFilterSelected(typeShifts.NEXT)" (keyup)="onFilterSelected(typeShifts.NEXT)" role="button" aria-disabled="true">
     <span class="shifts__text">Próximos</span>
   </div>
-  <div class="shifts__button" [ngClass]="{'shifts__selected' : filterSelected === typeShifts.COMPLETED}" (click)="onFilterSelected(typeShifts.COMPLETED)">
+  <div class="shifts__button" [ngClass]="{'shifts__selected' : filterSelected === typeShifts.COMPLETED}" (click)="onFilterSelected(typeShifts.COMPLETED)" (keyup)="onFilterSelected(typeShifts.COMPLETED)" role="button" aria-disabled="true">
     <span class="shifts__text">Completados</span>
   </div>
-  <div class="shifts__button" [ngClass]="{'shifts__selected' : filterSelected === typeShifts.CANCELED}" (click)="onFilterSelected(typeShifts.CANCELED)">
+  <div class="shifts__button" [ngClass]="{'shifts__selected' : filterSelected === typeShifts.CANCELED}" (click)="onFilterSelected(typeShifts.CANCELED)" (keyup)="onFilterSelected(typeShifts.CANCELED)" role="button" aria-disabled="true">
     <span class="shifts__text">Cancelados</span>
   </div>
 </div>

@@ -2,13 +2,15 @@
   <div class="select-hour__day" *ngFor="let day of selectedDays">
     <span class="select-hour__day--title">{{ day.description }}</span>
     <div class="select-hour__hourList">
-      <span class="select-hour__hour-detail"
+      <div class="select-hour__hour-detail"
+            aria-disabled="true"
             [ngClass]="{'select-hour--selected': hour.isSelected}"
             *ngFor="let hour of selectedDaysWithTimes[day.description]"
-            (click)="onHourSelect(hour)">
+            (click)="onHourSelect(hour)"
+            (keydown)="onHourSelect(hour)">
         <span class="fi-rr-check select-hour__icon"
               [ngClass]="{'fi-rr-check': hour.isSelected}"></span>{{ hour.description }}
-      </span>
+    </div>
     </div>
   </div>
 </div>

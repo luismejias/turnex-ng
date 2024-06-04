@@ -2,7 +2,7 @@
 export interface Permission {
   id: number,
   description: string,
-  active: Boolean,
+  active: boolean,
   createAt: Date,
   updatedAt: Date,
 }

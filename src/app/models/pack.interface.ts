@@ -4,7 +4,7 @@ export interface Pack {
   description: string,
   price: number,
   duration: string,
-  active: Boolean,
+  active: boolean,
   createAt: Date,
   updatedAt: Date,
 }

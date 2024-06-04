@@ -6,9 +6,10 @@ import { SelectableCardComponent } from '../selectable-card/selectable-card.comp
 import { SelectItemsComponent } from '../select-items/select-items.component';
 import { Specialty, Pack, Day, Hour } from '../../models';
 import { step } from 'src/app/models';
-import { NewShiftState } from './new-shift.state.service';
+import { NewShiftStateService } from './new-shift.state.service';
 import { SelectHourComponent } from '../select-hour/select-hour.component';
 import { NewShiftSummaryComponent } from '../new-shift-summary/new-shift-summary.component';
+import { NewShiftState } from '../../models/new-shift-state.interface';
 
 
 @Component({
@@ -20,7 +21,7 @@ import { NewShiftSummaryComponent } from '../new-shift-summary/new-shift-summary
   ],
   templateUrl: './new-shift.component.html',
   styleUrl: './new-shift.component.scss',
-  providers: [NewShiftState]
+  providers: [NewShiftStateService]
 })
 export class NewShiftComponent {
   title: string = '';
@@ -46,22 +47,22 @@ export class NewShiftComponent {
     { id: '4', description: ' Clase suelta', isSelected: false },
   ]; //TODO realizar servicio e integrar con back para data real
 
-  constructor(private newShiftState: NewShiftState) {
+  constructor(private newShiftStateService: NewShiftStateService) {
     this.updateStep(1);
     effect(() => {
-      console.log('CAMBIO EL ESTADO => ', this.newShiftState.state());
-      this.state = this.newShiftState.state();
+      console.log('CAMBIO EL ESTADO => ', this.newShiftStateService.state());
+      this.state = this.newShiftStateService.state();
       this.setTitleSubtitle();
       this.validateNextButton();
     })
   }
 
   updateStep(step: number): void {
-    this.newShiftState.set('step', step);
+    this.newShiftStateService.set('step', step);
   }
 
   get $step() {
-    return this.newShiftState.state().step;
+    return this.newShiftStateService.state().step;
   }
 
   validateNextButton(): void {
@@ -169,12 +170,12 @@ export class NewShiftComponent {
     this.isNextButtonDisabled = false;
     day.isSelected = !day.isSelected;
     this.selectedDays = this._selectedDays;
-    this.newShiftState.set(this.step.DAYS, this.selectedDays);
+    this.newShiftStateService.set(this.step.DAYS, this.selectedDays);
   }
 
   onHourSelect(daysWithTimesSelected: Record<string, Hour[]>) {
     this.isNextButtonDisabled = false;
-    this.newShiftState.set(this.step.HOURS, daysWithTimesSelected);
+    this.newShiftStateService.set(this.step.HOURS, daysWithTimesSelected);
   }
 
   toggleSelection(itemType: 'pack' | 'specialty', item: Pack | Specialty): void {
@@ -190,16 +191,16 @@ export class NewShiftComponent {
     if (itemType === 'pack') {
       this.packs = updatedItems as Pack[];
       if (this._pack) {
-        this.newShiftState.set(this.step.PACK, this._pack.description);
+        this.newShiftStateService.set(this.step.PACK, this._pack.description);
       } else {
-        this.newShiftState.set(this.step.PACK, '');
+        this.newShiftStateService.set(this.step.PACK, '');
       }
     } else {
       this.specialties = updatedItems as Specialty[];
       if (this._specialty) {
-        this.newShiftState.set(this.step.SPECIALTY, this._specialty.description);
+        this.newShiftStateService.set(this.step.SPECIALTY, this._specialty.description);
       } else {
-        this.newShiftState.set(this.step.SPECIALTY, '');
+        this.newShiftStateService.set(this.step.SPECIALTY, '');
       }
     }
   }
@@ -220,8 +221,8 @@ export class NewShiftComponent {
     return this.daysOfWeek.filter(day => day.isSelected);
   }
 
-  private get _selectedDaysWithSelectedTimes(): Boolean {
-    const days = this.newShiftState.state().hours;
+  private get _selectedDaysWithSelectedTimes(): boolean {
+    const days = this.newShiftStateService.state().hours;
     for (const day in days) {
       if (days[day].some(hour => hour.isSelected)) {
         return true;

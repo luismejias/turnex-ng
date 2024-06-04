@@ -1,17 +1,11 @@
 import { Injectable } from '@angular/core';
 import { SimpleStoreService } from 'src/app/simple-store.service';
-import { Day, Hour } from '../../models';
-export interface NewShiftState {
-  step: number;
-  pack: string;
-  specialty: string;
-  days: Day[];
-  hours: Record<string, Hour[]>;
-}
+import { NewShiftState } from '../../models/new-shift-state.interface';
+
 @Injectable({
   providedIn: 'root'
 })
-export class NewShiftState extends SimpleStoreService<NewShiftState> {
+export class NewShiftStateService extends SimpleStoreService<NewShiftState> {
   constructor() {
     super();
   }

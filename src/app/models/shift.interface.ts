@@ -7,5 +7,5 @@ export interface Shift {
   clientId: number,
   specialityID: number,
   status: TypeShifts;
-  active: Boolean,
+  active: boolean,
 }

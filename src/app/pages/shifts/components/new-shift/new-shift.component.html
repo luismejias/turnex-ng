@@ -19,8 +19,10 @@
     <ng-container *ngIf="$step === 3">
       <div class="new-shift__car-day-box">
         <div class="new-shift__card-day" *ngFor="let day of daysOfWeek"
+        aria-disabled="true"
         [ngClass]="{'new-shift__card-day-selected': day.isSelected}"
-        (click)="onDaySelect(day)">
+        (click)="onDaySelect(day)"
+        (keypress)="onDaySelect(day)">
           <span class="fi-rr-check" *ngIf="day.isSelected"></span>
           <span class="new-shift__day-text">{{day.description}}</span>
         </div>
@@ -36,8 +38,8 @@
     </ng-container>
 
     <div class="new-shift__button-box">
-      <turnex-button text="Anterior" [type]="'reset'" class="new-shift__button" (click)="onPreviousButton()" *ngIf="$step > 1"></turnex-button>
-      <turnex-button [text]="nextButtonText"  class="new-shift__button" (click)="onNextButton()" [disabled]="isNextButtonDisabled"></turnex-button>
+      <turnex-button text="Anterior" [type]="'reset'" class="new-shift__button" (click)="onPreviousButton()" (keyPress)="onPreviousButton()" tabIndex={0} *ngIf="$step > 1"></turnex-button>
+      <turnex-button [text]="nextButtonText"  class="new-shift__button" (click)="onNextButton()" (keyPress)="onNextButton()" tabIndex={0} [disabled]="isNextButtonDisabled"></turnex-button>
     </div>
 
 </div>

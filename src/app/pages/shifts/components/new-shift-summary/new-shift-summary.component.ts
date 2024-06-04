@@ -1,6 +1,7 @@
 import { Component, effect } from '@angular/core';
-import { NewShiftState } from '../new-shift/new-shift.state.service';
+import { NewShiftStateService } from '../new-shift/new-shift.state.service';
 import { CommonModule, NgIf } from '@angular/common';
+import { NewShiftState } from '../../models/new-shift-state.interface';
 
 @Component({
   selector: 'turnex-new-shift-summary',
@@ -11,9 +12,9 @@ import { CommonModule, NgIf } from '@angular/common';
 })
 export class NewShiftSummaryComponent {
   state!: NewShiftState;
-  constructor(private newShiftState: NewShiftState) {
+  constructor(private newShiftStateService: NewShiftStateService) {
     effect(() => {
-      this.state = this.newShiftState.state();
+      this.state = this.newShiftStateService.state();
     })
   }
 

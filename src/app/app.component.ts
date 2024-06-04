@@ -5,7 +5,7 @@ import { RouterOutlet } from '@angular/router';
 import { BottomBarComponent, NavbarComponent } from './components';
 
 @Component({
-  selector: 'app-root',
+  selector: 'turnex-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   standalone: true,

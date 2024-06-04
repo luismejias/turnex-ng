@@ -3,4 +3,4 @@ export enum step {
   SPECIALTY = 'specialty',
   DAYS = 'days',
   HOURS = 'hours'
-};
+}
