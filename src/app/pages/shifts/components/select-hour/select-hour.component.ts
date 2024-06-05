@@ -1,5 +1,5 @@
 import { NgClass, NgFor, NgIf } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Day, Hour } from '../../models';
 import { step } from 'src/app/models';
 import { NewShiftStateService } from '../new-shift/new-shift.state.service';
@@ -17,8 +17,7 @@ export class SelectHourComponent implements OnInit {
   @Input({ required: true }) hoursCount!: number;
   @Input({ required: true }) interval!: number;
   @Input({ required: true }) startTime!: string;
-  @Input({ required: true }) selectedDays!: Day[];
-  @Output() hoursSelected = new EventEmitter<Record<string, Hour[]>>();
+  selectedDays!: Day[];
   selectedDaysWithTimes!: Record<string, Hour[]>;
   hours!: Hour[];
   step = step;
@@ -27,11 +26,9 @@ export class SelectHourComponent implements OnInit {
 
   ngOnInit(): void {
     this.hours = this._generateTimes();
+    const days = this.newShiftStateService.state().days;
+    this.selectedDays = days ? days : [];
     this.selectedDaysWithTimes = this._generateTimesForSelectedDays();
-  }
-
-  hoursSelectedEmit() {
-    this.hoursSelected.emit(this.selectedDaysWithTimes);
   }
 
   private get $hours() {
@@ -40,7 +37,7 @@ export class SelectHourComponent implements OnInit {
 
   onHourSelect(hour: Hour) {
     hour.isSelected = !hour.isSelected;
-    this.hoursSelectedEmit();
+    this.newShiftStateService.set(this.step.HOURS, this.selectedDaysWithTimes);
   }
 
   private _generateTimes(): Hour[] {

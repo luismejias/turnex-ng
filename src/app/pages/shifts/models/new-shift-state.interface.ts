@@ -5,6 +5,6 @@ export interface NewShiftState {
   step: number;
   pack: string;
   specialty: string;
-  days: Day[];
-  hours: Record<string, Hour[]>;
+  days: Day[] | undefined;
+  hours: Record<string, Hour[]> | undefined;
 }

@@ -10,4 +10,14 @@ export class NewShiftStateService extends SimpleStoreService<NewShiftState> {
     super();
   }
 
+  setInitialState() {
+    this.state.set({
+      step: 1,
+      pack: '',
+      specialty: '',
+      days: undefined,
+      hours: undefined
+    })
+  }
+
 }

@@ -47,3 +47,17 @@
     font-size: $turnex-spacing-12;
   }
 }
+
+@media (max-width: $turnex-breakpoint-xs) {
+  .select-hour {
+    &__hour-detail {
+      width: 108px;
+      gap: $turnex-spacing-8;
+    }
+
+    &__hourList {
+      margin-top: $turnex-spacing-16;
+
+    }
+  }
+}

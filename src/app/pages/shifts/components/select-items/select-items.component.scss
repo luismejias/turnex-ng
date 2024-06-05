@@ -1,7 +1,13 @@
 @import 'variables';
 
 .select-items {
-    display: flex;
-    gap: $turnex-spacing-16;
-    margin-top: $turnex-spacing-40;
+  display: flex;
+  gap: $turnex-spacing-16;
+  margin-top: $turnex-spacing-40;
+}
+
+@media (max-width: $turnex-breakpoint-xs) {
+  .select-items {
+    flex-wrap: wrap;
+  }
 }

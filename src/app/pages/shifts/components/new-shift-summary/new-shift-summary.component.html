@@ -14,7 +14,7 @@
   <div class="new-shift-summary__detail-box-sub-titles">
     <div class="new-shift-summary__detail-box-sub-title" *ngFor="let day of state.days">
       <span>{{ day.description }}</span>
-      <div>
+      <div *ngIf="state.hours">
         <span *ngFor="let hour of state.hours[day.description]">
           {{ hour.isSelected ? hour.description+ ' hs': '' }}
         </span>

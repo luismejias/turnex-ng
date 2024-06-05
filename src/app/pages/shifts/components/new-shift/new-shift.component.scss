@@ -104,49 +104,6 @@
   &__button {
     width: 198px;
   }
-
-  &__car-day-box {
-    display: flex;
-    gap: $turnex-spacing-16;
-    margin-top: 40px;
-  }
-
-  &__card-day {
-    display: flex;
-    padding: $turnex-spacing-16;
-    align-items: center;
-    border-radius: 4px;
-    border: 1px solid $turnex-alabaster-100;
-    background: $turnex-alabaster-50;
-    cursor: pointer;
-    gap: 4px;
-
-    &:hover {
-      border-radius: $turnex-spacing-4;
-      border: 1px solid $turnex-primary-800;
-      background: var(--Primary-50, #F5F5FD);
-      color: $turnex-primary-800;
-    }
-
-    &-selected {
-      border-radius: $turnex-spacing-4;
-      border: 1px solid $turnex-primary-800;
-      background: var(--Primary-50, #F5F5FD);
-      color: $turnex-primary-800;
-    }
-
-  }
-
-  &__day-text {
-    text-align: center;
-    @include Rubik();
-    font-size: $turnex-spacing-18;
-    font-style: normal;
-    font-weight: bold;
-    line-height: 28px;
-  }
-
-
 }
 
 @media (max-width: $turnex-breakpoint-xs) {
@@ -156,6 +113,15 @@
       bottom: 18px;
       left: 10%;
       right: 10%;
+    }
+
+    &__sub-title {
+      font-size: $turnex-spacing-16;
+      line-height: $turnex-spacing-24;
+    }
+
+    &__button {
+      width: 100%;
     }
   }
 }
