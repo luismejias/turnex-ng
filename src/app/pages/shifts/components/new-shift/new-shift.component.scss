@@ -114,5 +114,14 @@
       left: 10%;
       right: 10%;
     }
+
+    &__sub-title {
+      font-size: $turnex-spacing-16;
+      line-height: $turnex-spacing-24;
+    }
+
+    &__button {
+      width: 100%;
+    }
   }
 }

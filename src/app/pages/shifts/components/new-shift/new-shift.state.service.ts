@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SimpleStoreService } from 'src/app/simple-store.service';
 import { NewShiftState } from '../../models/new-shift-state.interface';
-import { Day } from '../../models';
-import { daysOfWeek } from 'src/app/pages/constants';
 
 @Injectable({
   providedIn: 'root'

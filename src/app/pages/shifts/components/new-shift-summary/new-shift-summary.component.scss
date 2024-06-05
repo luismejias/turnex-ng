@@ -5,66 +5,77 @@
   flex-direction: column;
   gap: 16px;
   border-top: 1px solid #D0D9E7;
-  margin-top: 32px;
+  margin-top: $turnex-spacing-32;
   padding-top: 52px;
 
   &__detail-box {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: $turnex-spacing-8;
   }
 
   &__detail-box-title {
     color: #1E2533;
-    font-family: Rubik;
-    font-size: 24px;
+    font-size: $turnex-spacing-24;
     font-style: normal;
-    font-weight: 500;
-    line-height: 32px;
+    @include Rubik-Bold();
+    line-height: $turnex-spacing-32;
   }
 
   &__detail-box-sub-titles {
    display: flex;
-   gap: 16px;
+   gap: $turnex-spacing-16;
   }
 
   &__detail-box-sub-title {
     display: flex;
-    gap: 16px;
-    gap: 4px;
-    color: var(--Alabaster-500, #5776A0);
-    font-family: Rubik;
-    font-size: 18px;
+    gap: $turnex-spacing-16;
+    color: $turnex-alabaster-500;
+    @include Rubik();
+    font-size: $turnex-spacing-18;
     font-style: normal;
     font-weight: 400;
-    line-height: 28px;
+    line-height: $turnex-spacing-28;
   }
 
   &__info-message-box {
     display: flex;
     flex-direction: column;
-    padding: var(--rounded-2xl, 16px);
-    gap: var(--rounded-xl, 12px);
+    padding: $turnex-spacing-16;
+    gap: $turnex-spacing-12;
     align-self: stretch;
-    border-radius: var(--rounded-lg, 8px);
-    background: var(--Blue-Information-100, #DBE8FE);
+    border-radius: $turnex-spacing-8;
+    background: #DBE8FE;
   }
 
   &__info-message-title {
-    color: var(--Blue-Information-700, #1D64D8);
-    font-family: Rubik;
+    color: #1D64D8;
+    @include Rubik();
     font-size: 16px;
     font-style: normal;
     font-weight: bold;
-    line-height: 24px;
+    line-height: $turnex-spacing-24;
   }
 
   &__info-message-text {
-    color: var(--Blue-Information-700, #1D64D8);
-    font-family: Rubik;
-    font-size: 14px;
+    color: #1D64D8;
+    @include Rubik();
+    font-size: $turnex-spacing-14;
     font-style: normal;
     font-weight: 400;
-    line-height: 20px;
+    line-height: $turnex-spacing-20;
   }
+}
+
+@media (max-width: $turnex-breakpoint-xs) {
+ .new-shift-summary {
+  &__detail-box-title {
+    font-size: $turnex-spacing-18;
+    line-height: $turnex-spacing-28;
+  }
+
+  &__detail-box-sub-title {
+    font-size: $turnex-spacing-14;
+  }
+ }
 }

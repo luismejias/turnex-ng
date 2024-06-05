@@ -218,7 +218,6 @@ export class NewShiftComponent {
       this.subTitle = 'Puedes cancelar o re-agendar tus clases siempre que lo necesites desde la sección “Turnos” con un mínimo de 24 hs de anticipación.';
       this.nextButtonText = 'Ver mis Turnos';
       this.previousButtonText = 'Volver al inicio';
-
     }
   }
 

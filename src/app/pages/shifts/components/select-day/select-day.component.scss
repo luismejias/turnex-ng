@@ -4,6 +4,7 @@
     display: flex;
     gap: $turnex-spacing-16;
     margin-top: 40px;
+    flex-wrap: wrap;
 
   &__card-day {
     display: flex;
@@ -33,10 +34,9 @@
 
   &__day-text {
     text-align: center;
-    @include Rubik();
+    @include Rubik-Bold();
     font-size: $turnex-spacing-18;
     font-style: normal;
-    font-weight: bold;
     line-height: 28px;
   }
 }

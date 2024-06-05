@@ -1,5 +1,5 @@
 import { NgClass, NgFor, NgIf } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Day, Hour } from '../../models';
 import { step } from 'src/app/models';
 import { NewShiftStateService } from '../new-shift/new-shift.state.service';
