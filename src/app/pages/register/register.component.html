@@ -1,0 +1,110 @@
+<div class="register">
+  <div class="register__logo-box">
+    <div class="register__logo"></div>
+  </div>
+
+  <div class="register__central-box">
+    <turnex-title [text]="'Crear tu cuenta'"></turnex-title>
+    <div class="register__sub-title">
+      <span>Regístrate y toma el control de tus turnos.</span>
+    </div>
+
+    <form [formGroup]="registerForm" class="register__form">
+      <div class="register__input-box">
+        <label for="name" class="register__label">Nombre</label>
+        <div class="register__input-wrapper" [ngClass]="{
+          'register__error-input-box': registerForm.controls['name'].getError('required') &&
+        registerForm.controls['name'].touched}">
+          <input type="text" formControlName="name" placeholder="Bill" class="register__input">
+        </div>
+        <span *ngIf="registerForm.controls['name'].getError('required') &&
+                  registerForm.controls['name'].touched" class="register__error-input-message">
+            * Campo obligatorio.
+          </span>
+      </div>
+
+      <div class="register__input-box">
+        <label for="lastName" class="register__label">Apellido</label>
+        <div class="register__input-wrapper" [ngClass]="{
+          'register__error-input-box': registerForm.controls['lastName'].getError('required') &&
+        registerForm.controls['lastName'].touched}">
+          <input type="text" formControlName="lastName" placeholder="Sanders" class="register__input">
+        </div>
+        <span class="register__error-input-message" *ngIf="registerForm.controls['lastName'].getError('required') &&
+                    registerForm.controls['lastName'].touched">
+            * Campo obligatorio.
+          </span>
+      </div>
+
+      <div class="register__input-box">
+        <label for="email" class="register__label">Correo electrónico</label>
+        <div class="register__input-wrapper"
+        [ngClass]="{
+                    'register__error-input-box': registerForm.controls['email'].getError('required') &&
+                    registerForm.controls['email'].touched}">
+          <input type="text" formControlName="email" [pattern]="emailPattern" placeholder="bill.sanders@example.com" class="register__input">
+        </div>
+        <span *ngIf="(registerForm.controls['email'].getError('required') ||
+                    registerForm.controls['email'].getError('pattern'))&&
+                    registerForm.controls['email'].touched" class="register__error-input-message">
+            * Debe ingresar un correo valido.
+          </span>
+      </div>
+
+      <div class="register__input-box">
+        <label for="password" class="register__label">Contraseña</label>
+        <div class="register__input-wrapper" [ngClass]="{
+          'register__error-input-box':
+            registerForm.controls['password'].getError('required') &&
+            registerForm.controls['password'].touched}">
+          <input [type]="visiblePassword ? 'text' : 'password'" formControlName="password" placeholder="********" class="register__input">
+          <span class="register__icon"
+            [ngClass]="{'fi-rr-eye': !visiblePassword,  'fi-rr-eye-crossed' : visiblePassword}"
+            (click)="visiblePassword = !visiblePassword"
+            (keypress)="visiblePassword = !visiblePassword">
+          </span>
+        </div>
+        <span *ngIf="registerForm.controls['password'].getError('required') &&
+                  registerForm.controls['password'].touched" class="register__error-input-message">
+            * Campo obligatorio.
+          </span>
+      </div>
+
+      <div class="register__input-box">
+        <label for="password2" class="register__label">Contraseña</label>
+        <div class="register__input-wrapper" [ngClass]="{
+          'register__error-input-box':
+            registerForm.controls['password2'].getError('required') &&
+            registerForm.controls['password2'].touched}">
+          <input [type]="visiblePassword2 ? 'text' : 'password'" formControlName="password2" placeholder="********" class="register__input">
+          <span class="register__icon"
+            [ngClass]="{'fi-rr-eye': !visiblePassword2,  'fi-rr-eye-crossed' : visiblePassword2}"
+            (click)="visiblePassword2 = !visiblePassword2"
+            (keypress)="visiblePassword2 = !visiblePassword2">
+          </span>
+        </div>
+        <span *ngIf="registerForm.controls['password2'].getError('required') &&
+                  registerForm.controls['password2'].touched" class="register__error-input-message">
+            * Campo obligatorio.
+          </span>
+      </div>
+
+      <div class="register__bottom-box">
+        <span>
+          <input type="checkbox" formControlName="rememberData">
+          <label for="rememberData" class="register__label register__remember-data">Aceptar términos y condiciones</label>
+        </span>
+      </div>
+    </form>
+    <turnex-button text="Registrarme"  class="new-shift__button"tabIndex={0} [disabled]="registerForm.invalid" (click)="register()" (keypress)="register()"></turnex-button>
+    <div style="display: flex; flex-direction: column; align-items: center; margin-top: 16px; gap: 8px;">
+      <span>
+        <label for="forgotData" class="register__not-account">¿Ya tienes cuenta?</label>
+      </span>
+      <span>
+        <label for="forgotData" class="register__register" (keypress)="goToLogin()" (click)="goToLogin()">Iniciar sesión</label>
+      </span>
+    </div>
+
+  </div>
+</div>
