@@ -11,7 +11,7 @@
 
     <form [formGroup]="loginForm" class="login__form">
       <div class="login__input-box">
-        <label for="userName" class="login__label">Correo electrónico</label>
+        <label for="email" class="login__label">Correo electrónico</label>
         <div [ngClass]="{'login__error-input-box': errorEmail, 'login__input-wrapper': !errorEmail}">
           <input type="email" formControlName="email" [pattern]="emailPattern" placeholder="bill.sanders@example.com" class="login__input">
         </div>
@@ -43,7 +43,7 @@
 
       </div>
     </form>
-    <turnex-button text="Iniciar sesión"  class="new-shift__button"tabIndex={0} [disabled]="loginForm.invalid" (click)="login()" (keypress)="login()"></turnex-button>
+    <turnex-button text="Iniciar sesión"  class="new-shift__button"tabIndex={0} [disabled]="loginForm.invalid" (click)="login()"></turnex-button>
     <div style="display: flex; flex-direction: column; align-items: center; margin-top: 16px; gap: 8px;">
       <span>
         <label for="forgotData" class="login__not-account">¿No tienes cuenta?</label>

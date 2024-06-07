@@ -1,6 +1,6 @@
 
 <div class="app">
-  <turnex-navbar class="app__navbar"></turnex-navbar>
+  <turnex-navbar *ngIf="isLoggedIn" class="app__navbar" [isChildFlow]="isChildFlow"></turnex-navbar>
   <div class="app__principal-content">
     <router-outlet></router-outlet>
   </div>
