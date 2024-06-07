@@ -11,6 +11,8 @@
   <span class="shifts__pack-detail">4 clases al mes</span>
 </div>
 
+{{products$ | async | json}}
+
 <div class="shifts__box">
 <div class="shifts__filters-box">
   <div class="shifts__button" [ngClass]="{'shifts__selected' : filterSelected === typeShifts.NEXT}" (click)="onFilterSelected(typeShifts.NEXT)" (keyup)="onFilterSelected(typeShifts.NEXT)" role="button" aria-disabled="true">
