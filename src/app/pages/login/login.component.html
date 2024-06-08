@@ -25,7 +25,7 @@
           <span class="login__icon"
             [ngClass]="{'fi-rr-eye': !visiblePassword,  'fi-rr-eye-crossed' : visiblePassword}"
             (click)="visiblePassword = !visiblePassword"
-            (keypress)="visiblePassword = !visiblePassword">
+            (keyup)="visiblePassword = !visiblePassword">
           </span>
         </div>
         <span class="login__error-input-message" *ngIf="errorPassword">* Campo requerido.</span>

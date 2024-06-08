@@ -6,9 +6,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ShiftsService {
-private readonly _http = inject(HttpClient);
+  private readonly _http = inject(HttpClient);
 
-getAllPropducts(): Observable<unknown>{
-  return this._http.get('https://sssfakestoreapi.com/products');
-}
+  getAllPropducts(): Observable<unknown> {
+    return this._http.get('https://sssfakestoreapi.com/products');
+  }
 }
