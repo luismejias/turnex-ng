@@ -1,14 +1,10 @@
-
 <div class="home">
-  <div class="home__central-box">
-    <div class="home__logo-box"></div>
-  <div class="home__title">Te damos la bienvenida</div>
-  <span class="home__sub-title">Comienza a gestionar tus turnos de forma eficiente y ordenados.</span>
-  <div class="home__welcome-img"></div>
-  <button class="home__button-submit">
-    <span class="home__button-text">Registrarme</span>
-  </button>
-  <span class="home__with-account-message">¿Ya tienes cuenta?</span>
-  <span class="home__login-link">Iniciar sesión</span>
+  <turnex-title [text]="'¡Hola,  Verónica!'"></turnex-title>
+  <div class="home__sub-title">
+    Gestiona tus turnos de manera fácil y eficiente.
   </div>
+  <div class="home__detail-box-title">Próximo turno </div>
+  <turnex-shift-card  [date]="shift.date.toISOString()" [status]="shift.status"></turnex-shift-card>
+  <div class="home__detail-box-title home__detail-box-title-2">Agenda un nuevo turno </div>
+  <turnex-select-items [items]="specialties" (itemSelected)="goToNewShift(this.step.SPECIALTY, $event)"></turnex-select-items>
 </div>

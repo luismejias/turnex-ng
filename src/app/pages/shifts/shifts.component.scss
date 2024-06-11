@@ -93,5 +93,12 @@
     &__filters-box {
       gap: 0;
     }
+
+    &__new-shift-button {
+        position: fixed;
+        right: 16px;
+        bottom: 90px;
+        z-index: 9;
+    }
   }
 }

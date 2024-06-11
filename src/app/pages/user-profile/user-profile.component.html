@@ -1,1 +1,50 @@
-<p>user-profile works!</p>
+<div class="user-profile">
+  <div class="user-profile__central-box">
+    <turnex-title text="Tus datos personales"></turnex-title>
+
+    <form [formGroup]="userProfileForm" class="user-profile__form">
+      <div class="user-profile__input-box">
+        <label for="name" class="user-profile__label">Nombre</label>
+        <div class="user-profile__input-wrapper" [ngClass]="{
+          'user-profile__error-input-box': userProfileForm.controls['name'].getError('required') &&
+        userProfileForm.controls['name'].touched}">
+          <input type="text" formControlName="name" placeholder="Bill" class="user-profile__input">
+        </div>
+        <span *ngIf="userProfileForm.controls['name'].getError('required') &&
+                  userProfileForm.controls['name'].touched" class="user-profile__error-input-message">
+            * Campo obligatorio.
+          </span>
+      </div>
+
+      <div class="user-profile__input-box">
+        <label for="lastName" class="user-profile__label">Apellido</label>
+        <div class="user-profile__input-wrapper" [ngClass]="{
+          'user-profile__error-input-box': userProfileForm.controls['lastName'].getError('required') &&
+        userProfileForm.controls['lastName'].touched}">
+          <input type="text" formControlName="lastName" placeholder="Sanders" class="user-profile__input">
+        </div>
+        <span class="user-profile__error-input-message" *ngIf="userProfileForm.controls['lastName'].getError('required') &&
+                    userProfileForm.controls['lastName'].touched">
+            * Campo obligatorio.
+          </span>
+      </div>
+
+      <div class="user-profile__input-box">
+        <label for="email" class="user-profile__label">Correo electrónico</label>
+        <div class="user-profile__input-wrapper"
+        [ngClass]="{
+                    'user-profile__error-input-box': userProfileForm.controls['email'].getError('required') &&
+                    userProfileForm.controls['email'].touched}">
+          <input type="text" formControlName="email" [pattern]="emailPattern" placeholder="bill.sanders@example.com" class="user-profile__input">
+        </div>
+        <span *ngIf="(userProfileForm.controls['email'].getError('required') ||
+                    userProfileForm.controls['email'].getError('pattern'))&&
+                    userProfileForm.controls['email'].touched" class="user-profile__error-input-message">
+            * Debe ingresar un correo valido.
+          </span>
+      </div>
+    </form>
+    <turnex-button text="Cerrar sesión"  type="reset" class="new-shift__button"tabIndex={0} [disabled]="userProfileForm.invalid" (click)="logout()" (keypress)="logout()"></turnex-button>
+
+  </div>
+</div>

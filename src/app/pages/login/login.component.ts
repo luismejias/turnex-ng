@@ -6,6 +6,7 @@ import { NgClass, NgIf } from '@angular/common';
 import { EMAIL_PATTERN } from '../constants';
 import { Router } from '@angular/router';
 import { AppStateService } from 'src/app/app.state.service';
+import { UserProfileService } from '../user-profile';
 @Component({
   selector: 'turnex-login',
   standalone: true,
@@ -14,7 +15,8 @@ import { AppStateService } from 'src/app/app.state.service';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  appStateService = inject(AppStateService);
+  private appStateService = inject(AppStateService);
+  private userProfileService = inject(UserProfileService);
   loginForm: UntypedFormGroup;
   visiblePassword = false;
   emailPattern = EMAIL_PATTERN;
@@ -44,15 +46,15 @@ export class LoginComponent {
   }
 
   login(): void {
-    console.log('login');
-
     const { email, password } = this.loginForm.value;
     const emailAux = email.trim();
-    if (emailAux === 'luis@gmail.com' && password === '123456') {
-      this.appStateService.login();
-    } else {
-      this.appStateService.logout();
-    }
+    this.userProfileService.getUser(emailAux,password).subscribe(res => {
+      if (res) {
+        this.appStateService.login();
+      } else {
+        this.appStateService.logout();
+      }
+    });
   }
 
   goToRegister(): void {

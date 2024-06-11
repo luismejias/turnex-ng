@@ -1,0 +1,141 @@
+@import 'variables';
+
+.welcome {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &__central-box {
+    display: flex;
+    width: 608px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  &__logo-box {
+    background-image: url('../../../assets/images/logo.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 200px $turnex-spacing-40;
+    width: 200px;
+    height: $turnex-spacing-40;
+  }
+
+  &__title {
+    color: $turnex-alabaster-900;
+    text-align: center;
+    @include Rubik();;
+    font-size: $turnex-spacing-48;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 100%;
+    margin: $turnex-spacing-40 0 $turnex-spacing-16 0;
+  }
+
+  &__sub-title {
+    color: $turnex-alabaster-500;
+    text-align: center;
+    @include Rubik();;
+    font-size: $turnex-spacing-18;
+    font-style: normal;
+
+    line-height: $turnex-spacing-28;
+    margin-bottom: $turnex-spacing-16;
+    ;
+  }
+
+  &__welcome-img {
+    background-image: url('../../../assets/images/welcome.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 400px 275px;
+    width: 400px;
+    height: 275px;
+    margin-bottom: 77px;
+  }
+
+  &__button-submit {
+    border: none;
+    cursor: pointer;
+    display: flex;
+    width: 400px;
+    padding: $turnex-spacing-14 $turnex-spacing-24;
+    justify-content: center;
+    align-items: center;
+    gap: $turnex-spacing-8;
+    border-radius: $turnex-spacing-8;
+    background: $turnex-primary-800;
+    margin-bottom: $turnex-spacing-16;
+  }
+
+  &__button-text {
+    color: #FFF;
+    @include Rubik();;
+    font-size: $turnex-spacing-16;
+    font-style: normal;
+    line-height: $turnex-spacing-24;
+  }
+
+  &__with-account-message {
+    color: $turnex-alabaster-500;
+    text-align: center;
+    @include Rubik();;
+    font-size: $turnex-spacing-16;
+    font-style: normal;
+
+    line-height: $turnex-spacing-24;
+    margin-bottom: $turnex-spacing-2;
+  }
+
+  &__login-link {
+    cursor: pointer;
+    color: $turnex-primary-800;
+    text-align: center;
+    @include Rubik();;
+    font-size: $turnex-spacing-16;
+    font-style: normal;
+    line-height: $turnex-spacing-24;
+  }
+
+}
+
+@media (max-width: $turnex-breakpoint-xs) {
+
+  .welcome {
+    &__central-box {
+      padding: 24px 24px;
+    }
+
+    &__logo-box {
+      background-size: 120px $turnex-spacing-24;
+      width: 120px;
+      height: $turnex-spacing-24;
+    }
+
+    &__title {
+      font-size: $turnex-spacing-24;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 100%;
+      margin-top: $turnex-spacing-32;
+    }
+
+    &__sub-title {
+      font-size: $turnex-spacing-16;
+      line-height: $turnex-spacing-24;
+      width: 328px;
+    }
+
+    &__welcome-img {
+      background-size: 328px 226px;
+      width: 328px;
+      height: 226px;
+      margin-bottom: 126px;
+    }
+    &__button-submit {
+      width: 100%;
+  }
+}
+
+}

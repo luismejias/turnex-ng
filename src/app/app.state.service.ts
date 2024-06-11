@@ -21,9 +21,13 @@ export class AppStateService extends SimpleStoreService<AppState> {
   }
 // Manejo temporal de login y logout
   login(){
-    this.state.set({isLoggedIn: true, isChildFlow: false});
+    this.setLoggedIn();
     this.router.navigate(['/home']);
     localStorage.setItem('isLoggedIn', 'true');
+  }
+
+  setLoggedIn(){
+    this.state.set({isLoggedIn: true, isChildFlow: false});
   }
 
   logout(){

@@ -6,6 +6,7 @@ import { LoginComponent } from "./pages/login/login.component";
 import { RegisterComponent } from "./pages/register/register.component";
 import { authGuard } from "./guards/auth.guard";
 import { NotFoundComponent } from "./pages/not-found/not-found.component";
+import { UserProfileComponent } from "./pages/user-profile/user-profile.component";
 
 export const routes: Routes = [
   {
@@ -25,6 +26,12 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'profile',
+    component: UserProfileComponent,
+    title: 'Profile page',
+    canActivate: [authGuard]
+  },
+  {
     path: 'shifts',
     component: ShiftsComponent,
     title: 'Shifts Page',
@@ -34,6 +41,10 @@ export const routes: Routes = [
     path: 'shifts',
     canActivate: [authGuard],
     children: [
+      {
+        path: 'newShift/:idSpecialty',
+        component: NewShiftComponent
+      },
       {
         path: 'newShift',
         component: NewShiftComponent

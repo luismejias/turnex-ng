@@ -1,5 +1,5 @@
 import { CommonModule, NgClass, NgFor, NgIf } from '@angular/common';
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, Input, OnInit } from '@angular/core';
 import { ButtonComponent, TitleComponent } from 'src/app/components';
 import { daysOfWeek } from 'src/app/pages/constants';
 import { SelectableCardComponent } from '../selectable-card/selectable-card.component';
@@ -32,6 +32,7 @@ export class NewShiftComponent implements OnInit {
   private router= inject(Router);
   private packsService = inject(PacksService);
   private specialtyService = inject(SpecialtyService);
+  @Input() idSpecialty!: string;
   title: string = '';
   subTitle: string = '';
   nextButtonText: string = 'Siguiente';
@@ -45,7 +46,6 @@ export class NewShiftComponent implements OnInit {
   hours: Hour[] = [];
   state!: NewShiftState;
   specialties!: Specialty[];
-
   packs!: Pack[];
 
   constructor() {
@@ -61,6 +61,10 @@ export class NewShiftComponent implements OnInit {
   ngOnInit(): void {
       this.getAllPacks();
       this.getAllSpecialties();
+      if(this.idSpecialty){
+        this.toggleSelection('specialty', {id: this.idSpecialty, description:'', isSelected: true});
+        this.updateStep(2);
+      }
   }
 
   updateStep(step: number): void {
@@ -199,6 +203,8 @@ export class NewShiftComponent implements OnInit {
   }
 
   toggleSelection(itemType: 'pack' | 'specialty', item: Pack | Specialty): void {
+    console.log({itemType}, {item});
+
     const itemId = item.id;
     const items = itemType === 'pack' ? this.packs : this.specialties;
     const updatedItems = items.map(item => {

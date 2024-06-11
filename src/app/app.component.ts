@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
     //TODO Temporal solo para test corregir al implementar backend
     const isLoggedIn = localStorage.getItem('isLoggedIn');
     if(isLoggedIn){
-      this.appStateService.login();
+      this.appStateService.setLoggedIn();
     }
   }
 }

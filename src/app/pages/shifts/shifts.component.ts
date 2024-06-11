@@ -17,85 +17,15 @@ export class ShiftsComponent implements OnInit {
   typeShifts = TypeShifts;
   filterSelected: TypeShifts = this.typeShifts.NEXT;
   filteredShifts!: Shift[];
-  shifts: Shift[] = [
-    {
-      id: 1,
-      userId: 123,
-      date: new Date('2022-10-15T08:00:00.000Z'),
-      status: this.typeShifts.COMPLETED,
-      clientId: 456,
-      specialityID: 789,
-      active: true
-    },
-    {
-      id: 2,
-      userId: 456,
-      date: new Date ('2022-10-20T13:30:00.000Z'),
-      status: this.typeShifts.CANCELED,
-      clientId: 789,
-      specialityID: 123,
-      active: false
-    },
-    {
-      id: 3,
-      userId: 789,
-      date: new Date ('2022-11-03T10:00:00.000Z'),
-      status: this.typeShifts.NEXT,
-      clientId: 123,
-      specialityID: 456,
-      active: true
-    },
-    {
-      id: 4,
-      userId: 123,
-      date: new Date ('2022-11-08T14:15:00.000Z'),
-      status: this.typeShifts.COMPLETED,
-      clientId: 789,
-      specialityID: 456,
-      active: true
-    },
-    {
-      id: 4,
-      userId: 123,
-      date: new Date ('2022-11-08T14:15:00.000Z'),
-      status: this.typeShifts.CANCELED,
-      clientId: 789,
-      specialityID: 456,
-      active: true
-    },
-    {
-      id: 4,
-      userId: 123,
-      date: new Date ('2022-11-08T14:15:00.000Z'),
-      status: this.typeShifts.COMPLETED,
-      clientId: 789,
-      specialityID: 456,
-      active: true
-    },
-    {
-      id: 4,
-      userId: 123,
-      date: new Date ('2022-11-08T14:15:00.000Z'),
-      status: this.typeShifts.CANCELED,
-      clientId: 789,
-      specialityID: 456,
-      active: true
-    },
-    {
-      id: 4,
-      userId: 123,
-      date: new Date ('2022-11-08T14:15:00.000Z'),
-      status: this.typeShifts.NEXT,
-      clientId: 789,
-      specialityID: 456,
-      active: true
-    }
-  ];
+  shifts!: Shift[];
 
   private readonly shiftsService = inject(ShiftsService);
+
   products$ = this.shiftsService.getAllPropducts();
   ngOnInit(): void {
+    this.getShifts();
       this.onFilterSelected(this.typeShifts.NEXT);
+
   }
 
   onFilterSelected(selected: TypeShifts): void{
@@ -103,8 +33,10 @@ export class ShiftsComponent implements OnInit {
     this.filteredShifts = this.shifts.filter((shift)=> shift.status === selected);
   }
 
-  newShift(): void {
-    alert('Nuevo turno!!!!!!!');
+  getShifts(): void {
+    this.shiftsService.getShifts().subscribe((shifts: Shift[]) => {
+      this.shifts = shifts;
+    })
   }
 
 }
