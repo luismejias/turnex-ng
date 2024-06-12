@@ -1,12 +1,12 @@
 <div class="new-shift-summary" *ngIf="state">
   <div>
     <span class="new-shift-summary__detail-box-title">Especialidad seleccionada: </span>
-    <span class="new-shift-summary__detail-box-sub-title">{{ state.specialty }} </span>
+    <span class="new-shift-summary__detail-box-sub-title">{{ state.specialty?.description }} </span>
   </div>
 
   <div>
     <span class="new-shift-summary__detail-box-title">Pack seleccionado: </span>
-    <span class="new-shift-summary__detail-box-sub-title">{{ state.pack }} </span>
+    <span class="new-shift-summary__detail-box-sub-title">{{ state.pack?.description }} </span>
   </div>
 
   <div>

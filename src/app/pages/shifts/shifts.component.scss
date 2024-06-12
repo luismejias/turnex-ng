@@ -14,10 +14,10 @@
     border-radius: 8px;
     border: none;
     cursor: pointer;
-    background: #FF8CA0;
+    background: $turnex-secondary-300;
     color: #fff;
     &:hover {
-      background: #FE6E8A
+      background: $turnex-secondary-400;
     }
   }
 
@@ -92,6 +92,13 @@
 
     &__filters-box {
       gap: 0;
+    }
+
+    &__new-shift-button {
+        position: fixed;
+        right: 16px;
+        bottom: 90px;
+        z-index: 9;
     }
   }
 }

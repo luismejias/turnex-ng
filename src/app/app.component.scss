@@ -6,7 +6,6 @@
   &__principal-content {
 		margin-top: 90px;
 		background-color: #fff !important;
-		min-height: 100vh;
 	}
 
   &__bottom-bar {
@@ -18,11 +17,10 @@
   .app {
     padding: 0;
     &__principal-content {
-      margin-top: 0px;
       padding: $turnex-spacing-18;
     }
     &__navbar {
-      display: none;
+      display: block;
     }
 
     &__bottom-bar {

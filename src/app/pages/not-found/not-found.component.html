@@ -1,0 +1,12 @@
+
+<div class="not-found">
+  <div class="not-found__img"></div>
+  <turnex-title [text]="'¡La página que buscas no existe!'"></turnex-title>
+  <div class="not-found__sub-title ">
+    <span>Ve al inicio para continuar disfrutando de Turnex.</span>
+  </div>
+  <turnex-button [text]="'Volver al inicio'"  class="not-found__button" (click)="goToHome()" (keyPress)="goToHome()" tabIndex={0}></turnex-button>
+</div>
+
+
+

@@ -1,0 +1,57 @@
+<div class="login">
+  <div class="login__logo-box">
+    <div class="login__logo"></div>
+  </div>
+
+  <div class="login__central-box">
+    <turnex-title [text]="'Iniciar sesión'"></turnex-title>
+    <div class="login__sub-title">
+      <span>Ingresa tus datos y accede a tu cuenta. </span>
+    </div>
+
+    <form [formGroup]="loginForm" class="login__form">
+      <div class="login__input-box">
+        <label for="email" class="login__label">Correo electrónico</label>
+        <div [ngClass]="{'login__error-input-box': errorEmail, 'login__input-wrapper': !errorEmail}">
+          <input type="email" formControlName="email" [pattern]="emailPattern" placeholder="bill.sanders@example.com" class="login__input">
+        </div>
+        <span class="login__error-input-message" *ngIf="email.touched && email.dirty && !email.valid">* Email invalido . </span>
+      </div>
+
+      <div class="login__input-box">
+        <label for="password" class="login__label">Contraseña</label>
+        <div [ngClass]="{'login__error-input-box': errorPassword, 'login__input-wrapper': !errorPassword}">
+          <input [type]="visiblePassword ? 'text' : 'password'" formControlName="password" placeholder="********" class="login__input">
+          <span class="login__icon"
+            [ngClass]="{'fi-rr-eye': !visiblePassword,  'fi-rr-eye-crossed' : visiblePassword}"
+            (click)="visiblePassword = !visiblePassword"
+            (keyup)="visiblePassword = !visiblePassword">
+          </span>
+        </div>
+        <span class="login__error-input-message" *ngIf="errorPassword">* Campo requerido.</span>
+      </div>
+
+      <div class="login__bottom-box">
+        <span>
+          <input type="checkbox" formControlName="rememberData">
+          <label for="rememberData" class="login__label login__remember-data">Recordar mis datos</label>
+        </span>
+
+        <span>
+          <label for="forgotData" class="login__label login__forgot-data">Olvidé mis datos</label>
+        </span>
+
+      </div>
+    </form>
+    <turnex-button text="Iniciar sesión"  class="new-shift__button"tabIndex={0} [disabled]="loginForm.invalid" (click)="login()"></turnex-button>
+    <div style="display: flex; flex-direction: column; align-items: center; margin-top: 16px; gap: 8px;">
+      <span>
+        <label for="forgotData" class="login__not-account">¿No tienes cuenta?</label>
+      </span>
+      <span>
+        <label for="forgotData" class="login__register" (keypress)="goToRegister()" (click)="goToRegister()">Regístrate</label>
+      </span>
+    </div>
+
+  </div>
+</div>

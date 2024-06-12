@@ -1,1 +1,32 @@
-<p>user-profile works!</p>
+<div class="user-profile">
+  <div class="user-profile__central-box">
+    <turnex-title text="Tus datos personales"></turnex-title>
+
+    <form [formGroup]="userProfileForm" class="user-profile__form">
+      <div class="user-profile__input-box">
+        <label for="name" class="user-profile__label">Nombre</label>
+        <div class="user-profile__input-wrapper">
+          <input type="text" formControlName="name" placeholder="Bill" class="user-profile__input" >
+        </div>
+      </div>
+
+      <div class="user-profile__input-box">
+        <label for="lastName" class="user-profile__label">Apellido</label>
+        <div class="user-profile__input-wrapper">
+          <input type="text" formControlName="lastName" placeholder="Sanders" class="user-profile__input" >
+        </div>
+      </div>
+
+      <div class="user-profile__input-box">
+        <label for="email" class="user-profile__label">Correo electrónico</label>
+        <div class="user-profile__input-wrapper">
+          <input type="text" formControlName="email" class="user-profile__input" >
+        </div>
+      </div>
+    </form>
+    <div class="user-profile__close">
+      <turnex-button text="Cerrar sesión"  type="reset"  tabIndex={0} [disabled]="userProfileForm.invalid" (click)="logout()" (keypress)="logout()"></turnex-button>
+    </div>
+
+  </div>
+</div>

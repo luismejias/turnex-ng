@@ -9,18 +9,19 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  padding: 16px;
-  gap: 10px;
-  border-radius: 16px;
+  padding: $turnex-spacing-16;
+  max-width: 400px;
+  gap: $turnex-spacing-10;
+  border-radius: $turnex-spacing-16;
   border: 1px solid $turnex-alabaster-100;
   background: $turnex-alabaster-50;
 
   &__title {
     color: $turnex-alabaster-950;
     @include Rubik();;
-    font-size: 18px;
+    font-size: $turnex-spacing-18;
     font-style: normal;
-    line-height: 28px;
+    line-height: $turnex-spacing-28;
   }
 
   &__date {
@@ -28,16 +29,16 @@
     flex-direction: column;
     color: $turnex-alabaster-600;;
     @include Rubik();;
-    font-size: 16px;
+    font-size: $turnex-spacing-16;
     font-style: normal;
 
-    line-height: 24px;
+    line-height: $turnex-spacing-24;
   }
 
   &__buttons-box {
     display: flex;
     width: 100%;
-    gap: 8px;
+    gap: $turnex-spacing-8;
   }
 
   &__button {
@@ -48,6 +49,6 @@
   &__date-hour {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: $turnex-spacing-10;
   }
 }

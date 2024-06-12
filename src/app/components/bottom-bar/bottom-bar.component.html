@@ -1,4 +1,4 @@
-<div class="bottom-bar">
+<div class="bottom-bar" *ngIf="!isChildFlow">
   <div class="bottom-bar__item">
     <a routerLink="/home" routerLinkActive="active" class="bottom-bar__link">
       <span class="fi-rr-home"></span>
@@ -14,7 +14,7 @@
   </div>
 
   <div class="bottom-bar__item">
-    <a routerLink="/home" routerLinkActive="active" class="bottom-bar__link">
+    <a routerLink="/profile" routerLinkActive="active" class="bottom-bar__link">
       <span class="fi-rr-user"></span>
     </a>
       <span class="bottom-bar__text">Perfil</span>

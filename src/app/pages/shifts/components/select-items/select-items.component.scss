@@ -9,5 +9,7 @@
 @media (max-width: $turnex-breakpoint-xs) {
   .select-items {
     flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
   }
 }

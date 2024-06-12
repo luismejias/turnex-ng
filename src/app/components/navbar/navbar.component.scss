@@ -14,7 +14,7 @@ a {
   align-items: center;
   justify-content: space-between;
 
-  &__first-section{
+  &__first-section {
     display: flex;
     align-items: center;
   }
@@ -32,7 +32,7 @@ a {
     @include Rubik();
     font-size: $turnex-spacing-36;
     font-style: normal;
-    font-weight: 600;
+    font-weight: bold;
     line-height: $turnex-spacing-40;
   }
 
@@ -79,7 +79,7 @@ a {
     cursor: pointer;
     background: $turnex-alabaster-100;
     color: $turnex-alabaster-800;
-    @include Rubik();;
+    @include Rubik();
     font-size: 16px;
     font-style: normal;
     font-weight: bold;
@@ -87,6 +87,57 @@ a {
 
     &:hover {
       background: $turnex-alabaster-200
+    }
+  }
+
+  &__right-box {
+    display: flex;
+    gap: $turnex-spacing-24;
+    align-items: center;
+  }
+
+  &__beta-box {
+    display: flex;
+    padding: $turnex-spacing-12;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    height: $turnex-spacing-8;
+    background: #DBE8FE
+  }
+
+  &__beta-text {
+    color: #1E55AF;
+    text-align: center;
+    @include Rubik();
+    font-size: $turnex-spacing-12;
+    font-style: normal;
+    font-weight: 400;
+    line-height: $turnex-spacing-16;
+  }
+}
+
+@media (max-width: $turnex-breakpoint-xs) {
+  .navbar {
+    display: flex;
+    position: fixed;
+    width: 100%;
+    background: white;
+    top: 0px;
+    justify-content: space-around;
+
+    &__title {
+      font-size: $turnex-spacing-24;
+    }
+
+    &__first-section {
+      background: white;
+      top: 0px;
+      height: 50px;
+    }
+
+    &__client-name {
+      font-size: $turnex-spacing-24;
     }
   }
 }

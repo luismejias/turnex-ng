@@ -1,17 +1,19 @@
 import { CommonModule, NgClass, NgFor, NgIf } from '@angular/common';
-import { Component, effect } from '@angular/core';
+import { Component, effect, inject, Input, OnInit } from '@angular/core';
 import { ButtonComponent, TitleComponent } from 'src/app/components';
 import { daysOfWeek } from 'src/app/pages/constants';
 import { SelectableCardComponent } from '../selectable-card/selectable-card.component';
 import { SelectItemsComponent } from '../select-items/select-items.component';
-import { Specialty, Pack, Day, Hour } from '../../models';
-import { step } from 'src/app/models';
+import { Day, Hour } from '../../models';
+import { Pack, Specialty, step } from 'src/app/models';
 import { NewShiftStateService } from './new-shift.state.service';
 import { SelectHourComponent } from '../select-hour/select-hour.component';
 import { NewShiftSummaryComponent } from '../new-shift-summary/new-shift-summary.component';
 import { NewShiftState } from '../../models/new-shift-state.interface';
 import { Router } from '@angular/router';
 import { SelectDayComponent } from '../select-day/select-day.component';
+import { PacksService } from 'src/app/pages/packs';
+import { SpecialtyService } from 'src/app/pages/specialty';
 
 
 @Component({
@@ -25,7 +27,12 @@ import { SelectDayComponent } from '../select-day/select-day.component';
   styleUrl: './new-shift.component.scss',
   providers: [NewShiftStateService]
 })
-export class NewShiftComponent {
+export class NewShiftComponent implements OnInit {
+  private newShiftStateService = inject(NewShiftStateService);
+  private router= inject(Router);
+  private packsService = inject(PacksService);
+  private specialtyService = inject(SpecialtyService);
+  @Input() idSpecialty!: string;
   title: string = '';
   subTitle: string = '';
   nextButtonText: string = 'Siguiente';
@@ -38,19 +45,10 @@ export class NewShiftComponent {
   selectedDaysWithSelectedTimes!: Record<string, Hour[]>;
   hours: Hour[] = [];
   state!: NewShiftState;
-  specialties: Specialty[] = [
-    { id: '1', description: 'Pilates', isSelected: false },
-    { id: '2', description: 'Osteopatía', isSelected: false }
-  ]; //TODO realizar servicio e integrar con back para data real
+  specialties!: Specialty[];
+  packs!: Pack[];
 
-  packs: Pack[] = [
-    { id: '1', description: '4 clases al mes', isSelected: false },
-    { id: '2', description: '8 clases al mes', isSelected: false },
-    { id: '3', description: '12 clases al mes', isSelected: false },
-    { id: '4', description: ' Clase suelta', isSelected: false },
-  ]; //TODO realizar servicio e integrar con back para data real
-
-  constructor(private newShiftStateService: NewShiftStateService, private router: Router) {
+  constructor() {
     this.updateStep(1);
     effect(() => {
       console.log('CAMBIO EL ESTADO => ', this.newShiftStateService.state());
@@ -58,6 +56,15 @@ export class NewShiftComponent {
       this.setTitleSubtitle();
       this.validateNextButton();
     })
+  }
+
+  ngOnInit(): void {
+      this.getAllPacks();
+      this.getAllSpecialties();
+      if(this.idSpecialty){
+        this.toggleSelection('specialty', {id: this.idSpecialty, description:'', isSelected: true});
+        this.updateStep(2);
+      }
   }
 
   updateStep(step: number): void {
@@ -71,6 +78,20 @@ export class NewShiftComponent {
   goToShifts() {
     this.router.navigate(["/shifts"]);
   }
+
+  getAllPacks(): void {
+    this.packsService.getAllPacks().subscribe((packs: Pack[]) => {
+      this.packs = packs;
+    })
+  }
+
+  getAllSpecialties(): void {
+    this.specialtyService.getAllSpecialties().subscribe((specialties: Specialty[]) => {
+      this.specialties = specialties;
+    })
+  }
+
+
 
   validateNextButton(): void {
     switch (this.$step) {
@@ -182,6 +203,8 @@ export class NewShiftComponent {
   }
 
   toggleSelection(itemType: 'pack' | 'specialty', item: Pack | Specialty): void {
+    console.log({itemType}, {item});
+
     const itemId = item.id;
     const items = itemType === 'pack' ? this.packs : this.specialties;
     const updatedItems = items.map(item => {
@@ -194,16 +217,16 @@ export class NewShiftComponent {
     if (itemType === 'pack') {
       this.packs = updatedItems as Pack[];
       if (this._pack) {
-        this.newShiftStateService.set(this.step.PACK, this._pack.description);
+        this.newShiftStateService.set(this.step.PACK, this._pack);
       } else {
-        this.newShiftStateService.set(this.step.PACK, '');
+        this.newShiftStateService.set(this.step.PACK, undefined);
       }
     } else {
       this.specialties = updatedItems as Specialty[];
       if (this._specialty) {
-        this.newShiftStateService.set(this.step.SPECIALTY, this._specialty.description);
+        this.newShiftStateService.set(this.step.SPECIALTY, this._specialty);
       } else {
-        this.newShiftStateService.set(this.step.SPECIALTY, '');
+        this.newShiftStateService.set(this.step.SPECIALTY, undefined);
       }
     }
   }
