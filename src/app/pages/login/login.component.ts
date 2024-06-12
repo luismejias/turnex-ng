@@ -46,11 +46,11 @@ export class LoginComponent {
   }
 
   login(): void {
-    const { email, password } = this.loginForm.value;
+    const { email } = this.loginForm.value;
     const emailAux = email.trim();
-    this.userProfileService.getUser(emailAux,password).subscribe(user => {
-      if (user) {
-        this.appStateService.login(user);
+    const userExist = this.userProfileService.getUser(emailAux);
+      if (userExist) {
+        this.appStateService.login(userExist);
       } else {
         Swal.fire({
           title: '¡Usuario o clave inválido!',
@@ -61,7 +61,7 @@ export class LoginComponent {
         })
         this.appStateService.logout();
       }
-    });
+
   }
   goToRegister(): void {
     this.router.navigate(['/register']);
