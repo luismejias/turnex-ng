@@ -43,7 +43,6 @@ export class RegisterComponent {
 
     } else {
       console.error('faltan datos');
-
     }
   }
 

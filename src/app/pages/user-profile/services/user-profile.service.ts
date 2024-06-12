@@ -43,4 +43,8 @@ export class UserProfileService {
     console.log('USERS ===>  ', this.users);
 
   }
+
+  getDataUser() {
+    return JSON.parse(localStorage.getItem('user') || '');
+  }
 }

@@ -6,6 +6,7 @@ import { SelectItemsComponent } from '../shifts/components';
 import { SpecialtyService } from '../specialty';
 import { Specialty, step } from 'src/app/models';
 import { Router } from '@angular/router';
+import { UserProfileService } from '../user-profile';
 
 @Component({
   selector: 'turnex-home',
@@ -14,9 +15,11 @@ import { Router } from '@angular/router';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit{
+export class HomeComponent implements OnInit {
   private specialtyService = inject(SpecialtyService);
-  private router= inject(Router);
+  private userProfileService = inject(UserProfileService);
+  private router = inject(Router);
+  user!: string;
   typeShifts = TypeShifts;
   specialties!: Specialty[];
   step = step;
@@ -29,20 +32,23 @@ export class HomeComponent implements OnInit{
     specialityID: 789,
     active: true
   }
-ngOnInit(): void {
+  ngOnInit(): void {
     this.getAllSpecialties();
-}
+    const userData = this.userProfileService.getDataUser();
+    this.user = `¡Hola,  ${userData.name}!`;
 
-getAllSpecialties(): void {
-  this.specialtyService.getAllSpecialties().subscribe((specialties: Specialty[]) => {
-    this.specialties = specialties;
-  })
-}
+  }
 
-goToNewShift(itemType: 'specialty', item: Specialty){
-  console.log({itemType}, {item});
-  this.router.navigate([`/shifts/newShift/${item.id}`]);
+  getAllSpecialties(): void {
+    this.specialtyService.getAllSpecialties().subscribe((specialties: Specialty[]) => {
+      this.specialties = specialties;
+    })
+  }
 
-}
+  goToNewShift(itemType: 'specialty', item: Specialty) {
+    console.log({ itemType }, { item });
+    this.router.navigate([`/shifts/newShift/${item.id}`]);
+
+  }
 
 }

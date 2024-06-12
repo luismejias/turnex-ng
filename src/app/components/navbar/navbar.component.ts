@@ -11,8 +11,12 @@ import { AppStateService } from 'src/app/app.state.service';
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent {
+  _isMobile = false;
   @Input() isChildFlow!: boolean;
-  appStateService = inject(AppStateService);
+  @Input() set isMobile(value: boolean) {
+    this._isMobile = value;
+  }
+  private appStateService = inject(AppStateService);
   logout(){
     this.appStateService.logout();
   }

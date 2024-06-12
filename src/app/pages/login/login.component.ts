@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { FormControl, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ButtonComponent, TitleComponent } from 'src/app/components';
-import { ReactiveFormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
 import { NgClass, NgIf } from '@angular/common';
 import { EMAIL_PATTERN } from '../constants';
 import { Router } from '@angular/router';
@@ -48,17 +48,22 @@ export class LoginComponent {
   login(): void {
     const { email, password } = this.loginForm.value;
     const emailAux = email.trim();
-    this.userProfileService.getUser(emailAux,password).subscribe(res => {
-      if (res) {
-        this.appStateService.login();
+    this.userProfileService.getUser(emailAux,password).subscribe(user => {
+      if (user) {
+        this.appStateService.login(user);
       } else {
+        Swal.fire({
+          title: '¡Usuario o clave inválido!',
+          text: 'Por favor revisa los datos ingresados e intenta de nuevo.',
+          icon: 'error',
+          confirmButtonText: 'Entendido',
+          confirmButtonColor: '#5F3CAA'
+        })
         this.appStateService.logout();
       }
     });
   }
-
   goToRegister(): void {
     this.router.navigate(['/register']);
   }
-
 }

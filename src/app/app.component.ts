@@ -4,7 +4,7 @@ import { ShiftsComponent } from './pages/shifts/shifts.component';
 import { RouterOutlet } from '@angular/router';
 import { BottomBarComponent, NavbarComponent } from './components';
 import { AppStateService } from './app.state.service';
-
+import { BreakpointObserver } from '@angular/cdk/layout';
 @Component({
   selector: 'turnex-root',
   templateUrl: './app.component.html',
@@ -14,11 +14,16 @@ import { AppStateService } from './app.state.service';
 })
 export class AppComponent implements OnInit {
   title = 'turnex';
-  appStateService = inject(AppStateService);
+  private appStateService = inject(AppStateService);
+  private breakpointObserver = inject(BreakpointObserver)
   isLoggedIn = false;
   isChildFlow = false;
+  isMobile= false;
 
   constructor(){
+
+
+
     effect(()=>{
       const state = this.appStateService.state();
       this.isLoggedIn = state.isLoggedIn;
@@ -32,5 +37,17 @@ export class AppComponent implements OnInit {
     if(isLoggedIn){
       this.appStateService.setLoggedIn();
     }
+
+    this.breakpointObserver.observe('(max-width: 500px)').subscribe(result => {
+      if(result.matches){
+        this.isMobile = true;
+        console.log('this.isMobile =< ', this.isMobile);
+
+      } else{
+        this.isMobile = false;
+      }
+
+  });
+
   }
 }

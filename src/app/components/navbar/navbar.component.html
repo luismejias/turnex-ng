@@ -1,7 +1,11 @@
 <nav class="navbar">
   <div class="navbar__first-section">
-    <div class="navbar__title-box" routerLink="/home"><span class="navbar__title">Turnex |</span> <span class="navbar__client-name"> OStudio</span></div>
-  <div class="navbar__menu" *ngIf="!isChildFlow">
+    <div class="navbar__title-box" routerLink="/home">
+      <span class="navbar__title">Turnex</span>
+      <span class="navbar__title">|</span>
+      <span class="navbar__client-name"> OStudio</span>
+    </div>
+  <div class="navbar__menu" *ngIf="!isChildFlow && !_isMobile">
     <a routerLinkActive="navbar__active" [routerLinkActiveOptions]="{exact: true}" routerLink="/home" class="navbar__text">Inicio</a>
 
     <a routerLinkActive="navbar__active" [routerLinkActiveOptions]="{exact: true}" routerLink="/shifts" class="navbar__text">Turnos</a>
@@ -9,5 +13,10 @@
     <a routerLinkActive="navbar__active" [routerLinkActiveOptions]="{exact: true}" routerLink="/profile" class="navbar__text">Perfil</a>
   </div>
   </div>
-  <button class="navbar__logout-button" (click)="logout()">Cerrar sesión</button>
+
+  <div class="navbar__right-box">
+    <div class="navbar__beta-box">
+  <span class="navbar__beta-text">Versión BETA</span></div>
+  <button class="navbar__logout-button" (click)="logout()" *ngIf="!_isMobile">Cerrar sesión</button>
+  </div>
 </nav>

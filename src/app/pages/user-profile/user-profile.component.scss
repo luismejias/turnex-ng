@@ -107,10 +107,15 @@
     font-style: normal;
     line-height: $turnex-spacing-24;
   }
+
+  &__close {
+    display: none;
+    margin-top: 20%;
+  }
 }
 
 @media (max-width: $turnex-breakpoint-xs) {
-  .register {
+  .user-profile {
 
     &__sub-title {
       font-size: $turnex-spacing-16;
@@ -118,8 +123,21 @@
       line-height: 24px;
       margin-top: 8px;
     }
+
     &__central-box {
-      max-width: 100%;
+      width: 100%;
+    }
+
+    &__form {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    &__close {
+      display: block;
+      margin-top: 20%;
     }
   }
+
 }

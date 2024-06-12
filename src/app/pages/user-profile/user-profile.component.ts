@@ -26,14 +26,15 @@ export class UserProfileComponent {
 
 
   constructor() {
-		this.userProfileForm = this.fb.group({
-      name: new UntypedFormControl('', Validators.required),
-      lastName: new UntypedFormControl('', Validators.required),
-			email: new UntypedFormControl('', Validators.required),
-		});
-	}
+    const { name, lastName, email } = this.userProfileService.getDataUser();
+    this.userProfileForm = this.fb.group({
+      name: new UntypedFormControl({ value: name, disabled: true }, Validators.required,),
+      lastName: new UntypedFormControl({ value: lastName, disabled: true }, Validators.required),
+      email: new UntypedFormControl({ value: email, disabled: true }, Validators.required),
+    });
+  }
 
-  logout(){
+  logout() {
     this.appStateService.logout();
   }
 

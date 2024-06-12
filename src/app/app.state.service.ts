@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { SimpleStoreService } from './simple-store.service';
-import { AppState } from './models';
+import { AppState, User } from './models';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -20,10 +20,11 @@ export class AppStateService extends SimpleStoreService<AppState> {
     })
   }
 // Manejo temporal de login y logout
-  login(){
+  login(user: User){
     this.setLoggedIn();
     this.router.navigate(['/home']);
     localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('user', JSON.stringify(user));
   }
 
   setLoggedIn(){
