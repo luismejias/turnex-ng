@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { SelectDayComponent } from '../select-day/select-day.component';
 import { PacksService } from 'src/app/pages/packs';
 import { SpecialtyService } from 'src/app/pages/specialty';
+import { ShiftsService } from '../../service';
 
 
 @Component({
@@ -31,6 +32,7 @@ export class NewShiftComponent implements OnInit {
   private newShiftStateService = inject(NewShiftStateService);
   private router= inject(Router);
   private packsService = inject(PacksService);
+  private shiftsService = inject(ShiftsService);
   private specialtyService = inject(SpecialtyService);
   @Input() idSpecialty!: string;
   title: string = '';
@@ -51,7 +53,6 @@ export class NewShiftComponent implements OnInit {
   constructor() {
     this.updateStep(1);
     effect(() => {
-      console.log('CAMBIO EL ESTADO => ', this.newShiftStateService.state());
       this.state = this.newShiftStateService.state();
       this.setTitleSubtitle();
       this.validateNextButton();
@@ -179,6 +180,7 @@ export class NewShiftComponent implements OnInit {
         }
         break;
       case 5:
+        this.saveShifts();
         this.updateStep(6);
         break;
       case 6:
@@ -203,8 +205,6 @@ export class NewShiftComponent implements OnInit {
   }
 
   toggleSelection(itemType: 'pack' | 'specialty', item: Pack | Specialty): void {
-    console.log({itemType}, {item});
-
     const itemId = item.id;
     const items = itemType === 'pack' ? this.packs : this.specialties;
     const updatedItems = items.map(item => {
@@ -242,6 +242,10 @@ export class NewShiftComponent implements OnInit {
       this.nextButtonText = 'Ver mis Turnos';
       this.previousButtonText = 'Volver al inicio';
     }
+  }
+
+  saveShifts(): void {
+    this.shiftsService.saveShifts(this.state);
   }
 
   private get _specialty(): Specialty | undefined {

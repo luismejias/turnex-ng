@@ -4,7 +4,7 @@
     Gestiona tus turnos de manera fácil y eficiente.
   </div>
   <div class="home__detail-box-title">Próximo turno </div>
-  <turnex-shift-card  [date]="shift.date.toISOString()" [status]="shift.status"></turnex-shift-card>
+  <turnex-shift-card  [date]="shift.date" [time]="'10:00'" [status]="shift.status"></turnex-shift-card>
   <div class="home__detail-box-title home__detail-box-title-2">Agenda un nuevo turno </div>
   <turnex-select-items [items]="specialties" (itemSelected)="goToNewShift(this.step.SPECIALTY, $event)"></turnex-select-items>
 </div>

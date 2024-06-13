@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit {
   shift = {
     id: 1,
     userId: 123,
-    date: new Date('2022-10-15T08:00:00.000Z'),
+    date: '2022-10-15T08:00:00.000Z',
     status: this.typeShifts.NEXT,
     clientId: 456,
     specialityID: 789,
@@ -46,7 +46,6 @@ export class HomeComponent implements OnInit {
   }
 
   goToNewShift(itemType: 'specialty', item: Specialty) {
-    console.log({ itemType }, { item });
     this.router.navigate([`/shifts/newShift/${item.id}`]);
 
   }

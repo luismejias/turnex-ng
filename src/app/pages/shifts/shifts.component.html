@@ -25,7 +25,7 @@
 </div>
 
 <div class="shifts__list" >
-  <turnex-shift-card *ngFor="let shift of filteredShifts;" [date]="shift.date.toISOString()" [status]="shift.status"></turnex-shift-card>
+  <turnex-shift-card *ngFor="let shift of filteredShifts;" [date]="shift.date" [time]="shift.time" [status]="shift.status"></turnex-shift-card>
 </div>
 </div>
 </div>
