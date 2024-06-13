@@ -41,8 +41,6 @@ export class AppComponent implements OnInit {
     this.breakpointObserver.observe('(max-width: 500px)').subscribe(result => {
       if(result.matches){
         this.isMobile = true;
-        console.log('this.isMobile =< ', this.isMobile);
-
       } else{
         this.isMobile = false;
       }

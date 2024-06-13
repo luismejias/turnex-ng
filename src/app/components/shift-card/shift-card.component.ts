@@ -13,6 +13,7 @@ import { daysOfWeek } from 'src/app/pages/constants';
 })
 export class ShiftCardComponent implements OnInit {
   @Input({required: true}) date!: string;
+  @Input({required: true}) time!: string;
   @Input({required: true}) status!: TypeShifts;
   typeShift = TypeShifts;
   day!: string;
