@@ -1,4 +1,5 @@
 <div class="select-hour">
+  <turnex-week-pager (currentWeekData)="testWeek($event)"></turnex-week-pager>
   <div class="select-hour__day" *ngFor="let day of selectedDays">
     <span class="select-hour__day--title">{{ day.description }}</span>
     <div class="select-hour__hourList">

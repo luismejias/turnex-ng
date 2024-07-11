@@ -4,7 +4,7 @@ import { ButtonComponent, TitleComponent } from 'src/app/components';
 import { daysOfWeek } from 'src/app/pages/constants';
 import { SelectableCardComponent } from '../selectable-card/selectable-card.component';
 import { SelectItemsComponent } from '../select-items/select-items.component';
-import { Day, Hour } from '../../models';
+import { CurrentWeek, Day, Hour } from '../../models';
 import { Pack, Specialty, step } from 'src/app/models';
 import { NewShiftStateService } from './new-shift.state.service';
 import { SelectHourComponent } from '../select-hour/select-hour.component';
@@ -15,6 +15,7 @@ import { SelectDayComponent } from '../select-day/select-day.component';
 import { PacksService } from 'src/app/pages/packs';
 import { SpecialtyService } from 'src/app/pages/specialty';
 import { ShiftsService } from '../../service';
+import { WeekPagerComponent } from '../week-pager/week-pager.component';
 
 
 @Component({
@@ -22,7 +23,7 @@ import { ShiftsService } from '../../service';
   standalone: true,
   imports: [
     CommonModule, TitleComponent, ButtonComponent, SelectableCardComponent,
-    SelectItemsComponent, SelectDayComponent, SelectHourComponent, NewShiftSummaryComponent, NgFor, NgClass, NgIf
+    SelectItemsComponent, SelectDayComponent, SelectHourComponent, NewShiftSummaryComponent, WeekPagerComponent, NgFor, NgClass, NgIf
   ],
   templateUrl: './new-shift.component.html',
   styleUrl: './new-shift.component.scss',
@@ -30,7 +31,7 @@ import { ShiftsService } from '../../service';
 })
 export class NewShiftComponent implements OnInit {
   private newShiftStateService = inject(NewShiftStateService);
-  private router= inject(Router);
+  private router = inject(Router);
   private packsService = inject(PacksService);
   private shiftsService = inject(ShiftsService);
   private specialtyService = inject(SpecialtyService);
@@ -54,18 +55,19 @@ export class NewShiftComponent implements OnInit {
     this.updateStep(1);
     effect(() => {
       this.state = this.newShiftStateService.state();
+      console.log('CAMBIO EL ESTADO >=> ', this.state);
       this.setTitleSubtitle();
       this.validateNextButton();
     })
   }
 
   ngOnInit(): void {
-      this.getAllPacks();
-      this.getAllSpecialties();
-      if(this.idSpecialty){
-        this.toggleSelection('specialty', {id: this.idSpecialty, description:'', isSelected: true});
-        this.updateStep(2);
-      }
+    this.getAllPacks();
+    this.getAllSpecialties();
+    if (this.idSpecialty) {
+      this.toggleSelection('specialty', { id: this.idSpecialty, description: '', isSelected: true });
+      this.updateStep(2);
+    }
   }
 
   updateStep(step: number): void {
@@ -92,8 +94,6 @@ export class NewShiftComponent implements OnInit {
     })
   }
 
-
-
   validateNextButton(): void {
     switch (this.$step) {
       case 1:
@@ -103,7 +103,7 @@ export class NewShiftComponent implements OnInit {
         this.isNextButtonDisabled = !this._pack;
         break;
       case 3:
-        this.isNextButtonDisabled = !this._day;
+        this.isNextButtonDisabled = !this._days;
         break;
       case 4:
         this.isNextButtonDisabled = !this._selectedDaysWithSelectedTimes;
@@ -165,12 +165,14 @@ export class NewShiftComponent implements OnInit {
         }
         break;
       case 2:
-        if (this._pack) {
+        if (this._pack && !this._days) {
           this.updateStep(3);
+        } else if (this._pack && this._days) {
+          this.updateStep(4);
         }
         break;
       case 3:
-        if (this._day) {
+        if (this._days) {
           this.updateStep(4);
         }
         break;
@@ -198,7 +200,7 @@ export class NewShiftComponent implements OnInit {
   }
 
   onPreviousButton() {
-    const previousState = this.$step - 1;
+    const previousState =  this._pack?.id === '4'? this.$step - 2:  this.$step - 1;
     if (previousState > 0) {
       this.updateStep(previousState);
     }
@@ -217,7 +219,10 @@ export class NewShiftComponent implements OnInit {
     if (itemType === 'pack') {
       this.packs = updatedItems as Pack[];
       if (this._pack) {
+        //Si el pack es turno suelto selecciono todos los dias por defecto si no desSelecciono todos los dias
+        this._pack.id === '4'? this.setSelectedAllDays() : this.setDeSelectAllDays();
         this.newShiftStateService.set(this.step.PACK, this._pack);
+
       } else {
         this.newShiftStateService.set(this.step.PACK, undefined);
       }
@@ -256,10 +261,19 @@ export class NewShiftComponent implements OnInit {
     return this.packs.find(pack => pack.isSelected);
   }
 
-  private get _day(): Day | undefined {
+  private get _days(): Day | undefined {
     return this.daysOfWeek.find(day => day.isSelected);
   }
 
+  private setSelectedAllDays() {
+    this.daysOfWeek.map(day => day.isSelected = true);
+    this.newShiftStateService.set(this.step.DAYS, this.daysOfWeek);
+  }
+
+  private setDeSelectAllDays() {
+    this.daysOfWeek.map(day => day.isSelected = false);
+    this.newShiftStateService.set(this.step.DAYS, this.daysOfWeek);
+  }
 
   private get _selectedDaysWithSelectedTimes(): boolean {
     const days = this.newShiftStateService.state().hours;

@@ -15,6 +15,11 @@ export const routes: Routes = [
     title: 'Login page',
   },
   {
+    path: '',
+    component: LoginComponent,
+    title: 'Login page',
+  },
+  {
     path: 'register',
     component: RegisterComponent,
     title: 'Register page',

@@ -1,15 +1,16 @@
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { Day, Hour } from '../../models';
+import { CurrentWeek, Day, Hour } from '../../models';
 import { step } from 'src/app/models';
 import { NewShiftStateService } from '../new-shift/new-shift.state.service';
+import { WeekPagerComponent } from '../week-pager/week-pager.component';
 export interface TimesByDay {
   [key: string]: Hour[];
 }
 @Component({
   selector: 'turnex-select-hour',
   standalone: true,
-  imports: [NgFor, NgIf, NgClass],
+  imports: [WeekPagerComponent, NgFor, NgIf, NgClass],
   templateUrl: './select-hour.component.html',
   styleUrl: './select-hour.component.scss'
 })
@@ -17,6 +18,9 @@ export class SelectHourComponent implements OnInit {
   @Input({ required: true }) hoursCount!: number;
   @Input({ required: true }) interval!: number;
   @Input({ required: true }) startTime!: string;
+  @Input() currentWeekData!: CurrentWeek;
+
+
   selectedDays!: Day[];
   selectedDaysWithTimes!: Record<string, Hour[]>;
   hours!: Hour[];
@@ -27,8 +31,9 @@ export class SelectHourComponent implements OnInit {
   ngOnInit(): void {
     this.hours = this._generateTimes();
     const days = this.newShiftStateService.state().days;
+    console.warn({days});
     this.selectedDays = days ? days : [];
-    this.selectedDaysWithTimes = this._generateTimesForSelectedDays();
+    this.selectedDaysWithTimes = this._generateTimesForSelectedDays(this.selectedDays);
   }
 
   private get $hours() {
@@ -66,11 +71,11 @@ export class SelectHourComponent implements OnInit {
     return times;
   }
 
-  private _generateTimesForSelectedDays(): Record<string, Hour[]> {
+  private _generateTimesForSelectedDays(selectedDays: Day[]): Record<string, Hour[]> {
     const timesByDay: Record<string, Hour[]> = {};
 
     // Iterar sobre cada día de la semana
-    this.selectedDays?.forEach(day => {
+    selectedDays?.forEach(day => {
       if (day.isSelected) {
         // Generar las horas solo si el día está seleccionado
         timesByDay[day.description] = this._generateTimes();
@@ -92,4 +97,30 @@ export class SelectHourComponent implements OnInit {
     }
     return filteredHours;
   }
+
+  testWeek(currentWeek: CurrentWeek) {
+    console.log({currentWeek});
+    const daysRange = this.getDaysInRange(currentWeek);
+    console.log({daysRange});
+
+  }
+
+  getDaysInRange(currentWeek: CurrentWeek): Day[] {
+    const startDate = new Date(currentWeek.start);
+    const endDate = new Date(currentWeek.end);
+    const result: Day[] = [];
+
+    for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
+        const dayOfWeek = this.selectedDays[d.getDay()];
+        const dateCopy = new Date(d);
+
+        result.push({
+            description: dayOfWeek.description,
+            date: dateCopy,
+            isSelected: false
+        });
+    }
+
+    return result;
+}
 }

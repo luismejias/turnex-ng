@@ -22,6 +22,7 @@ export class LoginComponent {
   emailPattern = EMAIL_PATTERN;
 
   constructor(private fb: UntypedFormBuilder, private router: Router) {
+    this.logout();
     this.loginForm = this.fb.group({
       email: new UntypedFormControl('', Validators.required),
       password: new UntypedFormControl('', Validators.required),
@@ -59,9 +60,13 @@ export class LoginComponent {
           confirmButtonText: 'Entendido',
           confirmButtonColor: '#5F3CAA'
         })
-        this.appStateService.logout();
+       this.logout();
       }
 
+  }
+
+  logout(){
+    this.appStateService.logout();
   }
   goToRegister(): void {
     this.router.navigate(['/register']);

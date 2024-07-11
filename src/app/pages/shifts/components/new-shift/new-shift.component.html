@@ -6,6 +6,7 @@
       <span>{{subTitle}} </span>
     </div>
   </div>
+
     <ng-container *ngIf="$step === 1">
       <turnex-select-items [items]="specialties" (itemSelected)="toggleSelection(this.step.SPECIALTY, $event)"></turnex-select-items>
     </ng-container>

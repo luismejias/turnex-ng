@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Shift } from 'src/app/models';
 import { TypeShifts } from '../shift.enum';
 import { NewShiftState } from '../models/new-shift-state.interface';
 import { Hour, ShiftCalculated } from '../models';
