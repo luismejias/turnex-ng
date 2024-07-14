@@ -1,5 +1,5 @@
 <div class="shift-card">
-  <span class="shift-card__title">Clases de pilates</span>
+  <span class="shift-card__title">Clases de {{shift.specialty?.description}}</span>
   <div class="shift-card__date">
     <div class="shift-card__date-hour">
     <span class="fi-rr-calendar"></span>
@@ -7,12 +7,12 @@
     </div>
     <div class="shift-card__date-hour">
       <i class="fi-rr-clock-nine"></i>
-      <span>hora {{ time }} hs</span>
+      <span>hora {{ shift.time }} hs</span>
     </div>
 
   </div>
-  <div class="shift-card__buttons-box" *ngIf="status !== typeShift.COMPLETED">
-    <turnex-button text="Cancelar" type="reset" *ngIf="status !== typeShift.CANCELED" class="shift-card__button"></turnex-button>
+  <div class="shift-card__buttons-box" *ngIf="shift.status !== typeShift.COMPLETED">
+    <turnex-button text="Cancelar" type="reset" *ngIf="shift.status !== typeShift.CANCELED" class="shift-card__button"></turnex-button>
     <turnex-button text="Reagendar" class="shift-card__button"></turnex-button>
   </div>
 </div>

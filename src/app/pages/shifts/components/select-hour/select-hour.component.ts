@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { CurrentWeek, Day, Hour } from '../../models';
 import { step } from 'src/app/models';
@@ -10,7 +10,7 @@ export interface TimesByDay {
 @Component({
   selector: 'turnex-select-hour',
   standalone: true,
-  imports: [WeekPagerComponent, NgFor, NgIf, NgClass],
+  imports: [WeekPagerComponent, NgFor, NgIf, NgClass, DatePipe],
   templateUrl: './select-hour.component.html',
   styleUrl: './select-hour.component.scss'
 })
@@ -73,7 +73,6 @@ export class SelectHourComponent implements OnInit {
 
   private _generateTimesForSelectedDays(selectedDays: Day[]): Record<string, Hour[]> {
     const timesByDay: Record<string, Hour[]> = {};
-
     // Iterar sobre cada día de la semana
     selectedDays?.forEach(day => {
       if (day.isSelected) {
@@ -99,10 +98,8 @@ export class SelectHourComponent implements OnInit {
   }
 
   testWeek(currentWeek: CurrentWeek) {
-    console.log({currentWeek});
     const daysRange = this.getDaysInRange(currentWeek);
-    console.log({daysRange});
-
+    this.selectedDays = daysRange;
   }
 
   getDaysInRange(currentWeek: CurrentWeek): Day[] {
