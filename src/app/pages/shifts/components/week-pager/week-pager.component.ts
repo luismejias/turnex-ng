@@ -19,27 +19,41 @@ export class WeekPagerComponent implements OnInit {
   }
 
   nextWeek() {
-    this.currentWeekStart.setDate(this.currentWeekStart.getDate() + 7);
-    this.currentWeekEnd.setDate(this.currentWeekEnd.getDate() + 7);
+    this.currentWeekStart = this.adjustDateByDays(this.currentWeekStart, 7);
+    this.currentWeekEnd = this.getEndOfWeek(this.currentWeekStart);
     this.week = this.getCurrentWeek();
     this.currentWeekEmit();
   }
 
   previousWeek() {
-    this.currentWeekStart.setDate(this.currentWeekStart.getDate() - 7);
-    this.currentWeekEnd.setDate(this.currentWeekEnd.getDate() - 7);
+    this.currentWeekStart = this.adjustDateByDays(this.currentWeekStart, -7);
+    this.currentWeekEnd = this.getEndOfWeek(this.currentWeekStart);
     this.week = this.getCurrentWeek();
     this.currentWeekEmit();
   }
+
+  private adjustDateByDays(date: Date, days: number): Date {
+    const adjustedDate = new Date(date);
+    adjustedDate.setDate(adjustedDate.getDate() + days);
+    return adjustedDate;
+  }
+
   private getStartOfWeek(date: Date): Date {
     const start = new Date(date);
     const day = start.getDay();
-    const diff = start.getDate() - day + (day === 0 ? -7 : 1); // Adjust if Sunday (0) to be start of the week
+    const diff = start.getDate() - day + (day === 0 ? -6 : 1); // Ajustar si es domingo (0) para que sea el inicio de la semana (lunes)
     start.setDate(diff);
+    start.setHours(0, 0, 0, 0); // Establecer la hora a las 00:00:00.000
     return start;
-  }
+}
 
   currentWeekEmit() {
+
+    console.log({
+      start: this.currentWeekStart,
+      end: this.currentWeekEnd
+    });
+
     this.currentWeekData.emit({
       start: this.currentWeekStart,
       end: this.currentWeekEnd

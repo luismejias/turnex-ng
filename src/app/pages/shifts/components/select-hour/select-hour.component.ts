@@ -4,6 +4,7 @@ import { CurrentWeek, Day, Hour } from '../../models';
 import { step } from 'src/app/models';
 import { NewShiftStateService } from '../new-shift/new-shift.state.service';
 import { WeekPagerComponent } from '../week-pager/week-pager.component';
+import { daysOfWeek } from 'src/app/pages/constants';
 export interface TimesByDay {
   [key: string]: Hour[];
 }
@@ -31,7 +32,7 @@ export class SelectHourComponent implements OnInit {
   ngOnInit(): void {
     this.hours = this._generateTimes();
     const days = this.newShiftStateService.state().days;
-    console.warn({days});
+    console.warn({ days });
     this.selectedDays = days ? days : [];
     this.selectedDaysWithTimes = this._generateTimesForSelectedDays(this.selectedDays);
   }
@@ -108,16 +109,14 @@ export class SelectHourComponent implements OnInit {
     const result: Day[] = [];
 
     for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
-        const dayOfWeek = this.selectedDays[d.getDay()];
-        const dateCopy = new Date(d);
-
-        result.push({
-            description: dayOfWeek.description,
-            date: dateCopy,
-            isSelected: false
-        });
+      const dayOfWeek = daysOfWeek[d.getDay()].description;
+      const dateCopy = new Date(d);
+      result.push({
+        description: dayOfWeek,
+        date: dateCopy,
+        isSelected: false
+      });
     }
-
     return result;
-}
+  }
 }
