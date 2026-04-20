@@ -1,40 +1,42 @@
-import { DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { DatePipe, NgClass, NgStyle } from '@angular/common';
+import { Component, effect, Input, OnInit } from '@angular/core';
 import { CurrentWeek, Day, Hour } from '../../models';
 import { step } from 'src/app/models';
 import { NewShiftStateService } from '../new-shift/new-shift.state.service';
 import { WeekPagerComponent } from '../week-pager/week-pager.component';
 import { daysOfWeek } from 'src/app/pages/constants';
+import { Pack } from '../select-items/select-items.component';
 export interface TimesByDay {
   [key: string]: Hour[];
 }
 @Component({
   selector: 'turnex-select-hour',
-  standalone: true,
-  imports: [WeekPagerComponent, NgFor, NgIf, NgClass, DatePipe],
+  imports: [WeekPagerComponent, NgStyle, NgClass, DatePipe],
   templateUrl: './select-hour.component.html',
-  styleUrl: './select-hour.component.scss'
+  styleUrl: './select-hour.component.scss',
 })
 export class SelectHourComponent implements OnInit {
   @Input({ required: true }) hoursCount!: number;
   @Input({ required: true }) interval!: number;
   @Input({ required: true }) startTime!: string;
   @Input() currentWeekData!: CurrentWeek;
-
-
-  selectedDays!: Day[];
+  weekPagerIsVisible = false;
+  selectedDays: Day[] = [];
   selectedDaysWithTimes!: Record<string, Hour[]>;
   hours!: Hour[];
   step = step;
-
-  constructor(private newShiftStateService: NewShiftStateService) { }
-
+  pack!: Pack | undefined;
+  constructor(private newShiftStateService: NewShiftStateService) {}
   ngOnInit(): void {
     this.hours = this._generateTimes();
-    const days = this.newShiftStateService.state().days;
+    const { days, pack } = this.newShiftStateService.state();
+    this.pack = pack;
+    this.weekPagerIsVisible = this.pack?.id === '4';
     console.warn({ days });
     this.selectedDays = days ? days : [];
-    this.selectedDaysWithTimes = this._generateTimesForSelectedDays(this.selectedDays);
+    this.selectedDaysWithTimes = this._generateTimesForSelectedDays(
+      this.selectedDays
+    );
   }
 
   private get $hours() {
@@ -65,14 +67,16 @@ export class SelectHourComponent implements OnInit {
 
       times.push({
         description: `${formattedHour}:${formattedMinute}`,
-        isSelected: false
+        isSelected: false,
       });
     }
 
     return times;
   }
 
-  private _generateTimesForSelectedDays(selectedDays: Day[]): Record<string, Hour[]> {
+  private _generateTimesForSelectedDays(
+    selectedDays: Day[]
+  ): Record<string, Hour[]> {
     const timesByDay: Record<string, Hour[]> = {};
     // Iterar sobre cada día de la semana
     selectedDays?.forEach(day => {
@@ -81,12 +85,17 @@ export class SelectHourComponent implements OnInit {
         timesByDay[day.description] = this._generateTimes();
       }
     });
-    const filterHoursByTimesByDay = this.$hours ? this._filterHoursByTimesByDay(timesByDay, this.$hours) : timesByDay;
+    const filterHoursByTimesByDay = this.$hours
+      ? this._filterHoursByTimesByDay(timesByDay, this.$hours)
+      : timesByDay;
     const timesByDayResult = { ...timesByDay, ...filterHoursByTimesByDay };
     return timesByDayResult;
   }
 
-  private _filterHoursByTimesByDay(timesByDay: TimesByDay, hours: TimesByDay): TimesByDay {
+  private _filterHoursByTimesByDay(
+    timesByDay: TimesByDay,
+    hours: TimesByDay
+  ): TimesByDay {
     const filteredHours: TimesByDay = {};
 
     for (const day in timesByDay) {
@@ -98,9 +107,11 @@ export class SelectHourComponent implements OnInit {
     return filteredHours;
   }
 
-  testWeek(currentWeek: CurrentWeek) {
+  setCurrentWeek(currentWeek: CurrentWeek) {
+    console.log('setCurrentWeek => ', { currentWeek });
     const daysRange = this.getDaysInRange(currentWeek);
     this.selectedDays = daysRange;
+    console.error('selectedDays => ', this.selectedDays);
   }
 
   getDaysInRange(currentWeek: CurrentWeek): Day[] {
@@ -114,7 +125,7 @@ export class SelectHourComponent implements OnInit {
       result.push({
         description: dayOfWeek,
         date: dateCopy,
-        isSelected: false
+        isSelected: false,
       });
     }
     return result;

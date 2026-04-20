@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ShiftCardComponent, TitleComponent } from 'src/app/components';
 import { TypeShifts } from '../shifts/shift.enum';
 import { SelectItemsComponent } from '../shifts/components';
@@ -12,10 +12,9 @@ import { ShiftsService } from '../shifts/service';
 
 @Component({
   selector: 'turnex-home',
-  standalone: true,
-  imports: [CommonModule, TitleComponent, ShiftCardComponent, SelectItemsComponent],
+  imports: [TitleComponent, ShiftCardComponent, SelectItemsComponent],
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
   private specialtyService = inject(SpecialtyService);
@@ -38,9 +37,11 @@ export class HomeComponent implements OnInit {
   }
 
   getAllSpecialties(): void {
-    this.specialtyService.getAllSpecialties().subscribe((specialties: Specialty[]) => {
-      this.specialties = specialties;
-    })
+    this.specialtyService
+      .getAllSpecialties()
+      .subscribe((specialties: Specialty[]) => {
+        this.specialties = specialties;
+      });
   }
 
   getShifts(): void {
@@ -49,13 +50,13 @@ export class HomeComponent implements OnInit {
 
   getNextShift(shifts: Shift[], currentDate: Date): Shift | null {
     for (const shift of shifts) {
-        const shiftDate = new Date(shift.date);
-        if (shiftDate > currentDate && shift.status === this.typeShifts.NEXT) {
-            return shift;
-        }
+      const shiftDate = new Date(shift.date);
+      if (shiftDate > currentDate && shift.status === this.typeShifts.NEXT) {
+        return shift;
+      }
     }
     return null; // No hay turnos disponibles con el status "next" después de la fecha actual
-}
+  }
 
   goToNewShift(itemType: 'specialty', item: Specialty) {
     this.router.navigate([`/shifts/newShift/${item.id}`]);

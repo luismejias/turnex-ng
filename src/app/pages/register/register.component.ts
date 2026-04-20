@@ -1,6 +1,12 @@
-import { CommonModule, NgClass, NgIf } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { ReactiveFormsModule, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonComponent, TitleComponent } from 'src/app/components';
 import { EMAIL_PATTERN } from '../constants';
@@ -10,10 +16,15 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'turnex-register',
-  standalone: true,
-  imports: [TitleComponent, ButtonComponent, ReactiveFormsModule, NgClass, NgIf, CommonModule],
+  imports: [
+    TitleComponent,
+    ButtonComponent,
+    ReactiveFormsModule,
+    NgClass,
+    CommonModule,
+  ],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+  styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
   registerForm: UntypedFormGroup;
@@ -32,15 +43,23 @@ export class RegisterComponent {
       password2: new UntypedFormControl('', Validators.required),
       rememberData: new UntypedFormControl(''),
     });
-
   }
   register(): void {
-    const { name, lastName, email, password, password2 } = this.registerForm.value;
+    const { name, lastName, email, password, password2 } =
+      this.registerForm.value;
     const emailAux = email.trim();
     if (name && lastName && emailAux && password && password2) {
       const userExist = this.getUser(email);
       if (!userExist) {
-        this.saveUser({ id: this._generateRandomId(), name, lastName, email: emailAux, password, active: true, termAndConditions: true });
+        this.saveUser({
+          id: this._generateRandomId(),
+          name,
+          lastName,
+          email: emailAux,
+          password,
+          active: true,
+          termAndConditions: true,
+        });
         Swal.fire({
           title: '¡Usuario registrado exitosamente!',
           icon: 'success',
@@ -52,17 +71,16 @@ export class RegisterComponent {
           text: 'Por favor revisa los datos ingresados e intenta de nuevo.',
           icon: 'error',
           confirmButtonText: 'Entendido',
-          confirmButtonColor: '#5F3CAA'
+          confirmButtonColor: '#5F3CAA',
         });
       }
-
     } else {
       console.error('faltan datos');
     }
   }
 
   getUser(email: string) {
-    return this.userProfileService.getUser(email)
+    return this.userProfileService.getUser(email);
   }
 
   saveUser(user: User): void {

@@ -1,21 +1,26 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { CurrentWeek } from '../../models';
 
 @Component({
-  selector: 'turnex-week-pager',
-  standalone: true,
-  imports: [],
-  templateUrl: './week-pager.component.html',
-  styleUrl: './week-pager.component.scss'
+    selector: 'turnex-week-pager',
+    imports: [],
+    templateUrl: './week-pager.component.html',
+    styleUrl: './week-pager.component.scss'
 })
 export class WeekPagerComponent implements OnInit {
   @Output() currentWeekData = new EventEmitter<CurrentWeek>();
   private currentDate = new Date();
   private currentWeekStart = this.getStartOfWeek(this.currentDate);
   private currentWeekEnd = this.getEndOfWeek(this.currentDate);
-  week!: string
+  week!: string;
   ngOnInit(): void {
     this.week = this.getCurrentWeek();
+    this.currentWeekEmit();
   }
 
   nextWeek() {
@@ -45,19 +50,14 @@ export class WeekPagerComponent implements OnInit {
     start.setDate(diff);
     start.setHours(0, 0, 0, 0); // Establecer la hora a las 00:00:00.000
     return start;
-}
+  }
 
   currentWeekEmit() {
-
-    console.log({
+    const currentWeek = {
       start: this.currentWeekStart,
-      end: this.currentWeekEnd
-    });
-
-    this.currentWeekData.emit({
-      start: this.currentWeekStart,
-      end: this.currentWeekEnd
-    });
+      end: this.currentWeekEnd,
+    } as CurrentWeek;
+    this.currentWeekData.emit(currentWeek);
   }
 
   getCurrentWeek(): string {
@@ -77,5 +77,4 @@ export class WeekPagerComponent implements OnInit {
     const month = date.toLocaleString('es-ES', { month: 'long' });
     return `${day} ${month.charAt(0).toUpperCase() + month.slice(1)}`;
   }
-
 }

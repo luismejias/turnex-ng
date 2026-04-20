@@ -2,11 +2,10 @@ import { NgClass } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'turnex-button',
-  standalone: true,
-  imports: [NgClass],
-  templateUrl: './button.component.html',
-  styleUrl: './button.component.scss'
+    selector: 'turnex-button',
+    imports: [NgClass],
+    templateUrl: './button.component.html',
+    styleUrl: './button.component.scss'
 })
 export class ButtonComponent {
   @Input() disabled = false;

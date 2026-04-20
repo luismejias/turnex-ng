@@ -7,11 +7,10 @@ import { ShiftsService } from './service/shifts.service';
 import { Shift } from './models';
 
 @Component({
-  selector: 'turnex-shifts',
-  standalone: true,
-  imports: [CommonModule, RouterLink, ShiftCardComponent, TitleComponent],
-  templateUrl: './shifts.component.html',
-  styleUrls: ['./shifts.component.scss']
+    selector: 'turnex-shifts',
+    imports: [CommonModule, RouterLink, ShiftCardComponent, TitleComponent],
+    templateUrl: './shifts.component.html',
+    styleUrls: ['./shifts.component.scss']
 })
 export class ShiftsComponent implements OnInit {
   typeShifts = TypeShifts;

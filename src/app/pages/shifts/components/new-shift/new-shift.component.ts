@@ -1,10 +1,10 @@
-import { CommonModule, NgClass, NgFor, NgIf } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { Component, effect, inject, Input, OnInit } from '@angular/core';
 import { ButtonComponent, TitleComponent } from 'src/app/components';
 import { daysOfWeek } from 'src/app/pages/constants';
 import { SelectableCardComponent } from '../selectable-card/selectable-card.component';
 import { SelectItemsComponent } from '../select-items/select-items.component';
-import { CurrentWeek, Day, Hour } from '../../models';
+import { Day, Hour } from '../../models';
 import { Pack, Specialty, step } from 'src/app/models';
 import { NewShiftStateService } from './new-shift.state.service';
 import { SelectHourComponent } from '../select-hour/select-hour.component';
@@ -17,17 +17,23 @@ import { SpecialtyService } from 'src/app/pages/specialty';
 import { ShiftsService } from '../../service';
 import { WeekPagerComponent } from '../week-pager/week-pager.component';
 
-
 @Component({
   selector: 'turnex-new-shift',
-  standalone: true,
   imports: [
-    CommonModule, TitleComponent, ButtonComponent, SelectableCardComponent,
-    SelectItemsComponent, SelectDayComponent, SelectHourComponent, NewShiftSummaryComponent, WeekPagerComponent, NgFor, NgClass, NgIf
+    CommonModule,
+    TitleComponent,
+    ButtonComponent,
+    SelectableCardComponent,
+    SelectItemsComponent,
+    SelectDayComponent,
+    SelectHourComponent,
+    NewShiftSummaryComponent,
+    WeekPagerComponent,
+    NgClass,
   ],
   templateUrl: './new-shift.component.html',
   styleUrl: './new-shift.component.scss',
-  providers: [NewShiftStateService]
+  providers: [NewShiftStateService],
 })
 export class NewShiftComponent implements OnInit {
   private newShiftStateService = inject(NewShiftStateService);
@@ -58,14 +64,18 @@ export class NewShiftComponent implements OnInit {
       console.log('CAMBIO EL ESTADO >=> ', this.state);
       this.setTitleSubtitle();
       this.validateNextButton();
-    })
+    });
   }
 
   ngOnInit(): void {
     this.getAllPacks();
     this.getAllSpecialties();
     if (this.idSpecialty) {
-      this.toggleSelection('specialty', { id: this.idSpecialty, description: '', isSelected: true });
+      this.toggleSelection('specialty', {
+        id: this.idSpecialty,
+        description: '',
+        isSelected: true,
+      });
       this.updateStep(2);
     }
   }
@@ -79,19 +89,21 @@ export class NewShiftComponent implements OnInit {
   }
 
   goToShifts() {
-    this.router.navigate(["/shifts"]);
+    this.router.navigate(['/shifts']);
   }
 
   getAllPacks(): void {
     this.packsService.getAllPacks().subscribe((packs: Pack[]) => {
       this.packs = packs;
-    })
+    });
   }
 
   getAllSpecialties(): void {
-    this.specialtyService.getAllSpecialties().subscribe((specialties: Specialty[]) => {
-      this.specialties = specialties;
-    })
+    this.specialtyService
+      .getAllSpecialties()
+      .subscribe((specialties: Specialty[]) => {
+        this.specialties = specialties;
+      });
   }
 
   validateNextButton(): void {
@@ -128,19 +140,24 @@ export class NewShiftComponent implements OnInit {
         break;
       case 2:
         this.title = 'Elige tu pack de clases';
-        this.subTitle = 'Podrás cambiar de pack siempre que lo necesites. Al solicitar el cambio de pack se verá reflejado al mes siguiente. En caso de requerir clases adicionales, siempre podrás adquirir clases sueltas.';
+        this.subTitle =
+          'Podrás cambiar de pack siempre que lo necesites. Al solicitar el cambio de pack se verá reflejado al mes siguiente. En caso de requerir clases adicionales, siempre podrás adquirir clases sueltas.';
         break;
       case 3:
         this.title = 'Elige los días de tus turnos';
-        this.subTitle = 'Tienes el Pack de 4 clases activo, elige los días de la semana que más te convengan.';
+        this.subTitle =
+          'Tienes el Pack de 4 clases activo, elige los días de la semana que más te convengan.';
         break;
       case 4:
-        this.title = 'Te mostramos los horarios disponibles para cada día seleccionado, elige los que más te convengan.';
-        this.subTitle = 'Podrás cancelar, reagendar o pedir un turno nuevo siempre que lo necesites con un mínimos de 24hs de antelación.';
+        this.title =
+          'Te mostramos los horarios disponibles para cada día seleccionado, elige los que más te convengan.';
+        this.subTitle =
+          'Podrás cancelar, reagendar o pedir un turno nuevo siempre que lo necesites con un mínimos de 24hs de antelación.';
         break;
       case 5:
         this.title = '¡Ya casi estamos!';
-        this.subTitle = 'Confirma los datos de tu solicitud y, si está todo bien, presiona el botón “Agendar”.';
+        this.subTitle =
+          'Confirma los datos de tu solicitud y, si está todo bien, presiona el botón “Agendar”.';
         this.nextButtonText = 'Agendar';
         break;
       case 6:
@@ -154,7 +171,7 @@ export class NewShiftComponent implements OnInit {
 
   setInitialState() {
     this.newShiftStateService.setInitialState();
-    this.daysOfWeek.map(day => day.isSelected = false);
+    this.daysOfWeek.map(day => (day.isSelected = false));
   }
 
   onNextButton() {
@@ -194,19 +211,23 @@ export class NewShiftComponent implements OnInit {
         }
         break;
       default:
-        this.updateStep(1)
+        this.updateStep(1);
         break;
     }
   }
 
   onPreviousButton() {
-    const previousState =  this._pack?.id === '4'? this.$step - 2:  this.$step - 1;
+    const previousState =
+      this._pack?.id === '4' ? this.$step - 2 : this.$step - 1;
     if (previousState > 0) {
       this.updateStep(previousState);
     }
   }
 
-  toggleSelection(itemType: 'pack' | 'specialty', item: Pack | Specialty): void {
+  toggleSelection(
+    itemType: 'pack' | 'specialty',
+    item: Pack | Specialty
+  ): void {
     const itemId = item.id;
     const items = itemType === 'pack' ? this.packs : this.specialties;
     const updatedItems = items.map(item => {
@@ -220,9 +241,10 @@ export class NewShiftComponent implements OnInit {
       this.packs = updatedItems as Pack[];
       if (this._pack) {
         //Si el pack es turno suelto selecciono todos los dias por defecto si no desSelecciono todos los dias
-        this._pack.id === '4'? this.setSelectedAllDays() : this.setDeSelectAllDays();
+        this._pack.id === '4'
+          ? this.setSelectedAllDays()
+          : this.setDeSelectAllDays();
         this.newShiftStateService.set(this.step.PACK, this._pack);
-
       } else {
         this.newShiftStateService.set(this.step.PACK, undefined);
       }
@@ -240,10 +262,11 @@ export class NewShiftComponent implements OnInit {
     if (this.errorOnSave) {
       this.title = '¡Hubo un error al agendar tus turnos de Pilates!';
       this.subTitle = 'Por favor intenta de nuevo más tarde.';
-      this.nextButtonText = 'Volver al inicio'
+      this.nextButtonText = 'Volver al inicio';
     } else {
       this.title = '¡Has agendado tus turnos de Pilates con éxito!';
-      this.subTitle = 'Puedes cancelar o re-agendar tus clases siempre que lo necesites desde la sección “Turnos” con un mínimo de 24 hs de anticipación.';
+      this.subTitle =
+        'Puedes cancelar o re-agendar tus clases siempre que lo necesites desde la sección “Turnos” con un mínimo de 24 hs de anticipación.';
       this.nextButtonText = 'Ver mis Turnos';
       this.previousButtonText = 'Volver al inicio';
     }
@@ -266,12 +289,12 @@ export class NewShiftComponent implements OnInit {
   }
 
   private setSelectedAllDays() {
-    this.daysOfWeek.map(day => day.isSelected = true);
+    this.daysOfWeek.map(day => (day.isSelected = true));
     this.newShiftStateService.set(this.step.DAYS, this.daysOfWeek);
   }
 
   private setDeSelectAllDays() {
-    this.daysOfWeek.map(day => day.isSelected = false);
+    this.daysOfWeek.map(day => (day.isSelected = false));
     this.newShiftStateService.set(this.step.DAYS, this.daysOfWeek);
   }
 
@@ -285,4 +308,3 @@ export class NewShiftComponent implements OnInit {
     return false;
   }
 }
-

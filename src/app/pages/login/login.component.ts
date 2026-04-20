@@ -1,18 +1,24 @@
 import { Component, inject } from '@angular/core';
-import { FormControl, ReactiveFormsModule, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  FormControl,
+  ReactiveFormsModule,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { ButtonComponent, TitleComponent } from 'src/app/components';
 import Swal from 'sweetalert2';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { EMAIL_PATTERN } from '../constants';
 import { Router } from '@angular/router';
 import { AppStateService } from 'src/app/app.state.service';
 import { UserProfileService } from '../user-profile';
 @Component({
   selector: 'turnex-login',
-  standalone: true,
-  imports: [TitleComponent, ButtonComponent, ReactiveFormsModule, NgClass, NgIf],
+  imports: [TitleComponent, ButtonComponent, ReactiveFormsModule, NgClass],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   private appStateService = inject(AppStateService);
@@ -21,7 +27,10 @@ export class LoginComponent {
   visiblePassword = false;
   emailPattern = EMAIL_PATTERN;
 
-  constructor(private fb: UntypedFormBuilder, private router: Router) {
+  constructor(
+    private fb: UntypedFormBuilder,
+    private router: Router
+  ) {
     this.logout();
     this.loginForm = this.fb.group({
       email: new UntypedFormControl('', Validators.required),
@@ -50,22 +59,21 @@ export class LoginComponent {
     const { email } = this.loginForm.value;
     const emailAux = email.trim();
     const userExist = this.userProfileService.getUser(emailAux);
-      if (userExist) {
-        this.appStateService.login(userExist);
-      } else {
-        Swal.fire({
-          title: '¡Usuario o clave inválido!',
-          text: 'Por favor revisa los datos ingresados e intenta de nuevo.',
-          icon: 'error',
-          confirmButtonText: 'Entendido',
-          confirmButtonColor: '#5F3CAA'
-        })
-       this.logout();
-      }
-
+    if (userExist) {
+      this.appStateService.login(userExist);
+    } else {
+      Swal.fire({
+        title: '¡Usuario o clave inválido!',
+        text: 'Por favor revisa los datos ingresados e intenta de nuevo.',
+        icon: 'error',
+        confirmButtonText: 'Entendido',
+        confirmButtonColor: '#5F3CAA',
+      });
+      this.logout();
+    }
   }
 
-  logout(){
+  logout() {
     this.appStateService.logout();
   }
   goToRegister(): void {
