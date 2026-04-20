@@ -1,31 +1,54 @@
-
 <div class="shifts">
   <div class="shifts__principal-box">
     <turnex-title [text]="'Turnos'"></turnex-title>
 
-    <button class="shifts__new-shift-button"  [routerLink]="['newShift']"><i class="fi-rr-plus-small"></i> Nuevo turno</button>
+    <button class="shifts__new-shift-button" [routerLink]="['newShift']">
+      <i class="fi-rr-plus-small"></i> Nuevo turno
+    </button>
   </div>
 
-<div class="shifts__sub-title">
-  <span>Pack activo: </span>
-  <span class="shifts__pack-detail">4 clases al mes</span>
-</div>
+  <div class="shifts__sub-title">
+    <span>Pack activo: </span>
+    <span class="shifts__pack-detail">4 clases al mes</span>
+  </div>
 
-<div class="shifts__box">
-<div class="shifts__filters-box">
-  <div class="shifts__button" [ngClass]="{'shifts__selected' : filterSelected === typeShifts.NEXT}" (click)="onFilterSelected(typeShifts.NEXT)" (keyup)="onFilterSelected(typeShifts.NEXT)" role="button" aria-disabled="true">
-    <span class="shifts__text">Próximos</span>
-  </div>
-  <div class="shifts__button" [ngClass]="{'shifts__selected' : filterSelected === typeShifts.COMPLETED}" (click)="onFilterSelected(typeShifts.COMPLETED)" (keyup)="onFilterSelected(typeShifts.COMPLETED)" role="button" aria-disabled="true">
-    <span class="shifts__text">Completados</span>
-  </div>
-  <div class="shifts__button" [ngClass]="{'shifts__selected' : filterSelected === typeShifts.CANCELED}" (click)="onFilterSelected(typeShifts.CANCELED)" (keyup)="onFilterSelected(typeShifts.CANCELED)" role="button" aria-disabled="true">
-    <span class="shifts__text">Cancelados</span>
-  </div>
-</div>
+  <div class="shifts__box">
+    <div class="shifts__filters-box">
+      <div
+        class="shifts__button"
+        [ngClass]="{ shifts__selected: filterSelected === typeShifts.NEXT }"
+        (click)="onFilterSelected(typeShifts.NEXT)"
+        (keyup)="onFilterSelected(typeShifts.NEXT)"
+        role="button"
+        aria-disabled="true">
+        <span class="shifts__text">Próximos</span>
+      </div>
+      <div
+        class="shifts__button"
+        [ngClass]="{
+          shifts__selected: filterSelected === typeShifts.COMPLETED,
+        }"
+        (click)="onFilterSelected(typeShifts.COMPLETED)"
+        (keyup)="onFilterSelected(typeShifts.COMPLETED)"
+        role="button"
+        aria-disabled="true">
+        <span class="shifts__text">Completados</span>
+      </div>
+      <div
+        class="shifts__button"
+        [ngClass]="{ shifts__selected: filterSelected === typeShifts.CANCELED }"
+        (click)="onFilterSelected(typeShifts.CANCELED)"
+        (keyup)="onFilterSelected(typeShifts.CANCELED)"
+        role="button"
+        aria-disabled="true">
+        <span class="shifts__text">Cancelados</span>
+      </div>
+    </div>
 
-<div class="shifts__list" >
-  <turnex-shift-card *ngFor="let shift of filteredShifts;" [date]="shift.date" [time]="shift.time" [status]="shift.status"></turnex-shift-card>
-</div>
-</div>
+    <div class="shifts__list">
+      @for (shift of filteredShifts; track shift) {
+        <turnex-shift-card [shift]="shift"></turnex-shift-card>
+      }
+    </div>
+  </div>
 </div>

@@ -1,14 +1,12 @@
-import { NgIf } from '@angular/common';
 import { Component, inject, Input } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AppStateService } from 'src/app/app.state.service';
 
 @Component({
   selector: 'turnex-navbar',
-  standalone: true,
-  imports: [RouterLink, RouterLinkActive, NgIf],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss'
+  styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
   _isMobile = false;
@@ -17,7 +15,7 @@ export class NavbarComponent {
     this._isMobile = value;
   }
   private appStateService = inject(AppStateService);
-  logout(){
+  logout() {
     this.appStateService.logout();
   }
 }

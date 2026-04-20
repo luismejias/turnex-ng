@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Shift } from 'src/app/models';
 import { TypeShifts } from '../shift.enum';
 import { NewShiftState } from '../models/new-shift-state.interface';
-import { Hour, ShiftCalculated } from '../models';
+import { Hour, Shift } from '../models';
 import { daysOfWeek } from 'src/app/pages/constants';
 
 @Injectable({
@@ -21,7 +20,7 @@ export class ShiftsService {
 
   getShifts() {
     const shiftsStorage = localStorage.getItem('shifts');
-    this.dataStorage = shiftsStorage ? JSON.parse(shiftsStorage): [];
+    this.dataStorage = shiftsStorage ? JSON.parse(shiftsStorage) : [];
     return this.dataStorage;
   }
 
@@ -50,7 +49,7 @@ export class ShiftsService {
 
   createShiftForMonth(newShiftState: NewShiftState): NewShiftState {
     const daysOfWeekInEnglish = this.getDaysOfWeekInEnglish();
-    const shiftsCalculated: ShiftCalculated[] = [];
+    const shiftsCalculated: Shift[] = [];
     const today = new Date();
     const year = today.getFullYear();
     const month = today.getMonth();
@@ -68,10 +67,11 @@ export class ShiftsService {
           if (currentDate.getDay() === dayIndex) {
             newShiftState.hours[day].forEach(hour => {
               if (hour.isSelected) { // Filtrar solo las horas seleccionadas
-                const turn: ShiftCalculated = {
+                const turn: Shift = {
                   day,
                   date: currentDate.toISOString(),
                   time: hour.description,
+                  specialty: newShiftState.specialty,
                   status: TypeShifts.NEXT
                 };
                 shiftsCalculated.push(turn);

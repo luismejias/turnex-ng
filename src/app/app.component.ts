@@ -1,5 +1,5 @@
 import { Component, effect, inject, OnInit } from '@angular/core';
-import { NgSwitch, NgSwitchDefault, NgSwitchCase, NgIf } from '@angular/common';
+
 import { ShiftsComponent } from './pages/shifts/shifts.component';
 import { RouterOutlet } from '@angular/router';
 import { BottomBarComponent, NavbarComponent } from './components';
@@ -9,43 +9,37 @@ import { BreakpointObserver } from '@angular/cdk/layout';
   selector: 'turnex-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  standalone: true,
-  imports: [NgSwitch, NgSwitchDefault, NgSwitchCase, NgIf, ShiftsComponent, RouterOutlet, NavbarComponent, BottomBarComponent]
+  imports: [ShiftsComponent, RouterOutlet, NavbarComponent, BottomBarComponent],
 })
 export class AppComponent implements OnInit {
   title = 'turnex';
   private appStateService = inject(AppStateService);
-  private breakpointObserver = inject(BreakpointObserver)
+  private breakpointObserver = inject(BreakpointObserver);
   isLoggedIn = false;
   isChildFlow = false;
-  isMobile= false;
+  isMobile = false;
 
-  constructor(){
-
-
-
-    effect(()=>{
+  constructor() {
+    effect(() => {
       const state = this.appStateService.state();
       this.isLoggedIn = state.isLoggedIn;
       this.isChildFlow = state.isChildFlow;
-    })
+    });
   }
 
   ngOnInit(): void {
     //TODO Temporal solo para test corregir al implementar backend
     const isLoggedIn = localStorage.getItem('isLoggedIn');
-    if(isLoggedIn){
+    if (isLoggedIn) {
       this.appStateService.setLoggedIn();
     }
 
     this.breakpointObserver.observe('(max-width: 500px)').subscribe(result => {
-      if(result.matches){
+      if (result.matches) {
         this.isMobile = true;
-      } else{
+      } else {
         this.isMobile = false;
       }
-
-  });
-
+    });
   }
 }

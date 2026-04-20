@@ -6,11 +6,10 @@ export interface Item {
   isSelected: boolean,
 }
 @Component({
-  selector: 'turnex-selectable-card',
-  standalone: true,
-  imports: [NgClass],
-  templateUrl: './selectable-card.component.html',
-  styleUrl: './selectable-card.component.scss'
+    selector: 'turnex-selectable-card',
+    imports: [NgClass],
+    templateUrl: './selectable-card.component.html',
+    styleUrl: './selectable-card.component.scss'
 })
 export class SelectableCardComponent {
   @Input({required: true}) item!:Item;
