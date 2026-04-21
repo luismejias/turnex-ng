@@ -10,8 +10,7 @@ import {
 import { Router } from '@angular/router';
 import { ButtonComponent, TitleComponent } from 'src/app/components';
 import { EMAIL_PATTERN } from '../constants';
-import { UserProfileService } from '../user-profile';
-import { User } from 'src/app/models';
+import { AuthService } from 'src/app/shared/auth.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -27,13 +26,16 @@ import Swal from 'sweetalert2';
   styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
+  private fb = inject(UntypedFormBuilder);
+  private router = inject(Router);
+  private authService = inject(AuthService);
+
   registerForm: UntypedFormGroup;
   visiblePassword = false;
   visiblePassword2 = false;
   emailPattern = EMAIL_PATTERN;
-  private fb = inject(UntypedFormBuilder);
-  private router = inject(Router);
-  private userProfileService = inject(UserProfileService);
+  isLoading = false;
+
   constructor() {
     this.registerForm = this.fb.group({
       name: new UntypedFormControl('', Validators.required),
@@ -44,51 +46,41 @@ export class RegisterComponent {
       rememberData: new UntypedFormControl(''),
     });
   }
+
   register(): void {
-    const { name, lastName, email, password, password2 } =
-      this.registerForm.value;
-    const emailAux = email.trim();
-    if (name && lastName && emailAux && password && password2) {
-      const userExist = this.getUser(email);
-      if (!userExist) {
-        this.saveUser({
-          id: this._generateRandomId(),
-          name,
-          lastName,
-          email: emailAux,
-          password,
-          active: true,
-          termAndConditions: true,
-        });
+    if (this.registerForm.invalid || this.isLoading) return;
+
+    const { name, lastName, email, password } = this.registerForm.value;
+    this.isLoading = true;
+
+    this.authService.register({
+      name,
+      lastName,
+      email: email.trim(),
+      password,
+      termAndConditions: true,
+    }).subscribe({
+      next: () => {
+        this.isLoading = false;
         Swal.fire({
           title: '¡Usuario registrado exitosamente!',
           icon: 'success',
-        });
-        this.router.navigate(['login']);
-      } else {
+        }).then(() => this.router.navigate(['/login']));
+      },
+      error: (err: string) => {
+        this.isLoading = false;
+        const isConflict = err.includes('409');
         Swal.fire({
-          title: '¡Usuario existente!',
-          text: 'Por favor revisa los datos ingresados e intenta de nuevo.',
+          title: isConflict ? '¡Email ya registrado!' : '¡Error al registrar!',
+          text: isConflict
+            ? 'Ya existe una cuenta con ese email.'
+            : 'Por favor intenta de nuevo.',
           icon: 'error',
           confirmButtonText: 'Entendido',
           confirmButtonColor: '#5F3CAA',
         });
-      }
-    } else {
-      console.error('faltan datos');
-    }
-  }
-
-  getUser(email: string) {
-    return this.userProfileService.getUser(email);
-  }
-
-  saveUser(user: User): void {
-    this.userProfileService.saveUser(user);
-  }
-
-  private _generateRandomId() {
-    return Math.floor(1000 + Math.random() * 9000);
+      },
+    });
   }
 
   goToLogin(): void {
