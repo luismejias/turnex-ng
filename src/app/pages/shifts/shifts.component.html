@@ -46,7 +46,7 @@
     </div>
 
     <div class="shifts__list">
-      @for (shift of filteredShifts; track shift) {
+      @for (shift of filteredShifts; track shift.id) {
         <turnex-shift-card [shift]="shift"></turnex-shift-card>
       }
     </div>

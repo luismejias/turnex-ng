@@ -1,17 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Pack, Specialty } from 'src/app/models';
 import { SelectableCardComponent } from '../selectable-card/selectable-card.component';
 
-export interface Pack {
-  id: string;
-  description: string;
-  isSelected: boolean;
-}
-
-export interface Specialty {
-  id: string;
-  description: string;
-  isSelected: boolean;
-}
 @Component({
   selector: 'turnex-select-items',
   imports: [SelectableCardComponent],

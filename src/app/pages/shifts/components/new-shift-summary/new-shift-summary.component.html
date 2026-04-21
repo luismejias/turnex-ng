@@ -21,12 +21,12 @@
         >Días y horarios seleccionados:
       </span>
       <div class="new-shift-summary__detail-box-sub-titles">
-        @for (day of state.days; track day) {
+        @for (day of state.days; track day.description) {
           <div class="new-shift-summary__detail-box-sub-title">
             <span>{{ day.description }} {{ day.date }}</span>
             @if (state.hours) {
               <div>
-                @for (hour of state.hours[day.description]; track hour) {
+                @for (hour of state.hours[day.description]; track hour.description) {
                   <span>
                     {{ hour.isSelected ? hour.description + ' hs' : '' }}
                   </span>

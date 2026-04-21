@@ -2,7 +2,6 @@ import { CommonModule, NgClass } from '@angular/common';
 import { Component, effect, inject, Input, OnInit } from '@angular/core';
 import { ButtonComponent, TitleComponent } from 'src/app/components';
 import { daysOfWeek } from 'src/app/pages/constants';
-import { SelectableCardComponent } from '../selectable-card/selectable-card.component';
 import { SelectItemsComponent } from '../select-items/select-items.component';
 import { Day, Hour } from '../../models';
 import { Pack, Specialty, step } from 'src/app/models';
@@ -15,7 +14,6 @@ import { SelectDayComponent } from '../select-day/select-day.component';
 import { PacksService } from 'src/app/pages/packs';
 import { SpecialtyService } from 'src/app/pages/specialty';
 import { ShiftsService } from '../../service';
-import { WeekPagerComponent } from '../week-pager/week-pager.component';
 
 @Component({
   selector: 'turnex-new-shift',
@@ -23,12 +21,10 @@ import { WeekPagerComponent } from '../week-pager/week-pager.component';
     CommonModule,
     TitleComponent,
     ButtonComponent,
-    SelectableCardComponent,
     SelectItemsComponent,
     SelectDayComponent,
     SelectHourComponent,
     NewShiftSummaryComponent,
-    WeekPagerComponent,
     NgClass,
   ],
   templateUrl: './new-shift.component.html',
@@ -72,7 +68,7 @@ export class NewShiftComponent implements OnInit {
     this.getAllSpecialties();
     if (this.idSpecialty) {
       this.toggleSelection('specialty', {
-        id: this.idSpecialty,
+        id: Number(this.idSpecialty),
         description: '',
         isSelected: true,
       });
@@ -200,7 +196,6 @@ export class NewShiftComponent implements OnInit {
         break;
       case 5:
         this.saveShifts();
-        this.updateStep(6);
         break;
       case 6:
         if (this.errorOnSave) {
@@ -218,7 +213,7 @@ export class NewShiftComponent implements OnInit {
 
   onPreviousButton() {
     const previousState =
-      this._pack?.id === '4' ? this.$step - 2 : this.$step - 1;
+      this._pack?.id === 4 ? this.$step - 2 : this.$step - 1;
     if (previousState > 0) {
       this.updateStep(previousState);
     }
@@ -241,7 +236,7 @@ export class NewShiftComponent implements OnInit {
       this.packs = updatedItems as Pack[];
       if (this._pack) {
         //Si el pack es turno suelto selecciono todos los dias por defecto si no desSelecciono todos los dias
-        this._pack.id === '4'
+        this._pack.id === 4
           ? this.setSelectedAllDays()
           : this.setDeSelectAllDays();
         this.newShiftStateService.set(this.step.PACK, this._pack);
@@ -273,11 +268,20 @@ export class NewShiftComponent implements OnInit {
   }
 
   saveShifts(): void {
-    this.shiftsService.saveShifts(this.state);
+    this.shiftsService.saveShifts(this.state).subscribe({
+      next: () => {
+        this.errorOnSave = false;
+        this.updateStep(6);
+      },
+      error: () => {
+        this.errorOnSave = true;
+        this.updateStep(6);
+      },
+    });
   }
 
   private get _specialty(): Specialty | undefined {
-    return this.specialties.find(specialty => specialty.isSelected);
+    return this.specialties ? this.specialties.find(specialty => specialty.isSelected) : undefined;
   }
 
   private get _pack(): Pack | undefined {
