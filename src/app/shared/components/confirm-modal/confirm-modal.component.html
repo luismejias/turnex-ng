@@ -1,0 +1,16 @@
+<div class="confirm-modal">
+  <h2 mat-dialog-title class="confirm-modal__title">{{ data.title }}</h2>
+
+  <mat-dialog-content class="confirm-modal__content">
+    <p>{{ data.message }}</p>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="confirm-modal__actions">
+    <button class="confirm-modal__btn confirm-modal__btn--cancel" (click)="cancel()">
+      {{ data.cancelText ?? 'Cancelar' }}
+    </button>
+    <button class="confirm-modal__btn confirm-modal__btn--confirm" (click)="confirm()">
+      {{ data.confirmText ?? 'Confirmar' }}
+    </button>
+  </mat-dialog-actions>
+</div>
