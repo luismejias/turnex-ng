@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ShiftStatus {
+  NEXT
+  COMPLETED
+  CANCELED
+}
+
+model User {
+  id                Int      @id @default(autoincrement())
+  name              String
+  lastName          String
+  email             String   @unique
+  password          String
+  active            Boolean  @default(true)
+  termAndConditions Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  shifts            Shift[]
+
+  @@map("users")
+}
+
+model Pack {
+  id          Int     @id @default(autoincrement())
+  description String
+  price       Float   @default(0)
+  duration    String  @default("")
+  active      Boolean @default(true)
+  shifts      Shift[]
+
+  @@map("packs")
+}
+
+model Specialty {
+  id          Int     @id @default(autoincrement())
+  description String
+  active      Boolean @default(true)
+  shifts      Shift[]
+
+  @@map("specialties")
+}
+
+model Shift {
+  id          Int         @id @default(autoincrement())
+  userId      Int
+  packId      Int?
+  specialtyId Int?
+  day         String
+  date        DateTime
+  time        String
+  status      ShiftStatus @default(NEXT)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  user      User       @relation(fields: [userId], references: [id])
+  pack      Pack?      @relation(fields: [packId], references: [id])
+  specialty Specialty? @relation(fields: [specialtyId], references: [id])
+
+  @@map("shifts")
+}
