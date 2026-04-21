@@ -1,6 +1,5 @@
 import { Component, effect, inject, OnInit } from '@angular/core';
 
-import { ShiftsComponent } from './pages/shifts/shifts.component';
 import { RouterOutlet } from '@angular/router';
 import { BottomBarComponent, NavbarComponent } from './components';
 import { AppStateService } from './app.state.service';
@@ -9,7 +8,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
   selector: 'turnex-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  imports: [ShiftsComponent, RouterOutlet, NavbarComponent, BottomBarComponent],
+  imports: [RouterOutlet, NavbarComponent, BottomBarComponent],
 })
 export class AppComponent implements OnInit {
   title = 'turnex';

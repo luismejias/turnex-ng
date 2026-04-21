@@ -1,17 +1,16 @@
-import { DatePipe, NgClass, NgStyle } from '@angular/common';
-import { Component, effect, Input, OnInit } from '@angular/core';
+import { DatePipe, NgClass } from '@angular/common';
+import { Component, Input, OnInit } from '@angular/core';
 import { CurrentWeek, Day, Hour } from '../../models';
-import { step } from 'src/app/models';
+import { Pack, step } from 'src/app/models';
 import { NewShiftStateService } from '../new-shift/new-shift.state.service';
 import { WeekPagerComponent } from '../week-pager/week-pager.component';
 import { daysOfWeek } from 'src/app/pages/constants';
-import { Pack } from '../select-items/select-items.component';
 export interface TimesByDay {
   [key: string]: Hour[];
 }
 @Component({
   selector: 'turnex-select-hour',
-  imports: [WeekPagerComponent, NgStyle, NgClass, DatePipe],
+  imports: [WeekPagerComponent, NgClass, DatePipe],
   templateUrl: './select-hour.component.html',
   styleUrl: './select-hour.component.scss',
 })
@@ -31,7 +30,7 @@ export class SelectHourComponent implements OnInit {
     this.hours = this._generateTimes();
     const { days, pack } = this.newShiftStateService.state();
     this.pack = pack;
-    this.weekPagerIsVisible = this.pack?.id === '4';
+    this.weekPagerIsVisible = this.pack?.id === 4;
     console.warn({ days });
     this.selectedDays = days ? days : [];
     this.selectedDaysWithTimes = this._generateTimesForSelectedDays(

@@ -3,93 +3,52 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TypeShifts } from '../shift.enum';
 import { NewShiftState } from '../models/new-shift-state.interface';
-import { Hour, Shift } from '../models';
+import { Hour, Shift, CreateShiftsPayload } from '../models';
 import { daysOfWeek } from 'src/app/pages/constants';
+import { API_URL } from 'src/app/shared/api.config';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class ShiftsService {
-  dataStorage!: NewShiftState;
-  private readonly _http = inject(HttpClient);
+  private http = inject(HttpClient);
 
-
-  getAllPropducts(): Observable<unknown> {
-    return this._http.get('https://sssfakestoreapi.com/products');
+  getShifts(): Observable<Shift[]> {
+    return this.http.get<Shift[]>(`${API_URL}/shifts`);
   }
 
-  getShifts() {
-    const shiftsStorage = localStorage.getItem('shifts');
-    this.dataStorage = shiftsStorage ? JSON.parse(shiftsStorage) : [];
-    return this.dataStorage;
+  saveShifts(newShiftState: NewShiftState): Observable<Shift[]> {
+    const payload = this._buildPayload(newShiftState);
+    return this.http.post<Shift[]>(`${API_URL}/shifts`, payload);
   }
 
-  saveShifts(newShiftState: NewShiftState) {
-    const shiftForMonth = this.createShiftForMonth(newShiftState);
-    const shiftForMonthString = JSON.stringify(shiftForMonth);
-    localStorage.setItem('shifts', shiftForMonthString);
+  updateShiftStatus(shiftId: number, status: TypeShifts): Observable<Shift> {
+    return this.http.patch<Shift>(`${API_URL}/shifts/${shiftId}`, { status: status.toUpperCase() });
   }
 
-  // getShift(date: Date): Shift | undefined {
-  //   const shifts = localStorage.getItem('users');
-  //   this.shifts = shifts ? JSON.parse(shifts) : [];
-  //   return this.shifts ? this.shifts.find((shift) => (shift.date === date)) : undefined;
-  // }
+  deleteShift(shiftId: number): Observable<void> {
+    return this.http.delete<void>(`${API_URL}/shifts/${shiftId}`);
+  }
 
   filterSelectedHours(hours: Record<string, Hour[]>): Record<string, Hour[]> {
-    const filteredSchedule: Record<string, Hour[]> = {};
+    const filtered: Record<string, Hour[]> = {};
     for (const day in hours) {
       if (Object.prototype.hasOwnProperty.call(hours, day)) {
-        filteredSchedule[day] = hours[day].filter(hour => hour.isSelected);
+        filtered[day] = hours[day].filter((h) => h.isSelected);
       }
     }
-
-    return filteredSchedule;
+    return filtered;
   }
 
-  createShiftForMonth(newShiftState: NewShiftState): NewShiftState {
-    const daysOfWeekInEnglish = this.getDaysOfWeekInEnglish();
-    const shiftsCalculated: Shift[] = [];
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth();
-    const daysInMonth = new Date(year, month + 1, 0).getDate(); // Obtener el número de días en el mes actual
-
-    if (!newShiftState.hours) return { ...newShiftState, shiftsCalculated: [] };
-
-    for (const day in newShiftState.hours) {
-      if (Object.prototype.hasOwnProperty.call(newShiftState.hours, day)) {
-        const dayIndex = daysOfWeekInEnglish[day];
-
-        for (let date = 1; date <= daysInMonth; date++) {
-          const currentDate = new Date(year, month, date);
-
-          if (currentDate.getDay() === dayIndex) {
-            newShiftState.hours[day].forEach(hour => {
-              if (hour.isSelected) { // Filtrar solo las horas seleccionadas
-                const turn: Shift = {
-                  day,
-                  date: currentDate.toISOString(),
-                  time: hour.description,
-                  specialty: newShiftState.specialty,
-                  status: TypeShifts.NEXT
-                };
-                shiftsCalculated.push(turn);
-              }
-            });
-          }
-        }
-      }
-    }
-
-    return { ...newShiftState, shiftsCalculated };
+  getDaysOfWeekInEnglish(): Record<string, number> {
+    const map: Record<string, number> = {};
+    daysOfWeek.forEach((day, i) => { map[day.description] = i; });
+    return map;
   }
 
-  getDaysOfWeekInEnglish(): { [key: string]: number } {
-    const daysOfWeekInEnglish: { [key: string]: number } = {};
-    daysOfWeek.forEach((day, index) => {
-      daysOfWeekInEnglish[day.description] = index;
-    });
-    return daysOfWeekInEnglish;
+  private _buildPayload(state: NewShiftState): CreateShiftsPayload {
+    return {
+      packId: state.pack!.id,
+      specialtyId: state.specialty!.id,
+      hours: state.hours ?? {},
+    };
   }
 }

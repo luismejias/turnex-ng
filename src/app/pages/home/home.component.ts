@@ -31,9 +31,8 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.getAllSpecialties();
     const userData = this.userProfileService.getDataUser();
-    this.user = `¡Hola,  ${userData.name}!`;
+    this.user = `¡Hola,  ${userData?.name ?? ''}!`;
     this.getShifts();
-    this.nextShift = this.getNextShift(this.shifts, this.today);
   }
 
   getAllSpecialties(): void {
@@ -45,7 +44,12 @@ export class HomeComponent implements OnInit {
   }
 
   getShifts(): void {
-    this.shifts = this.shiftsService.getShifts().shiftsCalculated || [];
+    this.shiftsService.getShifts().subscribe({
+      next: (shifts) => {
+        this.shifts = shifts;
+        this.nextShift = this.getNextShift(this.shifts, this.today);
+      },
+    });
   }
 
   getNextShift(shifts: Shift[], currentDate: Date): Shift | null {

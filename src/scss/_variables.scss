@@ -1,4 +1,4 @@
-@import "colors";
-@import "sizes";
-@import "breakpoints";
-@import 'mixins';
+@forward "colors";
+@forward "sizes";
+@forward "breakpoints";
+@forward "mixins";

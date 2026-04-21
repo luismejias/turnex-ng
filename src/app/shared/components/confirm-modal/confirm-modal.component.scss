@@ -1,0 +1,53 @@
+@use 'variables' as *;
+
+.confirm-modal {
+  padding: 8px;
+  min-width: 280px;
+
+  &__title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: $turnex-primary-800;
+    margin: 0 0 8px;
+  }
+
+  &__content {
+    p {
+      font-size: 0.95rem;
+      color: $turnex-alabaster-800;
+      margin: 0;
+      line-height: 1.5;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 16px;
+  }
+
+  &__btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 0.85;
+    }
+
+    &--cancel {
+      background-color: $turnex-alabaster-100;
+      color: $turnex-alabaster-800;
+    }
+
+    &--confirm {
+      background-color: $turnex-primary-800;
+      color: $turnex-white-50;
+    }
+  }
+}

@@ -1,5 +1,6 @@
 export interface Specialty {
-  id: string,
+  id: number,
   description: string,
-  isSelected: boolean,
+  active?: boolean,
+  isSelected?: boolean,
 }

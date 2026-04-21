@@ -3,13 +3,13 @@
     <turnex-week-pager
       (currentWeekData)="setCurrentWeek($event)"></turnex-week-pager>
   }
-  @for (day of selectedDays; track day) {
+  @for (day of selectedDays; track day.description) {
     <div class="select-hour__day">
       <span class="select-hour__day--title"
         >{{ day.description }} {{ day.date | date: 'dd/MM/yyyy' }}</span
       >
       <div class="select-hour__hourList">
-        @for (hour of selectedDaysWithTimes[day.description]; track hour) {
+        @for (hour of selectedDaysWithTimes[day.description]; track hour.description) {
           <div
             class="select-hour__hour-detail"
             aria-disabled="true"

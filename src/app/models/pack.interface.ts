@@ -1,8 +1,8 @@
 export interface Pack {
-  id: string,
+  id: number,
   description: string,
   price: number,
   duration: string,
   active: boolean,
-  isSelected: boolean;
+  isSelected?: boolean;
 }
