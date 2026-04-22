@@ -7,10 +7,12 @@
     </button>
   </div>
 
-  <div class="shifts__sub-title">
-    <span>Pack activo: </span>
-    <span class="shifts__pack-detail">4 clases al mes</span>
-  </div>
+  @if (activePack) {
+    <div class="shifts__sub-title">
+      <span>Pack activo: </span>
+      <span class="shifts__pack-detail">{{ activePack }}</span>
+    </div>
+  }
 
   <div class="shifts__box">
     <div class="shifts__filters-box">
@@ -20,19 +22,23 @@
         (click)="onFilterSelected(typeShifts.NEXT)"
         (keyup)="onFilterSelected(typeShifts.NEXT)"
         role="button"
-        aria-disabled="true">
+        tabindex="0">
         <span class="shifts__text">Próximos</span>
+        <!-- @if (countByStatus(typeShifts.NEXT) > 0) {
+          <span class="shifts__badge">{{ countByStatus(typeShifts.NEXT) }}</span>
+        } -->
       </div>
       <div
         class="shifts__button"
-        [ngClass]="{
-          shifts__selected: filterSelected === typeShifts.COMPLETED,
-        }"
+        [ngClass]="{ shifts__selected: filterSelected === typeShifts.COMPLETED }"
         (click)="onFilterSelected(typeShifts.COMPLETED)"
         (keyup)="onFilterSelected(typeShifts.COMPLETED)"
         role="button"
-        aria-disabled="true">
+        tabindex="0">
         <span class="shifts__text">Completados</span>
+        <!-- @if (countByStatus(typeShifts.COMPLETED) > 0) {
+          <span class="shifts__badge">{{ countByStatus(typeShifts.COMPLETED) }}</span>
+        } -->
       </div>
       <div
         class="shifts__button"
@@ -40,14 +46,27 @@
         (click)="onFilterSelected(typeShifts.CANCELED)"
         (keyup)="onFilterSelected(typeShifts.CANCELED)"
         role="button"
-        aria-disabled="true">
+        tabindex="0">
         <span class="shifts__text">Cancelados</span>
+        <!-- @if (countByStatus(typeShifts.CANCELED) > 0) {
+          <span class="shifts__badge">{{ countByStatus(typeShifts.CANCELED) }}</span>
+        } -->
       </div>
     </div>
 
     <div class="shifts__list">
-      @for (shift of filteredShifts; track shift.id) {
-        <turnex-shift-card [shift]="shift"></turnex-shift-card>
+      @if (isLoading) {
+        <span class="shifts__empty">Cargando turnos...</span>
+      } @else if (filteredShifts.length === 0) {
+        <span class="shifts__empty">No tenés turnos en esta categoría.</span>
+      } @else {
+        @for (shift of filteredShifts; track shift.id) {
+          <turnex-shift-card
+            [shift]="shift"
+            (cancelShift)="onCancelShift($event)"
+            (rescheduleShift)="onRescheduleShift($event)">
+          </turnex-shift-card>
+        }
       }
     </div>
   </div>

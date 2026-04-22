@@ -1,28 +1,26 @@
-<div class="shift-card">
-  <span class="shift-card__title"
-    >Clases de {{ shift.specialty?.description }}</span
-  >
+<div class="shift-card" [class.shift-card--canceled]="shift.status === typeShift.CANCELED" [class.shift-card--completed]="shift.status === typeShift.COMPLETED">
+  <span class="shift-card__title">Clases de {{ shift.specialty?.description }}</span>
   <div class="shift-card__date">
     <div class="shift-card__date-hour">
       <span class="fi-rr-calendar"></span>
-      <span> {{ day }}</span>
+      <span>{{ day }}</span>
     </div>
     <div class="shift-card__date-hour">
       <i class="fi-rr-clock-nine"></i>
-      <span>hora {{ shift.time }} hs</span>
+      <span>{{ shift.time }} hs</span>
     </div>
   </div>
-  @if (shift.status !== typeShift.COMPLETED) {
+  @if (shift.status === typeShift.NEXT) {
     <div class="shift-card__buttons-box">
-      @if (shift.status !== typeShift.CANCELED) {
-        <turnex-button
-          text="Cancelar"
-          type="reset"
-          class="shift-card__button"></turnex-button>
-      }
+      <turnex-button
+        text="Cancelar"
+        type="reset"
+        class="shift-card__button"
+        (click)="cancelShift.emit(shift)"></turnex-button>
       <turnex-button
         text="Reagendar"
-        class="shift-card__button"></turnex-button>
+        class="shift-card__button"
+        (click)="rescheduleShift.emit(shift)"></turnex-button>
     </div>
   }
 </div>

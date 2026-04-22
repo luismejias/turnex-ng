@@ -78,6 +78,33 @@
   &__pack-detail {
     font-weight: bold;
   }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 10px;
+    background: $turnex-secondary-300;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: $turnex-spacing-4;
+  }
+
+  &__selected &__badge {
+    background: #fff;
+    color: $turnex-primary-800;
+  }
+
+  &__empty {
+    color: $turnex-alabaster-500;
+    @include Rubik();
+    font-size: $turnex-spacing-16;
+    padding: $turnex-spacing-16 0;
+  }
 }
 
 @media (max-width: $turnex-breakpoint-xs) {
