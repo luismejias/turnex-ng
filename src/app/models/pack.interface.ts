@@ -3,6 +3,7 @@ export interface Pack {
   description: string,
   price: number,
   duration: string,
+  classCount: number,
   active: boolean,
   isSelected?: boolean;
 }

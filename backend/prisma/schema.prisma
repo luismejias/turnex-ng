@@ -33,6 +33,7 @@ model Pack {
   description String
   price       Float   @default(0)
   duration    String  @default("")
+  classCount  Int     @default(1)
   active      Boolean @default(true)
   shifts      Shift[]
 
