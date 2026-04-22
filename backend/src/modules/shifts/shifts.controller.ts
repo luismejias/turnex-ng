@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { createShiftsSchema, updateShiftStatusSchema } from './shifts.schemas';
+import { createShiftsSchema, updateShiftStatusSchema, rescheduleShiftSchema } from './shifts.schemas';
 import * as shiftsService from './shifts.service';
 
 export async function getShiftsController(req: Request, res: Response, next: NextFunction) {
@@ -22,6 +22,14 @@ export async function updateShiftStatusController(req: Request, res: Response, n
     const dto = updateShiftStatusSchema.parse(req.body);
     const shift = await shiftsService.updateShiftStatus(req.user!.userId, Number(req.params['id']), dto);
     res.json(shift);
+  } catch (err) { next(err); }
+}
+
+export async function rescheduleShiftController(req: Request, res: Response, next: NextFunction) {
+  try {
+    const dto = rescheduleShiftSchema.parse(req.body);
+    const shift = await shiftsService.rescheduleShift(req.user!.userId, Number(req.params['id']), dto);
+    res.status(201).json(shift);
   } catch (err) { next(err); }
 }
 
