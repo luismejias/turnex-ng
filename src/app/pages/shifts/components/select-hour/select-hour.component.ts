@@ -31,7 +31,6 @@ export class SelectHourComponent implements OnInit {
     const { days, pack } = this.newShiftStateService.state();
     this.pack = pack;
     this.weekPagerIsVisible = this.pack?.id === 4;
-    console.warn({ days });
     this.selectedDays = days ? days : [];
     this.selectedDaysWithTimes = this._generateTimesForSelectedDays(
       this.selectedDays
@@ -43,8 +42,39 @@ export class SelectHourComponent implements OnInit {
   }
 
   onHourSelect(hour: Hour) {
-    hour.isSelected = !hour.isSelected;
+    const wasSelected = hour.isSelected;
+    const dayKey = this._getDayKeyForHour(hour);
+
+    if (this.weekPagerIsVisible) {
+      // Clase suelta: clear all hours across all days (only 1 total)
+      Object.values(this.selectedDaysWithTimes).forEach(hours =>
+        hours.forEach(h => { h.isSelected = false; })
+      );
+      // Persist the specific date for this day so the backend creates exactly 1 shift
+      if (dayKey) {
+        const specificDay = this.selectedDays.find(d => d.description === dayKey);
+        if (specificDay?.date) {
+          this.newShiftStateService.set('dates', {
+            [dayKey]: new Date(specificDay.date).toISOString(),
+          });
+        }
+      }
+    } else {
+      // Regular pack: clear all hours for this day only (1 per day)
+      if (dayKey) {
+        this.selectedDaysWithTimes[dayKey].forEach(h => { h.isSelected = false; });
+      }
+    }
+
+    hour.isSelected = !wasSelected;
     this.newShiftStateService.set(this.step.HOURS, this.selectedDaysWithTimes);
+  }
+
+  private _getDayKeyForHour(target: Hour): string | undefined {
+    for (const day in this.selectedDaysWithTimes) {
+      if (this.selectedDaysWithTimes[day].includes(target)) return day;
+    }
+    return undefined;
   }
 
   private _generateTimes(): Hour[] {
@@ -107,10 +137,9 @@ export class SelectHourComponent implements OnInit {
   }
 
   setCurrentWeek(currentWeek: CurrentWeek) {
-    console.log('setCurrentWeek => ', { currentWeek });
     const daysRange = this.getDaysInRange(currentWeek);
     this.selectedDays = daysRange;
-    console.error('selectedDays => ', this.selectedDays);
+    this.selectedDaysWithTimes = this._generateTimesForAllDays(daysRange);
   }
 
   getDaysInRange(currentWeek: CurrentWeek): Day[] {
@@ -128,5 +157,13 @@ export class SelectHourComponent implements OnInit {
       });
     }
     return result;
+  }
+
+  private _generateTimesForAllDays(days: Day[]): Record<string, Hour[]> {
+    const timesByDay: Record<string, Hour[]> = {};
+    days.forEach(day => {
+      timesByDay[day.description] = this._generateTimes();
+    });
+    return this.$hours ? this._filterHoursByTimesByDay(timesByDay, this.$hours) : timesByDay;
   }
 }

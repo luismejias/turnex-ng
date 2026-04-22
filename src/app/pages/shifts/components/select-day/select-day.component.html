@@ -1,15 +1,21 @@
 <div class="select-day">
-  @for (day of daysOfWeek; track day.description) {
-    <div
-      class="select-day__card-day"
-      aria-disabled="true"
-      [ngClass]="{ 'select-day__card-day-selected': day.isSelected }"
-      (click)="onDaySelect(day)"
-      (keypress)="onDaySelect(day)">
-      @if (day.isSelected) {
-        <span class="fi-rr-check"></span>
-      }
-      <span class="select-day__day-text">{{ day.description }}</span>
-    </div>
-  }
+  <div class="select-day__counter">
+    <span>Días seleccionados: </span>
+    <strong [class.select-day__counter--complete]="selectedCount === maxDays">{{ selectedCount }}/{{ maxDays }}</strong>
+  </div>
+
+  <div class="select-day__grid">
+    @for (day of daysOfWeek; track day.description) {
+      <div
+        class="select-day__card-day"
+        [ngClass]="{ 'select-day__card-day-selected': day.isSelected }"
+        (click)="onDaySelect(day)"
+        (keypress)="onDaySelect(day)">
+        @if (day.isSelected) {
+          <span class="fi-rr-check"></span>
+        }
+        <span class="select-day__day-text">{{ day.description }}</span>
+      </div>
+    }
+  </div>
 </div>

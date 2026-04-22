@@ -21,7 +21,11 @@ export class ShiftsService {
   }
 
   updateShiftStatus(shiftId: number, status: TypeShifts): Observable<Shift> {
-    return this.http.patch<Shift>(`${API_URL}/shifts/${shiftId}`, { status: status.toUpperCase() });
+    return this.http.patch<Shift>(`${API_URL}/shifts/${shiftId}`, { status });
+  }
+
+  rescheduleShift(shiftId: number, date: string, time: string): Observable<Shift> {
+    return this.http.post<Shift>(`${API_URL}/shifts/${shiftId}/reschedule`, { date, time });
   }
 
   deleteShift(shiftId: number): Observable<void> {
@@ -49,6 +53,7 @@ export class ShiftsService {
       packId: state.pack!.id,
       specialtyId: state.specialty!.id,
       hours: state.hours ?? {},
+      ...(state.dates ? { dates: state.dates } : {}),
     };
   }
 }

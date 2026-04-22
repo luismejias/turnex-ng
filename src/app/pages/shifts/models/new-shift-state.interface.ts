@@ -9,5 +9,6 @@ export interface NewShiftState {
   specialty: Specialty | undefined;
   days: Day[] | undefined;
   hours: Record<string, Hour[]> | undefined;
+  dates?: Record<string, string>; // dayName -> ISO date string (clase suelta)
   shiftsCalculated?: Shift[]
 }

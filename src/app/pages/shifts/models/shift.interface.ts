@@ -15,4 +15,5 @@ export interface CreateShiftsPayload {
   packId: number;
   specialtyId: number;
   hours: Record<string, { description: string; isSelected: boolean }[]>;
+  dates?: Record<string, string>; // dayName -> ISO date string (clase suelta)
 }
