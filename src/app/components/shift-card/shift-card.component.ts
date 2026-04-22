@@ -1,7 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ButtonComponent } from '../button/button.component';
 import { TypeShifts } from 'src/app/pages/shifts/shift.enum';
-
 import { daysOfWeek } from 'src/app/pages/constants';
 import { Shift } from 'src/app/pages/shifts/models';
 
@@ -13,31 +12,21 @@ import { Shift } from 'src/app/pages/shifts/models';
 })
 export class ShiftCardComponent implements OnInit {
   @Input({ required: true }) shift!: Shift;
+  @Output() cancelShift = new EventEmitter<Shift>();
+  @Output() rescheduleShift = new EventEmitter<Shift>();
   typeShift = TypeShifts;
   day!: string;
-  hour!: string;
 
   ngOnInit(): void {
-    const { day, hour } = this.formatDateTime(this.shift.date);
-    this.day = day;
-    this.hour = hour;
+    this.day = this.formatDate(this.shift.date);
   }
-  formatDateTime(isoString: string) {
+
+  private formatDate(isoString: string): string {
     const date = new Date(isoString);
-    const dayOfWeek = daysOfWeek[date.getDay()].description;
+    const dayOfWeek = daysOfWeek[date.getUTCDay()].description;
     const day = String(date.getUTCDate()).padStart(2, '0');
-    const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Los meses empiezan desde 0
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
     const year = date.getUTCFullYear();
-
-    const hours = String(date.getUTCHours()).padStart(2, '0');
-    const minutes = String(date.getUTCMinutes()).padStart(2, '0');
-
-    const formattedDate = `${dayOfWeek} ${day}/${month}/${year}`;
-    const formattedTime = `${hours}:${minutes}`;
-
-    return {
-      day: formattedDate,
-      hour: formattedTime,
-    };
+    return `${dayOfWeek} ${day}/${month}/${year}`;
   }
 }

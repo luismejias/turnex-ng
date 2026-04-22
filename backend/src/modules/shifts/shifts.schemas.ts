@@ -7,11 +7,18 @@ export const createShiftsSchema = z.object({
     z.string(),
     z.array(z.object({ description: z.string(), isSelected: z.boolean() }))
   ),
+  dates: z.record(z.string(), z.string()).optional(),
 });
 
 export const updateShiftStatusSchema = z.object({
   status: z.enum(['NEXT', 'COMPLETED', 'CANCELED']),
 });
 
+export const rescheduleShiftSchema = z.object({
+  date: z.string(),
+  time: z.string(),
+});
+
 export type CreateShiftsDto = z.infer<typeof createShiftsSchema>;
 export type UpdateShiftStatusDto = z.infer<typeof updateShiftStatusSchema>;
+export type RescheduleShiftDto = z.infer<typeof rescheduleShiftSchema>;

@@ -16,6 +16,15 @@
   border: 1px solid $turnex-alabaster-100;
   background: $turnex-alabaster-50;
 
+  &--canceled {
+    opacity: 0.6;
+    border-color: $turnex-alabaster-200;
+  }
+
+  &--completed {
+    border-color: $turnex-alabaster-200;
+  }
+
   &__title {
     color: $turnex-alabaster-950;
     @include Rubik();;

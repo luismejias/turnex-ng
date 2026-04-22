@@ -1,0 +1,63 @@
+<div class="reschedule">
+  @if (isDone) {
+    <div class="reschedule__result">
+      <div class="reschedule__result-img reschedule__result-img--success"></div>
+      <turnex-title text="¡Turno reagendado con éxito!"></turnex-title>
+      <p class="reschedule__result-text">Tu nuevo turno fue confirmado.</p>
+      <turnex-button text="Ver mis turnos" (click)="goBack()"></turnex-button>
+    </div>
+  } @else if (hasError) {
+    <div class="reschedule__result">
+      <div class="reschedule__result-img reschedule__result-img--error"></div>
+      <turnex-title text="Hubo un error al reagendar"></turnex-title>
+      <p class="reschedule__result-text">Por favor intentá de nuevo más tarde.</p>
+      <turnex-button text="Volver a mis turnos" (click)="goBack()"></turnex-button>
+    </div>
+  } @else {
+    <turnex-title text="Reagendar turno"></turnex-title>
+
+    @if (shift) {
+      <p class="reschedule__subtitle">
+        Elegí el nuevo día y horario para tu clase de
+        <strong>{{ shift.specialty?.description }}</strong>.
+        El turno anterior será cancelado automáticamente.
+      </p>
+    }
+
+    <turnex-week-pager (currentWeekData)="setCurrentWeek($event)"></turnex-week-pager>
+
+    @for (day of selectedDays; track day.description) {
+      <div class="reschedule__day">
+        <span class="reschedule__day-title">
+          {{ day.description }} {{ day.date | date: 'dd/MM/yyyy' }}
+        </span>
+        <div class="reschedule__hour-list">
+          @for (hour of selectedDaysWithTimes[day.description]; track hour.description) {
+            <div
+              class="reschedule__hour"
+              [ngClass]="{ 'reschedule__hour--selected': hour.isSelected }"
+              (click)="onHourSelect(day.description, hour)"
+              (keydown)="onHourSelect(day.description, hour)">
+              <span class="fi-rr-check reschedule__icon"
+                [ngClass]="{ 'fi-rr-check': hour.isSelected }"></span>
+              {{ hour.description }}
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <div class="reschedule__buttons">
+      <turnex-button
+        text="Cancelar"
+        type="reset"
+        class="reschedule__btn"
+        (click)="goBack()"></turnex-button>
+      <turnex-button
+        text="Confirmar reagendado"
+        class="reschedule__btn"
+        [disabled]="!canConfirm"
+        (click)="confirm()"></turnex-button>
+    </div>
+  }
+</div>

@@ -2,6 +2,7 @@ import { Routes } from "@angular/router";
 import { HomeComponent } from "./pages/home/home.component";
 import { ShiftsComponent } from "./pages/shifts/shifts.component";
 import { NewShiftComponent } from "./pages/shifts/components/new-shift/new-shift.component";
+import { RescheduleShiftComponent } from "./pages/shifts/components/reschedule-shift/reschedule-shift.component";
 import { LoginComponent } from "./pages/login/login.component";
 import { RegisterComponent } from "./pages/register/register.component";
 import { authGuard } from "./guards/auth.guard";
@@ -53,6 +54,10 @@ export const routes: Routes = [
       {
         path: 'newShift',
         component: NewShiftComponent
+      },
+      {
+        path: 'reschedule/:shiftId',
+        component: RescheduleShiftComponent
       },
       {
         path: '',

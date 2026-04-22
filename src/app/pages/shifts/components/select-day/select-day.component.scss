@@ -1,10 +1,25 @@
 @use 'variables' as *;
 
 .select-day {
+  margin-top: $turnex-spacing-40;
+
+  &__counter {
+    @include Rubik();
+    font-size: $turnex-spacing-14;
+    color: $turnex-alabaster-600;
+    margin-bottom: $turnex-spacing-16;
+
+    &--complete {
+      color: $turnex-primary-800;
+      font-weight: 700;
+    }
+  }
+
+  &__grid {
     display: flex;
     gap: $turnex-spacing-16;
-    margin-top: 40px;
     flex-wrap: wrap;
+  }
 
   &__card-day {
     display: flex;
@@ -16,17 +31,15 @@
     cursor: pointer;
     gap: 4px;
 
-    &:hover {
-      border-radius: $turnex-spacing-4;
+    &:hover:not(.select-day__card-day-disabled) {
       border: 1px solid $turnex-primary-800;
-      background: var(--Primary-50, #F5F5FD);
+      background: #F5F5FD;
       color: $turnex-primary-800;
     }
 
     &-selected {
-      border-radius: $turnex-spacing-4;
       border: 1px solid $turnex-primary-800;
-      background: var(--Primary-50, #F5F5FD);
+      background: #F5F5FD;
       color: $turnex-primary-800;
     }
 

@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import { UserProfileService } from '../user-profile';
 import { Shift } from '../shifts/models';
 import { ShiftsService } from '../shifts/service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmModalComponent } from 'src/app/shared/components/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'turnex-home',
@@ -20,6 +22,7 @@ export class HomeComponent implements OnInit {
   private specialtyService = inject(SpecialtyService);
   private userProfileService = inject(UserProfileService);
   private readonly shiftsService = inject(ShiftsService);
+  private readonly dialog = inject(MatDialog);
   private router = inject(Router);
   shifts!: Shift[];
   nextShift!: Shift | null;
@@ -64,5 +67,26 @@ export class HomeComponent implements OnInit {
 
   goToNewShift(itemType: 'specialty', item: Specialty) {
     this.router.navigate([`/shifts/newShift/${item.id}`]);
+  }
+
+  onCancelShift(shift: Shift): void {
+    this.dialog.open(ConfirmModalComponent, {
+      data: {
+        title: 'Cancelar turno',
+        message: `¿Confirmás la cancelación del turno de ${shift.specialty?.description ?? 'la clase'}?`,
+        confirmText: 'Sí, cancelar',
+        cancelText: 'Volver',
+      },
+    }).afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.shiftsService.updateShiftStatus(shift.id, TypeShifts.CANCELED).subscribe({
+          next: () => this.getShifts(),
+        });
+      }
+    });
+  }
+
+  onRescheduleShift(shift: Shift): void {
+    this.router.navigate(['/shifts/reschedule', shift.id], { state: { shift } });
   }
 }

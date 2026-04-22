@@ -1,5 +1,5 @@
 export enum TypeShifts {
-  NEXT = 'next',
-  COMPLETED = 'completed',
-  CANCELED = 'canceled'
+  NEXT = 'NEXT',
+  COMPLETED = 'COMPLETED',
+  CANCELED = 'CANCELED'
 }
