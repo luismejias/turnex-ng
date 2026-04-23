@@ -1,6 +1,6 @@
 import { Component, effect, inject, OnDestroy, OnInit } from '@angular/core';
 
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { BottomBarComponent, NavbarComponent } from './components';
 import { AppStateService } from './app.state.service';
 import { BreakpointObserver } from '@angular/cdk/layout';
@@ -21,10 +21,15 @@ export class AppComponent implements OnInit, OnDestroy {
   private breakpointObserver = inject(BreakpointObserver);
   private idleService = inject(IdleService);
   private dialog = inject(MatDialog);
+  private router = inject(Router);
 
   isLoggedIn = false;
   isChildFlow = false;
   isMobile = false;
+
+  get isAdminRoute(): boolean {
+    return this.router.url.startsWith('/admin');
+  }
 
   private _idleSub: Subscription | null = null;
   private _modalOpen = false;

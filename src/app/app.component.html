@@ -1,5 +1,5 @@
 <div class="app">
-  @if (isLoggedIn) {
+  @if (isLoggedIn && !isAdminRoute) {
     <turnex-navbar
       class="app__navbar"
       [isChildFlow]="isChildFlow"
@@ -8,7 +8,7 @@
   <div class="app__principal-content">
     <router-outlet></router-outlet>
   </div>
-  @if (isLoggedIn) {
+  @if (isLoggedIn && !isAdminRoute) {
     <turnex-bottom-bar class="app__bottom-bar"></turnex-bottom-bar>
   }
 </div>

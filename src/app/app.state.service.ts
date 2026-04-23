@@ -24,9 +24,10 @@ export class AppStateService extends SimpleStoreService<AppState> {
     }
   }
 
-  login(_user: User): void {
+  login(user: User): void {
     this.state.set({ isLoggedIn: true, isChildFlow: false });
-    this.router.navigate(['/home']);
+    const destination = user.role === 'SUPER_ADMIN' ? '/admin' : '/home';
+    this.router.navigate([destination]);
   }
 
   setLoggedIn(): void {
