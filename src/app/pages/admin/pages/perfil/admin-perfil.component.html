@@ -1,0 +1,22 @@
+<div class="admin-perfil">
+  <h1 class="admin-perfil__title">Perfil</h1>
+
+  <div class="admin-perfil__avatar">
+    <span class="fi fi-rr-user"></span>
+  </div>
+
+  <div class="admin-perfil__form">
+    <div class="admin-perfil__field">
+      <label class="admin-perfil__label">Nombre</label>
+      <input class="admin-perfil__input" [(ngModel)]="name" name="name" />
+    </div>
+    <div class="admin-perfil__field">
+      <label class="admin-perfil__label">Apellido</label>
+      <input class="admin-perfil__input" [(ngModel)]="lastName" name="lastName" />
+    </div>
+    <div class="admin-perfil__field">
+      <label class="admin-perfil__label">Correo electrónico</label>
+      <input class="admin-perfil__input" [(ngModel)]="email" name="email" type="email" />
+    </div>
+  </div>
+</div>

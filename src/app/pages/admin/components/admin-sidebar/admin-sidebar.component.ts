@@ -15,6 +15,10 @@ export class AdminSidebarComponent {
   private appStateService = inject(AppStateService);
   private router = inject(Router);
 
+  get isEmpresasRoute(): boolean {
+    return this.router.url.startsWith('/admin/empresas');
+  }
+
   close(): void {
     this.closed.emit();
   }

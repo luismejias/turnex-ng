@@ -6,6 +6,7 @@ import { CrearEmpresaComponent } from './pages/crear-empresa/crear-empresa.compo
 import { EditarEmpresaComponent } from './pages/editar-empresa/editar-empresa.component';
 import { EditarPerfilComponent } from './pages/editar-perfil/editar-perfil.component';
 import { EditarTurnoComponent } from './pages/editar-turno/editar-turno.component';
+import { AdminPerfilComponent } from './pages/perfil/admin-perfil.component';
 import { superAdminGuard } from 'src/app/guards/super-admin.guard';
 
 export const adminRoutes: Routes = [
@@ -15,11 +16,13 @@ export const adminRoutes: Routes = [
     canActivate: [superAdminGuard],
     children: [
       { path: '', component: AdminHomeComponent },
+      { path: 'empresas', redirectTo: '', pathMatch: 'full' },
       { path: 'empresas/crear', component: CrearEmpresaComponent },
       { path: 'empresas/:id', component: EmpresaDetailComponent },
       { path: 'empresas/:id/editar', component: EditarEmpresaComponent },
       { path: 'empresas/:companyId/perfiles/:profileId/editar', component: EditarPerfilComponent },
       { path: 'empresas/:companyId/turnos/:shiftId/editar', component: EditarTurnoComponent },
+      { path: 'perfil', component: AdminPerfilComponent },
     ],
   },
 ];
