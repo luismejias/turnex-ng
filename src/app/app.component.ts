@@ -1,6 +1,5 @@
 import { Component, effect, inject, OnDestroy, OnInit } from '@angular/core';
-
-import { Router, RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { BottomBarComponent, NavbarComponent } from './components';
 import { AppStateService } from './app.state.service';
 import { BreakpointObserver } from '@angular/cdk/layout';
@@ -8,6 +7,7 @@ import { IdleService } from './shared/services/idle.service';
 import { MatDialog } from '@angular/material/dialog';
 import { IdleModalComponent } from './shared/components/idle-modal/idle-modal.component';
 import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'turnex-root',
@@ -26,12 +26,10 @@ export class AppComponent implements OnInit, OnDestroy {
   isLoggedIn = false;
   isChildFlow = false;
   isMobile = false;
-
-  get isAdminRoute(): boolean {
-    return this.router.url.startsWith('/admin');
-  }
+  isAdminRoute = false;
 
   private _idleSub: Subscription | null = null;
+  private _routerSub: Subscription | null = null;
   private _modalOpen = false;
 
   constructor() {
@@ -48,6 +46,13 @@ export class AppComponent implements OnInit, OnDestroy {
     if (isLoggedIn) {
       this.appStateService.setLoggedIn();
     }
+
+    this.isAdminRoute = this.router.url.startsWith('/admin');
+    this._routerSub = this.router.events
+      .pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe((e: NavigationEnd) => {
+        this.isAdminRoute = e.urlAfterRedirects.startsWith('/admin');
+      });
 
     this.breakpointObserver.observe('(max-width: 500px)').subscribe(result => {
       this.isMobile = result.matches;
@@ -100,5 +105,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this._stopIdle();
+    this._routerSub?.unsubscribe();
   }
 }

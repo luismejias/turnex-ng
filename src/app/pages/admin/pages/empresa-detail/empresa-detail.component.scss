@@ -208,7 +208,7 @@
     color: $turnex-alabaster-600;
   }
 
-  // Toggle
+  // Toggle — selector must live outside BEM nesting to combine sibling + descendant
   &__toggle {
     position: relative;
     display: inline-block;
@@ -216,7 +216,18 @@
     height: 24px;
     flex-shrink: 0;
 
-    input { opacity: 0; width: 0; height: 0; }
+    input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+
+      &:checked + .empresa-detail__toggle-slider {
+        background: $turnex-primary-600;
+
+        &::before { transform: translateX(20px); }
+      }
+    }
   }
 
   &__toggle-slider {
@@ -240,10 +251,6 @@
     }
   }
 
-  input:checked + &__toggle-slider {
-    background: $turnex-primary-600;
-    &::before { transform: translateX(20px); }
-  }
 
   // Shifts
   &__shift-card {

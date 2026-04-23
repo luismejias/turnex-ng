@@ -1,4 +1,4 @@
-<div class="app">
+<div class="app" [class.app--admin]="isAdminRoute">
   @if (isLoggedIn && !isAdminRoute) {
     <turnex-navbar
       class="app__navbar"

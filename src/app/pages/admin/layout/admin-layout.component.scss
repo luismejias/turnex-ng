@@ -4,7 +4,7 @@
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  background: $turnex-alabaster-50;
+  background: #f5f5f8;
 
   &__topbar {
     display: flex;
@@ -22,8 +22,8 @@
   &__menu-btn {
     background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.8);
-    font-size: $turnex-spacing-20;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 22px;
     cursor: pointer;
     padding: 4px;
     line-height: 1;
@@ -42,9 +42,14 @@
 
   &__content {
     flex: 1;
-    padding: $turnex-spacing-16;
-    max-width: 600px;
+    padding: $turnex-spacing-20 $turnex-spacing-16 $turnex-spacing-40;
     width: 100%;
-    margin: 0 auto;
+    box-sizing: border-box;
+
+    @media (min-width: $turnex-breakpoint-sm) {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: $turnex-spacing-28 $turnex-spacing-24 $turnex-spacing-40;
+    }
   }
 }

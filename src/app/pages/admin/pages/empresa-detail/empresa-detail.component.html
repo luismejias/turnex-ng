@@ -1,4 +1,5 @@
-<div class="empresa-detail" *ngIf="company">
+@if (company) {
+<div class="empresa-detail">
   <!-- Header -->
   <div class="empresa-detail__header">
     <button class="empresa-detail__back" (click)="goBack()">
@@ -157,3 +158,4 @@
     </div>
   }
 </div>
+}

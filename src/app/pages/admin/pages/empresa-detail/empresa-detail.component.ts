@@ -1,6 +1,5 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgIf, NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminService } from '../../services/admin.service';
 import { AdminCompany, AdminProfile, AdminShift } from '../../models/admin.models';
@@ -16,7 +15,7 @@ const PERIODICITY = ['Cada 15 minutos', 'Cada 30 minutos', 'Cada 45 minutos', 'C
 
 @Component({
   selector: 'turnex-empresa-detail',
-  imports: [NgIf, FormsModule],
+  imports: [FormsModule],
   templateUrl: './empresa-detail.component.html',
   styleUrl: './empresa-detail.component.scss',
 })

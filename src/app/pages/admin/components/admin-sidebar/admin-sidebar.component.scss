@@ -10,7 +10,7 @@
   display: flex;
   flex-direction: column;
   z-index: 200;
-  transform: translateX(-100%);
+  transform: translateX(-110%); // extra 10% so shadow doesn't peek
   transition: transform 0.28s ease;
 
   &--open {
@@ -18,17 +18,17 @@
   }
 
   &__overlay {
-    display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.45);
+    background: rgba(0, 0, 0, 0.5);
     z-index: 199;
     opacity: 0;
+    pointer-events: none;
     transition: opacity 0.28s ease;
 
     &--visible {
-      display: block;
       opacity: 1;
+      pointer-events: auto;
     }
   }
 
@@ -55,6 +55,8 @@
     cursor: pointer;
     padding: 4px;
     line-height: 1;
+    display: flex;
+    align-items: center;
 
     &:hover { color: #fff; }
   }
@@ -90,8 +92,8 @@
     }
 
     &--active {
-      background: $turnex-primary-700;
-      color: #fff;
+      background: $turnex-primary-700 !important;
+      color: #fff !important;
     }
 
     &--logout {
@@ -105,9 +107,13 @@
   }
 
   &__icon {
-    font-size: $turnex-spacing-18;
+    font-size: 18px;
     width: 20px;
+    text-align: center;
     flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   &__footer {
