@@ -13,12 +13,18 @@ enum ShiftStatus {
   CANCELED
 }
 
+enum UserRole {
+  USER
+  SUPER_ADMIN
+}
+
 model User {
   id                Int      @id @default(autoincrement())
   name              String
   lastName          String
   email             String   @unique
   password          String
+  role              UserRole @default(USER)
   active            Boolean  @default(true)
   termAndConditions Boolean  @default(false)
   createdAt         DateTime @default(now())
