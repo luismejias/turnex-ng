@@ -1,0 +1,350 @@
+@use 'variables' as *;
+
+.empresa-detail {
+  display: flex;
+  flex-direction: column;
+  gap: $turnex-spacing-16;
+  padding-bottom: $turnex-spacing-40;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: $turnex-spacing-12;
+  }
+
+  &__back {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: $turnex-spacing-20;
+    color: $turnex-primary-800;
+    padding: 4px;
+    line-height: 1;
+  }
+
+  &__title {
+    @include Rubik-Bold();
+    font-size: $turnex-spacing-20;
+    color: $turnex-primary-800;
+    margin: 0;
+  }
+
+  &__tabs {
+    display: flex;
+    border-bottom: 2px solid $turnex-alabaster-100;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  &__tab {
+    flex: 1;
+    min-width: 70px;
+    padding: $turnex-spacing-10 $turnex-spacing-8;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    cursor: pointer;
+    font-size: $turnex-spacing-14;
+    @include Rubik();
+    color: $turnex-alabaster-500;
+    white-space: nowrap;
+    transition: color 0.15s, border-color 0.15s;
+
+    &--active {
+      color: $turnex-primary-800;
+      border-bottom-color: $turnex-primary-800;
+      @include Rubik-Bold();
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: $turnex-spacing-16;
+  }
+
+  &__actions-top {
+    display: flex;
+    gap: $turnex-spacing-8;
+    flex-wrap: wrap;
+  }
+
+  &__actions-row {
+    display: flex;
+    gap: $turnex-spacing-8;
+    flex-wrap: wrap;
+    margin-top: $turnex-spacing-8;
+  }
+
+  &__btn {
+    display: flex;
+    align-items: center;
+    gap: $turnex-spacing-6;
+    padding: $turnex-spacing-8 $turnex-spacing-12;
+    border-radius: $turnex-spacing-8;
+    font-size: $turnex-spacing-14;
+    @include Rubik();
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.15s;
+
+    &:hover { opacity: 0.85; }
+
+    &--primary {
+      background: $turnex-primary-800;
+      color: #fff;
+    }
+
+    &--danger {
+      background: $turnex-secondary-50;
+      color: $turnex-secondary-600;
+      border: 1px solid $turnex-secondary-200;
+    }
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: $turnex-spacing-16;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: $turnex-spacing-4;
+  }
+
+  &__label {
+    @include Rubik-Bold();
+    font-size: $turnex-spacing-14;
+    color: $turnex-alabaster-700;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__required {
+    @include Rubik();
+    font-size: 11px;
+    color: $turnex-alabaster-400;
+    font-weight: normal;
+  }
+
+  &__input {
+    width: 100%;
+    padding: $turnex-spacing-12 $turnex-spacing-14;
+    border: 1px solid $turnex-alabaster-200;
+    border-radius: $turnex-spacing-8;
+    font-size: $turnex-spacing-16;
+    @include Rubik();
+    color: $turnex-alabaster-800;
+    background: $turnex-white-50;
+    box-sizing: border-box;
+    transition: border-color 0.15s;
+
+    &:focus {
+      outline: none;
+      border-color: $turnex-primary-500;
+    }
+  }
+
+  // Profiles
+  &__profile-card {
+    background: $turnex-white-50;
+    border: 1px solid $turnex-alabaster-100;
+    border-radius: $turnex-spacing-12;
+    padding: $turnex-spacing-16;
+    display: flex;
+    flex-direction: column;
+    gap: $turnex-spacing-8;
+  }
+
+  &__profile-top {
+    display: flex;
+    align-items: center;
+    gap: $turnex-spacing-12;
+  }
+
+  &__profile-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: $turnex-primary-100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $turnex-spacing-20;
+    color: $turnex-primary-600;
+    flex-shrink: 0;
+  }
+
+  &__profile-info {
+    flex: 1;
+  }
+
+  &__profile-name {
+    @include Rubik-Bold();
+    font-size: $turnex-spacing-16;
+    color: $turnex-alabaster-800;
+    margin: 0;
+  }
+
+  &__profile-type {
+    @include Rubik();
+    font-size: $turnex-spacing-12;
+    color: $turnex-alabaster-500;
+    margin: 0;
+  }
+
+  &__profile-data {
+    display: flex;
+    align-items: center;
+    gap: $turnex-spacing-8;
+    font-size: $turnex-spacing-14;
+    @include Rubik();
+    color: $turnex-alabaster-600;
+  }
+
+  // Toggle
+  &__toggle {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+
+    input { opacity: 0; width: 0; height: 0; }
+  }
+
+  &__toggle-slider {
+    position: absolute;
+    inset: 0;
+    background: $turnex-alabaster-200;
+    border-radius: 24px;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      left: 3px;
+      top: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
+  }
+
+  input:checked + &__toggle-slider {
+    background: $turnex-primary-600;
+    &::before { transform: translateX(20px); }
+  }
+
+  // Shifts
+  &__shift-card {
+    background: $turnex-white-50;
+    border: 1px solid $turnex-alabaster-100;
+    border-radius: $turnex-spacing-12;
+    padding: $turnex-spacing-16;
+    display: flex;
+    flex-direction: column;
+    gap: $turnex-spacing-8;
+  }
+
+  &__shift-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: $turnex-spacing-8;
+  }
+
+  &__shift-name {
+    @include Rubik-Bold();
+    font-size: $turnex-spacing-16;
+    color: $turnex-primary-800;
+    margin: 0;
+  }
+
+  &__shift-detail {
+    display: flex;
+    align-items: center;
+    gap: $turnex-spacing-8;
+    font-size: $turnex-spacing-14;
+    @include Rubik();
+    color: $turnex-alabaster-600;
+  }
+
+  &__shift-packs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $turnex-spacing-6;
+    margin-top: $turnex-spacing-4;
+  }
+
+  &__pack-chip {
+    background: $turnex-primary-50;
+    color: $turnex-primary-700;
+    border: 1px solid $turnex-primary-100;
+    border-radius: 20px;
+    padding: 2px $turnex-spacing-10;
+    font-size: 12px;
+    @include Rubik();
+  }
+
+  // Add button
+  &__add-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $turnex-spacing-8;
+    width: 100%;
+    padding: $turnex-spacing-14;
+    border: 2px dashed $turnex-primary-200;
+    border-radius: $turnex-spacing-12;
+    background: $turnex-primary-50;
+    color: $turnex-primary-700;
+    font-size: $turnex-spacing-14;
+    @include Rubik-Bold();
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+
+    &:hover {
+      background: $turnex-primary-100;
+      border-color: $turnex-primary-400;
+    }
+  }
+
+  &__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $turnex-spacing-12;
+    padding: $turnex-spacing-32 0;
+    color: $turnex-alabaster-400;
+    text-align: center;
+
+    p { margin: 0; font-size: $turnex-spacing-14; @include Rubik(); }
+  }
+
+  &__empty-icon {
+    font-size: 40px;
+  }
+
+  &__settings-soon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $turnex-spacing-12;
+    padding: $turnex-spacing-40 0;
+    color: $turnex-alabaster-400;
+    text-align: center;
+
+    p { margin: 0; font-size: $turnex-spacing-14; @include Rubik(); }
+  }
+}

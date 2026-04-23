@@ -1,0 +1,172 @@
+<div class="crear-empresa">
+  <!-- Header -->
+  <div class="crear-empresa__header">
+    <button class="crear-empresa__back" (click)="prevStep()">
+      <span class="fi fi-rr-arrow-left"></span>
+    </button>
+    <h1 class="crear-empresa__title">{{ stepLabel }}</h1>
+  </div>
+
+  <!-- Stepper -->
+  <div class="crear-empresa__stepper">
+    <div class="crear-empresa__step" [class.crear-empresa__step--active]="step >= 1"
+         [class.crear-empresa__step--done]="step > 1">
+      <span class="crear-empresa__step-num">{{ step > 1 ? '✓' : '1' }}</span>
+      <span class="crear-empresa__step-label">Crear empresa</span>
+    </div>
+    <div class="crear-empresa__step-line"></div>
+    <div class="crear-empresa__step" [class.crear-empresa__step--active]="step >= 2"
+         [class.crear-empresa__step--done]="step > 2">
+      <span class="crear-empresa__step-num">{{ step > 2 ? '✓' : '2' }}</span>
+      <span class="crear-empresa__step-label">Crear perfil</span>
+    </div>
+    <div class="crear-empresa__step-line"></div>
+    <div class="crear-empresa__step" [class.crear-empresa__step--active]="step >= 3">
+      <span class="crear-empresa__step-num">3</span>
+      <span class="crear-empresa__step-label">Crear turno</span>
+    </div>
+  </div>
+
+  <!-- Step 1: Empresa -->
+  @if (step === 1) {
+    <form class="crear-empresa__form" (ngSubmit)="nextStep()">
+      <div class="crear-empresa__upload-area">
+        <span class="fi fi-rr-picture crear-empresa__upload-icon"></span>
+        <p class="crear-empresa__upload-text">Haga click para cargar logo PNG, JPG o SVG (máximo 5 MB)</p>
+      </div>
+
+      <div class="crear-empresa__field">
+        <label class="crear-empresa__label">Nombre de la empresa <span class="crear-empresa__required">*Campo obligatorio</span></label>
+        <input class="crear-empresa__input" [(ngModel)]="company.name" name="name" placeholder="Ingresa el nombre" />
+      </div>
+      <div class="crear-empresa__field">
+        <label class="crear-empresa__label">CUIT de la empresa <span class="crear-empresa__required">*Campo obligatorio</span></label>
+        <input class="crear-empresa__input" [(ngModel)]="company.cuit" name="cuit" placeholder="00-00000000-0" />
+      </div>
+      <div class="crear-empresa__field">
+        <label class="crear-empresa__label">Teléfono <span class="crear-empresa__required">*Campo obligatorio</span></label>
+        <input class="crear-empresa__input" [(ngModel)]="company.phone" name="phone" placeholder="Teléfono" />
+      </div>
+      <div class="crear-empresa__field">
+        <label class="crear-empresa__label">Domicilio <span class="crear-empresa__required">*Campo obligatorio</span></label>
+        <input class="crear-empresa__input" [(ngModel)]="company.address" name="address" placeholder="Domicilio" />
+      </div>
+      <div class="crear-empresa__field">
+        <label class="crear-empresa__label">Servicio que ofrece <span class="crear-empresa__required">*Campo obligatorio</span></label>
+        <input class="crear-empresa__input" [(ngModel)]="company.service" name="service" placeholder="Servicio" />
+      </div>
+
+      <button class="crear-empresa__next-btn" type="submit" [disabled]="!canNextStep1">Siguiente</button>
+    </form>
+  }
+
+  <!-- Step 2: Perfil -->
+  @if (step === 2) {
+    <div class="crear-empresa__notice">
+      <span class="fi fi-rr-info"></span>
+      <p>Podrás crear un (1) perfil ahora, luego podrás sumar los que necesites desde el inicio.</p>
+    </div>
+
+    <form class="crear-empresa__form" (ngSubmit)="nextStep()">
+      <div class="crear-empresa__upload-area">
+        <span class="fi fi-rr-user crear-empresa__upload-icon"></span>
+        <p class="crear-empresa__upload-text">Haga click para cargar foto de perfil PNG, JPG o SVG (máximo 5 MB)</p>
+      </div>
+
+      <div class="crear-empresa__field">
+        <label class="crear-empresa__label">Tipo de perfil</label>
+        <select class="crear-empresa__input" [(ngModel)]="profile.type" name="type">
+          <option value="Administrador">Administrador</option>
+          <option value="Instructor">Instructor</option>
+          <option value="Recepcionista">Recepcionista</option>
+        </select>
+      </div>
+      <div class="crear-empresa__field">
+        <label class="crear-empresa__label">Nombre <span class="crear-empresa__required">*Campo obligatorio</span></label>
+        <input class="crear-empresa__input" [(ngModel)]="profile.name" name="pname" placeholder="Nombre" />
+      </div>
+      <div class="crear-empresa__field">
+        <label class="crear-empresa__label">Apellido <span class="crear-empresa__required">*Campo obligatorio</span></label>
+        <input class="crear-empresa__input" [(ngModel)]="profile.lastName" name="lastName" placeholder="Apellido" />
+      </div>
+      <div class="crear-empresa__field">
+        <label class="crear-empresa__label">Teléfono <span class="crear-empresa__required">*Campo obligatorio</span></label>
+        <input class="crear-empresa__input" [(ngModel)]="profile.phone" name="pphone" placeholder="Teléfono" />
+      </div>
+      <div class="crear-empresa__field">
+        <label class="crear-empresa__label">Correo electrónico <span class="crear-empresa__required">*Campo obligatorio</span></label>
+        <input class="crear-empresa__input" [(ngModel)]="profile.email" name="email" type="email" placeholder="correo@ejemplo.com" />
+      </div>
+      <div class="crear-empresa__field">
+        <label class="crear-empresa__label">Asignar contraseña</label>
+        <input class="crear-empresa__input" name="password" type="password" placeholder="••••••••" />
+      </div>
+
+      <button class="crear-empresa__next-btn" type="submit" [disabled]="!canNextStep2">Siguiente</button>
+    </form>
+  }
+
+  <!-- Step 3: Turno -->
+  @if (step === 3) {
+    <div class="crear-empresa__notice">
+      <span class="fi fi-rr-info"></span>
+      <p>Podrás crear un (1) horario ahora, luego podrás sumar los que necesites desde tu perfil.</p>
+    </div>
+
+    <form class="crear-empresa__form" (ngSubmit)="finish()">
+      <div class="crear-empresa__field">
+        <label class="crear-empresa__label">Nombre del turno <span class="crear-empresa__required">*Campo obligatorio</span></label>
+        <input class="crear-empresa__input" [(ngModel)]="shift.name" name="sname" placeholder="Ej: Pilates" />
+      </div>
+
+      <div class="crear-empresa__field">
+        <label class="crear-empresa__label">Selecciona los días disponibles</label>
+        <div class="crear-empresa__days">
+          @for (day of days; track day) {
+            <button type="button" class="crear-empresa__day-chip"
+                    [class.crear-empresa__day-chip--selected]="shift.days.includes(day)"
+                    (click)="toggleDay(day)">{{ day }}</button>
+          }
+        </div>
+      </div>
+
+      <div class="crear-empresa__field">
+        <label class="crear-empresa__label">Franja horaria</label>
+        <div class="crear-empresa__time-row">
+          <div class="crear-empresa__time-field">
+            <span class="crear-empresa__time-label">Desde</span>
+            <input class="crear-empresa__input" [(ngModel)]="shift.timeFrom" name="from" placeholder="8:00 hs" />
+          </div>
+          <div class="crear-empresa__time-field">
+            <span class="crear-empresa__time-label">Hasta</span>
+            <input class="crear-empresa__input" [(ngModel)]="shift.timeTo" name="to" placeholder="18:00 hs" />
+          </div>
+        </div>
+      </div>
+
+      <div class="crear-empresa__field">
+        <label class="crear-empresa__label">Periodicidad del turno</label>
+        <select class="crear-empresa__input" [(ngModel)]="shift.periodicity" name="periodicity">
+          @for (p of periodicity; track p) {
+            <option [value]="p">{{ p }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="crear-empresa__field">
+        <label class="crear-empresa__label">Selecciona los packs disponibles</label>
+        <div class="crear-empresa__packs">
+          @for (pack of packs; track pack) {
+            <label class="crear-empresa__pack-check">
+              <input type="checkbox" [checked]="shift.packs.includes(pack)"
+                     (change)="togglePack(pack)" />
+              {{ pack }}
+            </label>
+          }
+        </div>
+      </div>
+
+      <button class="crear-empresa__next-btn" type="submit" [disabled]="!canFinish">Crear empresa</button>
+    </form>
+  }
+</div>

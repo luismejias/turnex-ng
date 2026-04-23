@@ -1,0 +1,35 @@
+<div class="edit-form">
+  <div class="edit-form__header">
+    <button class="edit-form__back" (click)="goBack()"><span class="fi fi-rr-arrow-left"></span></button>
+    <h1 class="edit-form__title">Editar empresa</h1>
+  </div>
+
+  <div class="edit-form__upload-area">
+    <span class="fi fi-rr-picture edit-form__upload-icon"></span>
+    <p class="edit-form__upload-text">Cambiar logo de la empresa PNG, JPG o SVG (máximo 5 MB)</p>
+  </div>
+
+  <form class="edit-form__form" (ngSubmit)="save()">
+    <div class="edit-form__field">
+      <label class="edit-form__label">Nombre de la empresa <span class="edit-form__required">*Campo obligatorio</span></label>
+      <input class="edit-form__input" [(ngModel)]="company.name" name="name" />
+    </div>
+    <div class="edit-form__field">
+      <label class="edit-form__label">CUIT de la empresa <span class="edit-form__required">*Campo obligatorio</span></label>
+      <input class="edit-form__input" [(ngModel)]="company.cuit" name="cuit" />
+    </div>
+    <div class="edit-form__field">
+      <label class="edit-form__label">Teléfono <span class="edit-form__required">*Campo obligatorio</span></label>
+      <input class="edit-form__input" [(ngModel)]="company.phone" name="phone" />
+    </div>
+    <div class="edit-form__field">
+      <label class="edit-form__label">Domicilio <span class="edit-form__required">*Campo obligatorio</span></label>
+      <input class="edit-form__input" [(ngModel)]="company.address" name="address" />
+    </div>
+    <div class="edit-form__field">
+      <label class="edit-form__label">Servicio que ofrece <span class="edit-form__required">*Campo obligatorio</span></label>
+      <input class="edit-form__input" [(ngModel)]="company.service" name="service" />
+    </div>
+    <button class="edit-form__save-btn" type="submit" [disabled]="!canSave">Guardar cambios</button>
+  </form>
+</div>

@@ -1,0 +1,43 @@
+<div class="edit-form">
+  <div class="edit-form__header">
+    <button class="edit-form__back" (click)="goBack()"><span class="fi fi-rr-arrow-left"></span></button>
+    <h1 class="edit-form__title">Editar perfil</h1>
+  </div>
+
+  <div class="edit-form__upload-area">
+    <span class="fi fi-rr-user edit-form__upload-icon"></span>
+    <p class="edit-form__upload-text">Cambiar foto de perfil PNG, JPG o SVG (máximo 5 MB)</p>
+  </div>
+
+  <form class="edit-form__form" (ngSubmit)="save()">
+    <div class="edit-form__field">
+      <label class="edit-form__label">Tipo de perfil</label>
+      <select class="edit-form__input" [(ngModel)]="profile.type" name="type">
+        <option value="Administrador">Administrador</option>
+        <option value="Instructor">Instructor</option>
+        <option value="Recepcionista">Recepcionista</option>
+      </select>
+    </div>
+    <div class="edit-form__field">
+      <label class="edit-form__label">Nombre <span class="edit-form__required">*Campo obligatorio</span></label>
+      <input class="edit-form__input" [(ngModel)]="profile.name" name="name" />
+    </div>
+    <div class="edit-form__field">
+      <label class="edit-form__label">Apellido <span class="edit-form__required">*Campo obligatorio</span></label>
+      <input class="edit-form__input" [(ngModel)]="profile.lastName" name="lastName" />
+    </div>
+    <div class="edit-form__field">
+      <label class="edit-form__label">Teléfono <span class="edit-form__required">*Campo obligatorio</span></label>
+      <input class="edit-form__input" [(ngModel)]="profile.phone" name="phone" />
+    </div>
+    <div class="edit-form__field">
+      <label class="edit-form__label">Correo electrónico <span class="edit-form__required">*Campo obligatorio</span></label>
+      <input class="edit-form__input" [(ngModel)]="profile.email" name="email" type="email" />
+    </div>
+    <div class="edit-form__field">
+      <label class="edit-form__label">Cambiar contraseña</label>
+      <input class="edit-form__input" name="password" type="password" placeholder="••••••••" />
+    </div>
+    <button class="edit-form__save-btn" type="submit" [disabled]="!canSave">Guardar cambios</button>
+  </form>
+</div>

@@ -1,0 +1,50 @@
+@use 'variables' as *;
+
+.admin-layout {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: $turnex-alabaster-50;
+
+  &__topbar {
+    display: flex;
+    align-items: center;
+    gap: $turnex-spacing-12;
+    padding: 0 $turnex-spacing-16;
+    height: 56px;
+    background: $turnex-primary-950;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    flex-shrink: 0;
+  }
+
+  &__menu-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: $turnex-spacing-20;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+
+    &:hover { color: #fff; }
+  }
+
+  &__brand {
+    @include Rubik-Bold();
+    color: #fff;
+    font-size: $turnex-spacing-18;
+    letter-spacing: 0.5px;
+  }
+
+  &__content {
+    flex: 1;
+    padding: $turnex-spacing-16;
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+  }
+}

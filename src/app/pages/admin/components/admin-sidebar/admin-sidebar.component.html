@@ -1,0 +1,36 @@
+<div class="sidebar__overlay" [class.sidebar__overlay--visible]="isOpen" (click)="close()"></div>
+
+<aside class="sidebar" [class.sidebar--open]="isOpen">
+  <div class="sidebar__header">
+    <span class="sidebar__logo">Turnex</span>
+    <button class="sidebar__close" (click)="close()">
+      <span class="fi fi-rr-cross-small"></span>
+    </button>
+  </div>
+
+  <nav class="sidebar__nav">
+    <a class="sidebar__item" routerLink="/admin" routerLinkActive="sidebar__item--active"
+       [routerLinkActiveOptions]="{ exact: true }" (click)="close()">
+      <span class="fi fi-rr-home sidebar__icon"></span>
+      Inicio
+    </a>
+    <a class="sidebar__item" routerLink="/admin/empresas" routerLinkActive="sidebar__item--active"
+       (click)="close()">
+      <span class="fi fi-rr-building sidebar__icon"></span>
+      Empresas
+    </a>
+    <a class="sidebar__item" routerLink="/admin/perfil" routerLinkActive="sidebar__item--active"
+       (click)="close()">
+      <span class="fi fi-rr-user sidebar__icon"></span>
+      Perfil
+    </a>
+  </nav>
+
+  <div class="sidebar__footer">
+    <span class="sidebar__beta">Versión BETA</span>
+    <button class="sidebar__item sidebar__item--logout" (click)="logout()">
+      <span class="fi fi-rr-sign-out-alt sidebar__icon"></span>
+      Cerrar sesión
+    </button>
+  </div>
+</aside>

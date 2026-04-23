@@ -1,0 +1,44 @@
+<div class="admin-home">
+  <div class="admin-home__header">
+    <h1 class="admin-home__greeting">Hola, {{ userName }}</h1>
+    <p class="admin-home__subtitle">Crea nuevas empresas y administra las registradas.</p>
+  </div>
+
+  <section class="admin-home__section">
+    <h2 class="admin-home__section-title">Empresas registradas</h2>
+
+    @if (companies.length === 0) {
+      <div class="admin-home__empty">
+        <span class="fi fi-rr-building admin-home__empty-icon"></span>
+        <p class="admin-home__empty-text">Todavía no tenés empresas registradas</p>
+      </div>
+    } @else {
+      <ul class="admin-home__list">
+        @for (company of companies; track company.id) {
+          <li class="admin-home__card" (click)="goToCompany(company.id)"
+              (keydown.enter)="goToCompany(company.id)" tabindex="0">
+            <div class="admin-home__card-info">
+              <span class="fi fi-rr-building admin-home__card-icon"></span>
+              <div>
+                <p class="admin-home__card-name">{{ company.name }}</p>
+                <p class="admin-home__card-service">{{ company.service }}</p>
+              </div>
+            </div>
+            <div class="admin-home__card-actions">
+              <button class="admin-home__action-btn admin-home__action-btn--delete"
+                      (click)="deleteCompany($event, company)">
+                <span class="fi fi-rr-trash"></span>
+              </button>
+              <span class="fi fi-rr-angle-right admin-home__card-arrow"></span>
+            </div>
+          </li>
+        }
+      </ul>
+    }
+  </section>
+
+  <button class="admin-home__fab" (click)="createCompany()">
+    <span class="fi fi-rr-plus"></span>
+    Crear nueva empresa
+  </button>
+</div>

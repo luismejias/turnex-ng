@@ -1,0 +1,159 @@
+<div class="empresa-detail" *ngIf="company">
+  <!-- Header -->
+  <div class="empresa-detail__header">
+    <button class="empresa-detail__back" (click)="goBack()">
+      <span class="fi fi-rr-arrow-left"></span>
+    </button>
+    <h1 class="empresa-detail__title">Empresa {{ company.name }}</h1>
+  </div>
+
+  <!-- Tabs -->
+  <div class="empresa-detail__tabs">
+    <button class="empresa-detail__tab" [class.empresa-detail__tab--active]="activeTab === 'datos'"
+            (click)="setTab('datos')">Datos</button>
+    <button class="empresa-detail__tab" [class.empresa-detail__tab--active]="activeTab === 'perfiles'"
+            (click)="setTab('perfiles')">Perfiles</button>
+    <button class="empresa-detail__tab" [class.empresa-detail__tab--active]="activeTab === 'turnos'"
+            (click)="setTab('turnos')">Turnos</button>
+    <button class="empresa-detail__tab" [class.empresa-detail__tab--active]="activeTab === 'settings'"
+            (click)="setTab('settings')">Settings</button>
+  </div>
+
+  <!-- Tab: Datos -->
+  @if (activeTab === 'datos') {
+    <div class="empresa-detail__body">
+      <div class="empresa-detail__actions-top">
+        <button class="empresa-detail__btn empresa-detail__btn--danger" (click)="deleteCompany()">
+          <span class="fi fi-rr-trash"></span> Eliminar empresa
+        </button>
+        <button class="empresa-detail__btn empresa-detail__btn--primary" (click)="saveCompanyData()">
+          <span class="fi fi-rr-edit"></span> Editar empresa
+        </button>
+      </div>
+
+      <div class="empresa-detail__form">
+        <div class="empresa-detail__field">
+          <label class="empresa-detail__label">Nombre de la empresa <span class="empresa-detail__required">*Campo obligatorio</span></label>
+          <input class="empresa-detail__input" [(ngModel)]="company.name" placeholder="Nombre de la empresa" />
+        </div>
+        <div class="empresa-detail__field">
+          <label class="empresa-detail__label">CUIT de la empresa <span class="empresa-detail__required">*Campo obligatorio</span></label>
+          <input class="empresa-detail__input" [(ngModel)]="company.cuit" placeholder="00-00000000-0" />
+        </div>
+        <div class="empresa-detail__field">
+          <label class="empresa-detail__label">Teléfono <span class="empresa-detail__required">*Campo obligatorio</span></label>
+          <input class="empresa-detail__input" [(ngModel)]="company.phone" placeholder="Teléfono" />
+        </div>
+        <div class="empresa-detail__field">
+          <label class="empresa-detail__label">Domicilio <span class="empresa-detail__required">*Campo obligatorio</span></label>
+          <input class="empresa-detail__input" [(ngModel)]="company.address" placeholder="Domicilio" />
+        </div>
+        <div class="empresa-detail__field">
+          <label class="empresa-detail__label">Servicio que ofrece <span class="empresa-detail__required">*Campo obligatorio</span></label>
+          <input class="empresa-detail__input" [(ngModel)]="company.service" placeholder="Servicio" />
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Tab: Perfiles -->
+  @if (activeTab === 'perfiles') {
+    <div class="empresa-detail__body">
+      @if (company.profiles.length === 0) {
+        <div class="empresa-detail__empty">
+          <span class="fi fi-rr-users empresa-detail__empty-icon"></span>
+          <p>No hay perfiles registrados</p>
+        </div>
+      } @else {
+        @for (profile of company.profiles; track profile.id) {
+          <div class="empresa-detail__profile-card">
+            <div class="empresa-detail__profile-top">
+              <div class="empresa-detail__profile-avatar">
+                <span class="fi fi-rr-user"></span>
+              </div>
+              <div class="empresa-detail__profile-info">
+                <p class="empresa-detail__profile-name">{{ profile.name }} {{ profile.lastName }}</p>
+                <p class="empresa-detail__profile-type">{{ profile.type }}</p>
+              </div>
+              <label class="empresa-detail__toggle">
+                <input type="checkbox" [checked]="profile.active" (change)="toggleProfileActive(profile)" />
+                <span class="empresa-detail__toggle-slider"></span>
+              </label>
+            </div>
+            <div class="empresa-detail__profile-data">
+              <span class="fi fi-rr-envelope"></span> {{ profile.email }}
+            </div>
+            <div class="empresa-detail__profile-data">
+              <span class="fi fi-rr-phone-flip"></span> {{ profile.phone }}
+            </div>
+            <div class="empresa-detail__actions-row">
+              <button class="empresa-detail__btn empresa-detail__btn--danger" (click)="deleteProfile(profile)">
+                <span class="fi fi-rr-trash"></span> Eliminar perfil
+              </button>
+              <button class="empresa-detail__btn empresa-detail__btn--primary" (click)="editProfile(profile)">
+                <span class="fi fi-rr-edit"></span> Editar perfil
+              </button>
+            </div>
+          </div>
+        }
+      }
+      <button class="empresa-detail__add-btn" (click)="addProfile()">
+        <span class="fi fi-rr-plus"></span> Agregar nuevo perfil
+      </button>
+    </div>
+  }
+
+  <!-- Tab: Turnos -->
+  @if (activeTab === 'turnos') {
+    <div class="empresa-detail__body">
+      @if (company.shifts.length === 0) {
+        <div class="empresa-detail__empty">
+          <span class="fi fi-rr-calendar empresa-detail__empty-icon"></span>
+          <p>No hay turnos registrados</p>
+        </div>
+      } @else {
+        @for (shift of company.shifts; track shift.id) {
+          <div class="empresa-detail__shift-card">
+            <div class="empresa-detail__shift-header">
+              <p class="empresa-detail__shift-name">{{ shift.name }}</p>
+              <div class="empresa-detail__actions-row">
+                <button class="empresa-detail__btn empresa-detail__btn--danger" (click)="deleteShift(shift)">
+                  <span class="fi fi-rr-trash"></span> Eliminar
+                </button>
+                <button class="empresa-detail__btn empresa-detail__btn--primary" (click)="editShift(shift)">
+                  <span class="fi fi-rr-edit"></span> Editar
+                </button>
+              </div>
+            </div>
+            <div class="empresa-detail__shift-detail">
+              <span class="fi fi-rr-calendar-days"></span>
+              {{ shift.days.join(', ') }}
+            </div>
+            <div class="empresa-detail__shift-detail">
+              <span class="fi fi-rr-clock"></span>
+              {{ shift.timeFrom }} – {{ shift.timeTo }} · {{ shift.periodicity }}
+            </div>
+            <div class="empresa-detail__shift-packs">
+              @for (pack of shift.packs; track pack) {
+                <span class="empresa-detail__pack-chip">{{ pack }}</span>
+              }
+            </div>
+          </div>
+        }
+      }
+      <button class="empresa-detail__add-btn" (click)="addShift()">
+        <span class="fi fi-rr-plus"></span> Agregar nuevo turno
+      </button>
+    </div>
+  }
+
+  <!-- Tab: Settings -->
+  @if (activeTab === 'settings') {
+    <div class="empresa-detail__body">
+      <div class="empresa-detail__settings-soon">
+        <span class="fi fi-rr-settings empresa-detail__empty-icon"></span>
+        <p>Configuración disponible próximamente</p>
+      </div>
+    </div>
+  }
+</div>
