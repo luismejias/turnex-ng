@@ -1,62 +1,42 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
+import { AuthService } from 'src/app/shared/auth.service';
+import { API_URL, BACKEND_URL } from 'src/app/shared/api.config';
 import { AdminCompany, AdminProfile, AdminShift } from '../models/admin.models';
-
-const MOCK_COMPANIES: AdminCompany[] = [
-  {
-    id: 1,
-    name: 'OStudio',
-    cuit: '21-12345678-9',
-    phone: '1122334455',
-    address: 'Vuelta de Obligado 1234',
-    service: 'Pilates y Osteopatía',
-    profiles: [
-      {
-        id: 1,
-        type: 'Administrador',
-        name: 'María',
-        lastName: 'Vásquez',
-        phone: '1122334455',
-        email: 'mariavasquez@gmail.com',
-        active: true,
-      },
-    ],
-    shifts: [
-      {
-        id: 1,
-        name: 'Pilates',
-        days: ['Lunes', 'Miércoles', 'Viernes'],
-        timeFrom: '8:00 hs',
-        timeTo: '18:00 hs',
-        periodicity: 'Cada 30 minutos',
-        packs: ['Clase suelta', '4 clases al mes', '8 clases al mes', '12 clases al mes'],
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: 'Yogatime Center',
-    cuit: '30-87654321-5',
-    phone: '1199887766',
-    address: 'Av. Corrientes 2500',
-    service: 'Yoga y Meditación',
-    profiles: [],
-    shifts: [],
-  },
-  {
-    id: 3,
-    name: 'Natatorio Urquiza',
-    cuit: '20-11223344-1',
-    phone: '1155443322',
-    address: 'Av. Triunvirato 4500',
-    service: 'Natación',
-    profiles: [],
-    shifts: [],
-  },
-];
 
 @Injectable({ providedIn: 'root' })
 export class AdminService {
-  private _companies = signal<AdminCompany[]>(MOCK_COMPANIES);
+  private http = inject(HttpClient);
+  private auth = inject(AuthService);
+
+  private _companies = signal<AdminCompany[]>([]);
+
+  private get headers(): HttpHeaders {
+    return new HttpHeaders({ Authorization: `Bearer ${this.auth.getToken() ?? ''}` });
+  }
+
+  private get base(): string {
+    return `${API_URL}/admin`;
+  }
+
+  // ── Upload ───────────────────────────────────────────────────────────────
+
+  uploadLogo(file: File): Observable<{ url: string }> {
+    const formData = new FormData();
+    formData.append('logo', file);
+    return this.http.post<{ url: string }>(
+      `${this.base}/upload`,
+      formData,
+      { headers: new HttpHeaders({ Authorization: `Bearer ${this.auth.getToken() ?? ''}` }) }
+    );
+  }
+
+  toAbsoluteUrl(path: string): string {
+    return `${BACKEND_URL}${path}`;
+  }
+
+  // ── Reads (synchronous from signal) ──────────────────────────────────────
 
   getCompanies(): AdminCompany[] {
     return this._companies();
@@ -66,64 +46,91 @@ export class AdminService {
     return this._companies().find(c => c.id === id);
   }
 
-  createCompany(company: Omit<AdminCompany, 'id' | 'profiles' | 'shifts'>): AdminCompany {
-    const newId = Math.max(...this._companies().map(c => c.id), 0) + 1;
-    const newCompany: AdminCompany = { ...company, id: newId, profiles: [], shifts: [] };
-    this._companies.update(list => [...list, newCompany]);
-    return newCompany;
+  // ── Load ──────────────────────────────────────────────────────────────────
+
+  loadCompanies(): Observable<AdminCompany[]> {
+    return this.http
+      .get<AdminCompany[]>(`${this.base}/companies`, { headers: this.headers })
+      .pipe(tap(list => this._companies.set(list)));
   }
 
-  updateCompany(id: number, data: Partial<AdminCompany>): void {
-    this._companies.update(list =>
-      list.map(c => c.id === id ? { ...c, ...data } : c)
-    );
+  // ── Company mutations ─────────────────────────────────────────────────────
+
+  createCompany(data: Omit<AdminCompany, 'id' | 'profiles' | 'shifts'>): Observable<AdminCompany> {
+    return this.http
+      .post<AdminCompany>(`${this.base}/companies`, data, { headers: this.headers })
+      .pipe(tap(c => this._companies.update(list => [...list, { ...c, profiles: [], shifts: [] }])));
   }
 
-  deleteCompany(id: number): void {
-    this._companies.update(list => list.filter(c => c.id !== id));
+  updateCompany(id: number, data: Partial<Omit<AdminCompany, 'profiles' | 'shifts'>>): Observable<AdminCompany> {
+    return this.http
+      .patch<AdminCompany>(`${this.base}/companies/${id}`, data, { headers: this.headers })
+      .pipe(tap(c => this._companies.update(list => list.map(x => x.id === id ? { ...x, ...c } : x))));
   }
 
-  addProfile(companyId: number, profile: Omit<AdminProfile, 'id'>): void {
-    this._companies.update(list => list.map(c => {
-      if (c.id !== companyId) return c;
-      const newId = Math.max(...c.profiles.map(p => p.id), 0) + 1;
-      return { ...c, profiles: [...c.profiles, { ...profile, id: newId }] };
-    }));
+  deleteCompany(id: number): Observable<void> {
+    return this.http
+      .delete<void>(`${this.base}/companies/${id}`, { headers: this.headers })
+      .pipe(tap(() => this._companies.update(list => list.filter(c => c.id !== id))));
   }
 
-  updateProfile(companyId: number, profileId: number, data: Partial<AdminProfile>): void {
-    this._companies.update(list => list.map(c => {
-      if (c.id !== companyId) return c;
-      return { ...c, profiles: c.profiles.map(p => p.id === profileId ? { ...p, ...data } : p) };
-    }));
+  // ── Profile mutations ─────────────────────────────────────────────────────
+
+  addProfile(companyId: number, profile: Omit<AdminProfile, 'id'>): Observable<AdminProfile> {
+    return this.http
+      .post<AdminProfile>(`${this.base}/companies/${companyId}/profiles`, profile, { headers: this.headers })
+      .pipe(tap(p => this._companies.update(list =>
+        list.map(c => c.id === companyId ? { ...c, profiles: [...c.profiles, p] } : c)
+      )));
   }
 
-  deleteProfile(companyId: number, profileId: number): void {
-    this._companies.update(list => list.map(c => {
-      if (c.id !== companyId) return c;
-      return { ...c, profiles: c.profiles.filter(p => p.id !== profileId) };
-    }));
+  updateProfile(companyId: number, profileId: number, data: Partial<AdminProfile>): Observable<AdminProfile> {
+    return this.http
+      .patch<AdminProfile>(`${this.base}/companies/${companyId}/profiles/${profileId}`, data, { headers: this.headers })
+      .pipe(tap(p => this._companies.update(list =>
+        list.map(c => c.id === companyId
+          ? { ...c, profiles: c.profiles.map(x => x.id === profileId ? { ...x, ...p } : x) }
+          : c)
+      )));
   }
 
-  addShift(companyId: number, shift: Omit<AdminShift, 'id'>): void {
-    this._companies.update(list => list.map(c => {
-      if (c.id !== companyId) return c;
-      const newId = Math.max(...c.shifts.map(s => s.id), 0) + 1;
-      return { ...c, shifts: [...c.shifts, { ...shift, id: newId }] };
-    }));
+  deleteProfile(companyId: number, profileId: number): Observable<void> {
+    return this.http
+      .delete<void>(`${this.base}/companies/${companyId}/profiles/${profileId}`, { headers: this.headers })
+      .pipe(tap(() => this._companies.update(list =>
+        list.map(c => c.id === companyId
+          ? { ...c, profiles: c.profiles.filter(p => p.id !== profileId) }
+          : c)
+      )));
   }
 
-  updateShift(companyId: number, shiftId: number, data: Partial<AdminShift>): void {
-    this._companies.update(list => list.map(c => {
-      if (c.id !== companyId) return c;
-      return { ...c, shifts: c.shifts.map(s => s.id === shiftId ? { ...s, ...data } : s) };
-    }));
+  // ── Schedule/Shift mutations ──────────────────────────────────────────────
+
+  addShift(companyId: number, shift: Omit<AdminShift, 'id'>): Observable<AdminShift> {
+    return this.http
+      .post<AdminShift>(`${this.base}/companies/${companyId}/schedules`, shift, { headers: this.headers })
+      .pipe(tap(s => this._companies.update(list =>
+        list.map(c => c.id === companyId ? { ...c, shifts: [...c.shifts, s] } : c)
+      )));
   }
 
-  deleteShift(companyId: number, shiftId: number): void {
-    this._companies.update(list => list.map(c => {
-      if (c.id !== companyId) return c;
-      return { ...c, shifts: c.shifts.filter(s => s.id !== shiftId) };
-    }));
+  updateShift(companyId: number, shiftId: number, data: Partial<AdminShift>): Observable<AdminShift> {
+    return this.http
+      .patch<AdminShift>(`${this.base}/companies/${companyId}/schedules/${shiftId}`, data, { headers: this.headers })
+      .pipe(tap(s => this._companies.update(list =>
+        list.map(c => c.id === companyId
+          ? { ...c, shifts: c.shifts.map(x => x.id === shiftId ? { ...x, ...s } : x) }
+          : c)
+      )));
+  }
+
+  deleteShift(companyId: number, shiftId: number): Observable<void> {
+    return this.http
+      .delete<void>(`${this.base}/companies/${companyId}/schedules/${shiftId}`, { headers: this.headers })
+      .pipe(tap(() => this._companies.update(list =>
+        list.map(c => c.id === companyId
+          ? { ...c, shifts: c.shifts.filter(s => s.id !== shiftId) }
+          : c)
+      )));
   }
 }
