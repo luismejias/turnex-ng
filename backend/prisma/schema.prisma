@@ -73,3 +73,50 @@ model Shift {
 
   @@map("shifts")
 }
+
+model Company {
+  id        Int               @id @default(autoincrement())
+  name      String
+  cuit      String
+  phone     String
+  address   String
+  service   String
+  logo      String?
+  active    Boolean           @default(true)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  profiles  CompanyProfile[]
+  schedules CompanySchedule[]
+
+  @@map("companies")
+}
+
+model CompanyProfile {
+  id        Int     @id @default(autoincrement())
+  companyId Int
+  type      String  @default("Administrador")
+  name      String
+  lastName  String
+  phone     String
+  email     String
+  active    Boolean @default(true)
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@map("company_profiles")
+}
+
+model CompanySchedule {
+  id          Int      @id @default(autoincrement())
+  companyId   Int
+  name        String
+  days        String[]
+  timeFrom    String
+  timeTo      String
+  periodicity String
+  packs       String[]
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@map("company_schedules")
+}
