@@ -16,12 +16,12 @@
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background: $turnex-primary-100;
+    background: $turnex-primary-50;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 36px;
-    color: $turnex-primary-600;
+    color: $turnex-primary-800;
     align-self: center;
   }
 
@@ -56,7 +56,7 @@
 
     &:focus {
       outline: none;
-      border-color: $turnex-primary-500;
+      border-color: $turnex-primary-800;
     }
   }
 }

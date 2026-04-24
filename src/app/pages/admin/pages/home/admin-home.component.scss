@@ -91,7 +91,7 @@
 
   &__card-icon {
     font-size: $turnex-spacing-24;
-    color: $turnex-primary-500;
+    color: $turnex-primary-800;
     flex-shrink: 0;
   }
 
@@ -165,7 +165,7 @@
     z-index: 50;
 
     &:hover {
-      background: $turnex-primary-700;
+      background: $turnex-primary-900;
       box-shadow: 0 6px 24px rgba(95, 60, 170, 0.45);
       transform: translateX(-50%) translateY(-1px);
     }

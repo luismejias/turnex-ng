@@ -1,0 +1,46 @@
+<div class="edit-form">
+  <div class="edit-form__header">
+    <button class="edit-form__back" (click)="goBack()"><span class="fi fi-rr-arrow-left"></span></button>
+    <h1 class="edit-form__title">Editar perfil</h1>
+  </div>
+
+  <label class="edit-form__upload-area" for="ep-photo-input">
+    <span class="fi fi-rr-user edit-form__upload-icon"></span>
+    <p class="edit-form__upload-text">Cambiar foto de perfil PNG, JPG o SVG (máximo 5 MB)</p>
+    <input id="ep-photo-input" type="file" accept="image/png,image/jpeg,image/svg+xml,image/webp" style="display:none" />
+  </label>
+
+  @if (form) {
+    <form class="edit-form__form" [formGroup]="form" (ngSubmit)="save()">
+      <div class="edit-form__field">
+        <label class="edit-form__label" for="ep-type">Tipo de perfil</label>
+        <select id="ep-type" class="edit-form__input" formControlName="type">
+          <option value="Administrador">Administrador</option>
+          <option value="Instructor">Instructor</option>
+          <option value="Recepcionista">Recepcionista</option>
+        </select>
+      </div>
+      <div class="edit-form__field">
+        <label class="edit-form__label" for="ep-name">Nombre <span class="edit-form__required">*Campo obligatorio</span></label>
+        <input id="ep-name" class="edit-form__input" formControlName="name" />
+      </div>
+      <div class="edit-form__field">
+        <label class="edit-form__label" for="ep-lastName">Apellido <span class="edit-form__required">*Campo obligatorio</span></label>
+        <input id="ep-lastName" class="edit-form__input" formControlName="lastName" />
+      </div>
+      <div class="edit-form__field">
+        <label class="edit-form__label" for="ep-phone">Teléfono <span class="edit-form__required">*Campo obligatorio</span></label>
+        <input id="ep-phone" class="edit-form__input" formControlName="phone" />
+      </div>
+      <div class="edit-form__field">
+        <label class="edit-form__label" for="ep-email">Correo electrónico <span class="edit-form__required">*Campo obligatorio</span></label>
+        <input id="ep-email" class="edit-form__input" formControlName="email" type="email" />
+      </div>
+      <div class="edit-form__field">
+        <label class="edit-form__label" for="ep-password">Cambiar contraseña</label>
+        <input id="ep-password" class="edit-form__input" formControlName="password" type="password" placeholder="••••••••" />
+      </div>
+      <button class="edit-form__save-btn" type="submit" [disabled]="form.invalid">Guardar cambios</button>
+    </form>
+  }
+</div>

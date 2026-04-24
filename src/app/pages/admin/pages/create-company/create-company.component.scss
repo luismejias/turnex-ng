@@ -76,7 +76,7 @@
     }
 
     &--done &-num {
-      background: $turnex-primary-600;
+      background: $turnex-primary-800;
       color: #fff;
     }
   }
@@ -99,7 +99,7 @@
     padding: $turnex-spacing-12;
     font-size: $turnex-spacing-14;
     @include Rubik();
-    color: $turnex-primary-700;
+    color: $turnex-primary-800;
 
     span { flex-shrink: 0; margin-top: 2px; }
     p { margin: 0; }
@@ -123,7 +123,14 @@
     cursor: pointer;
     transition: border-color 0.15s;
 
-    &:hover { border-color: $turnex-primary-300; }
+    &:hover { border-color: $turnex-primary-800; }
+  }
+
+  &__upload-preview {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    border-radius: $turnex-spacing-8;
   }
 
   &__upload-icon {
@@ -175,7 +182,7 @@
 
     &:focus {
       outline: none;
-      border-color: $turnex-primary-500;
+      border-color: $turnex-primary-800;
     }
   }
 
@@ -260,7 +267,7 @@
     transition: background 0.15s, opacity 0.15s;
     margin-top: $turnex-spacing-8;
 
-    &:hover:not(:disabled) { background: $turnex-primary-700; }
+    &:hover:not(:disabled) { background: $turnex-primary-900; }
     &:disabled { opacity: 0.45; cursor: not-allowed; }
   }
 }

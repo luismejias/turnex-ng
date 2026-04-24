@@ -1,0 +1,44 @@
+<div class="edit-form">
+  <div class="edit-form__header">
+    <button class="edit-form__back" (click)="goBack()"><span class="fi fi-rr-arrow-left"></span></button>
+    <h1 class="edit-form__title">Crear perfil</h1>
+  </div>
+
+  <label class="edit-form__upload-area" for="cpe-photo-input">
+    <span class="fi fi-rr-user edit-form__upload-icon"></span>
+    <p class="edit-form__upload-text">Haga click para cargar foto de perfil PNG, JPG o SVG (máximo 5 MB)</p>
+    <input id="cpe-photo-input" type="file" accept="image/png,image/jpeg,image/svg+xml,image/webp" style="display:none" />
+  </label>
+
+  <form class="edit-form__form" [formGroup]="form" (ngSubmit)="save()">
+    <div class="edit-form__field">
+      <label class="edit-form__label" for="cp-type">Tipo de perfil</label>
+      <select id="cp-type" class="edit-form__input" formControlName="type">
+        <option value="Administrador">Administrador</option>
+        <option value="Instructor">Instructor</option>
+        <option value="Recepcionista">Recepcionista</option>
+      </select>
+    </div>
+    <div class="edit-form__field">
+      <label class="edit-form__label" for="cp-name">Nombre <span class="edit-form__required">*Campo obligatorio</span></label>
+      <input id="cp-name" class="edit-form__input" formControlName="name" placeholder="Nombre" />
+    </div>
+    <div class="edit-form__field">
+      <label class="edit-form__label" for="cp-lastName">Apellido <span class="edit-form__required">*Campo obligatorio</span></label>
+      <input id="cp-lastName" class="edit-form__input" formControlName="lastName" placeholder="Apellido" />
+    </div>
+    <div class="edit-form__field">
+      <label class="edit-form__label" for="cp-phone">Teléfono <span class="edit-form__required">*Campo obligatorio</span></label>
+      <input id="cp-phone" class="edit-form__input" formControlName="phone" placeholder="Teléfono" />
+    </div>
+    <div class="edit-form__field">
+      <label class="edit-form__label" for="cp-email">Correo electrónico <span class="edit-form__required">*Campo obligatorio</span></label>
+      <input id="cp-email" class="edit-form__input" formControlName="email" type="email" placeholder="correo@ejemplo.com" />
+    </div>
+    <div class="edit-form__field">
+      <label class="edit-form__label" for="cp-password">Asignar contraseña</label>
+      <input id="cp-password" class="edit-form__input" formControlName="password" type="password" placeholder="••••••••" />
+    </div>
+    <button class="edit-form__save-btn" type="submit" [disabled]="form.invalid">Crear perfil</button>
+  </form>
+</div>

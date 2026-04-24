@@ -1,25 +1,20 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 import { AdminService } from '../../services/admin.service';
 import { AdminCompany, AdminProfile, AdminShift } from '../../models/admin.models';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmModalComponent } from 'src/app/shared/components/confirm-modal/confirm-modal.component';
 import { Location } from '@angular/common';
 
-type Tab = 'datos' | 'perfiles' | 'turnos' | 'settings';
-
-const DAYS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
-const PACKS = ['Clase suelta', '4 clases al mes', '8 clases al mes', '12 clases al mes'];
-const PERIODICITY = ['Cada 15 minutos', 'Cada 30 minutos', 'Cada 45 minutos', 'Cada 60 minutos'];
+type Tab = 'data' | 'profiles' | 'schedules' | 'settings';
 
 @Component({
-  selector: 'turnex-empresa-detail',
-  imports: [FormsModule],
-  templateUrl: './empresa-detail.component.html',
-  styleUrl: './empresa-detail.component.scss',
+  selector: 'turnex-company-detail',
+  imports: [],
+  templateUrl: './company-detail.component.html',
+  styleUrl: './company-detail.component.scss',
 })
-export class EmpresaDetailComponent implements OnInit {
+export class CompanyDetailComponent implements OnInit {
   @Input() id!: string;
 
   private adminService = inject(AdminService);
@@ -28,10 +23,7 @@ export class EmpresaDetailComponent implements OnInit {
   private location = inject(Location);
 
   company!: AdminCompany;
-  activeTab: Tab = 'datos';
-  readonly days = DAYS;
-  readonly packs = PACKS;
-  readonly periodicity = PERIODICITY;
+  activeTab: Tab = 'data';
 
   ngOnInit(): void {
     const company = this.adminService.getCompanyById(Number(this.id));
@@ -39,24 +31,11 @@ export class EmpresaDetailComponent implements OnInit {
     this.company = { ...company };
   }
 
-  setTab(tab: Tab): void {
-    this.activeTab = tab;
-  }
+  setTab(tab: Tab): void { this.activeTab = tab; }
+  goBack(): void { this.location.back(); }
 
-  goBack(): void {
-    this.location.back();
-  }
-
-  // --- Datos ---
-  saveCompanyData(): void {
-    this.adminService.updateCompany(this.company.id, {
-      name: this.company.name,
-      cuit: this.company.cuit,
-      phone: this.company.phone,
-      address: this.company.address,
-      service: this.company.service,
-    });
-    this.router.navigate(['/admin']);
+  editCompany(): void {
+    this.router.navigate(['/admin/companies', this.id, 'edit']);
   }
 
   deleteCompany(): void {
@@ -69,19 +48,18 @@ export class EmpresaDetailComponent implements OnInit {
       },
     }).afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
-        this.adminService.deleteCompany(this.company.id);
-        this.router.navigate(['/admin']);
+        this.adminService.deleteCompany(this.company.id)
+          .subscribe(() => this.router.navigate(['/admin']));
       }
     });
   }
 
-  // --- Perfiles ---
   addProfile(): void {
-    this.router.navigate(['/admin/empresas', this.id, 'perfiles', 'crear']);
+    this.router.navigate(['/admin/companies', this.id, 'profiles', 'create']);
   }
 
   editProfile(profile: AdminProfile): void {
-    this.router.navigate(['/admin/empresas', this.id, 'perfiles', profile.id, 'editar']);
+    this.router.navigate(['/admin/companies', this.id, 'profiles', profile.id, 'edit']);
   }
 
   deleteProfile(profile: AdminProfile): void {
@@ -94,24 +72,23 @@ export class EmpresaDetailComponent implements OnInit {
       },
     }).afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
-        this.adminService.deleteProfile(this.company.id, profile.id);
-        this.company = this.adminService.getCompanyById(this.company.id)!;
+        this.adminService.deleteProfile(this.company.id, profile.id)
+          .subscribe(() => { this.company = this.adminService.getCompanyById(this.company.id)!; });
       }
     });
   }
 
   toggleProfileActive(profile: AdminProfile): void {
-    this.adminService.updateProfile(this.company.id, profile.id, { active: !profile.active });
-    this.company = this.adminService.getCompanyById(this.company.id)!;
+    this.adminService.updateProfile(this.company.id, profile.id, { active: !profile.active })
+      .subscribe(() => { this.company = this.adminService.getCompanyById(this.company.id)!; });
   }
 
-  // --- Turnos ---
   addShift(): void {
-    this.router.navigate(['/admin/empresas', this.id, 'turnos', 'crear']);
+    this.router.navigate(['/admin/companies', this.id, 'schedules', 'create']);
   }
 
   editShift(shift: AdminShift): void {
-    this.router.navigate(['/admin/empresas', this.id, 'turnos', shift.id, 'editar']);
+    this.router.navigate(['/admin/companies', this.id, 'schedules', shift.id, 'edit']);
   }
 
   deleteShift(shift: AdminShift): void {
@@ -124,8 +101,8 @@ export class EmpresaDetailComponent implements OnInit {
       },
     }).afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
-        this.adminService.deleteShift(this.company.id, shift.id);
-        this.company = this.adminService.getCompanyById(this.company.id)!;
+        this.adminService.deleteShift(this.company.id, shift.id)
+          .subscribe(() => { this.company = this.adminService.getCompanyById(this.company.id)!; });
       }
     });
   }

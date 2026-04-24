@@ -28,11 +28,11 @@ export class AdminHomeComponent {
   }
 
   goToCompany(id: number): void {
-    this.router.navigate(['/admin/empresas', id]);
+    this.router.navigate(['/admin/companies', id]);
   }
 
   createCompany(): void {
-    this.router.navigate(['/admin/empresas/crear']);
+    this.router.navigate(['/admin/companies/create']);
   }
 
   deleteCompany(event: Event, company: AdminCompany): void {
@@ -45,7 +45,7 @@ export class AdminHomeComponent {
         cancelText: 'Cancelar',
       },
     }).afterClosed().subscribe((confirmed: boolean) => {
-      if (confirmed) this.adminService.deleteCompany(company.id);
+      if (confirmed) this.adminService.deleteCompany(company.id).subscribe();
     });
   }
 }

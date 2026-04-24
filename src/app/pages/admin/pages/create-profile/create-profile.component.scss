@@ -39,7 +39,7 @@
     padding: $turnex-spacing-24;
     cursor: pointer;
     transition: border-color 0.15s;
-    &:hover { border-color: $turnex-primary-300; }
+    &:hover { border-color: $turnex-primary-800; }
   }
 
   &__upload-icon {
@@ -94,7 +94,7 @@
     background: $turnex-white-50;
     box-sizing: border-box;
     transition: border-color 0.15s;
-    &:focus { outline: none; border-color: $turnex-primary-500; }
+    &:focus { outline: none; border-color: $turnex-primary-800; }
   }
 
   &__save-btn {
@@ -109,7 +109,7 @@
     cursor: pointer;
     margin-top: $turnex-spacing-8;
     transition: background 0.15s, opacity 0.15s;
-    &:hover:not(:disabled) { background: $turnex-primary-700; }
+    &:hover:not(:disabled) { background: $turnex-primary-900; }
     &:disabled { opacity: 0.45; cursor: not-allowed; }
   }
 }

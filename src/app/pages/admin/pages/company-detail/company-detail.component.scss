@@ -105,50 +105,30 @@
     }
   }
 
-  &__form {
+  &__info {
     display: flex;
     flex-direction: column;
-    gap: $turnex-spacing-16;
+    gap: $turnex-spacing-12;
   }
 
   &__field {
     display: flex;
     flex-direction: column;
-    gap: $turnex-spacing-4;
+    gap: 2px;
   }
 
   &__label {
     @include Rubik-Bold();
-    font-size: $turnex-spacing-14;
-    color: $turnex-alabaster-700;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
+    font-size: 12px;
+    color: $turnex-alabaster-500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
-  &__required {
+  &__value {
     @include Rubik();
-    font-size: 11px;
-    color: $turnex-alabaster-400;
-    font-weight: normal;
-  }
-
-  &__input {
-    width: 100%;
-    padding: $turnex-spacing-12 $turnex-spacing-14;
-    border: 1px solid $turnex-alabaster-200;
-    border-radius: $turnex-spacing-8;
     font-size: $turnex-spacing-16;
-    @include Rubik();
     color: $turnex-alabaster-800;
-    background: $turnex-white-50;
-    box-sizing: border-box;
-    transition: border-color 0.15s;
-
-    &:focus {
-      outline: none;
-      border-color: $turnex-primary-500;
-    }
   }
 
   // Profiles
@@ -172,12 +152,12 @@
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    background: $turnex-primary-100;
+    background: $turnex-primary-50;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: $turnex-spacing-20;
-    color: $turnex-primary-600;
+    color: $turnex-primary-800;
     flex-shrink: 0;
   }
 
@@ -223,7 +203,7 @@
       position: absolute;
 
       &:checked + .empresa-detail__toggle-slider {
-        background: $turnex-primary-600;
+        background: $turnex-primary-800;
 
         &::before { transform: translateX(20px); }
       }
@@ -296,7 +276,7 @@
 
   &__pack-chip {
     background: $turnex-primary-50;
-    color: $turnex-primary-700;
+    color: $turnex-primary-800;
     border: 1px solid $turnex-primary-100;
     border-radius: 20px;
     padding: 2px $turnex-spacing-10;
@@ -312,10 +292,10 @@
     gap: $turnex-spacing-8;
     width: 100%;
     padding: $turnex-spacing-14;
-    border: 2px dashed $turnex-primary-200;
+    border: 2px dashed $turnex-primary-300;
     border-radius: $turnex-spacing-12;
     background: $turnex-primary-50;
-    color: $turnex-primary-700;
+    color: $turnex-primary-800;
     font-size: $turnex-spacing-14;
     @include Rubik-Bold();
     cursor: pointer;
@@ -323,7 +303,7 @@
 
     &:hover {
       background: $turnex-primary-100;
-      border-color: $turnex-primary-400;
+      border-color: $turnex-primary-800;
     }
   }
 

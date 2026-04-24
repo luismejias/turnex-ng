@@ -29,6 +29,39 @@
     margin: 0;
   }
 
+  &__upload-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $turnex-spacing-8;
+    border: 2px dashed $turnex-alabaster-200;
+    border-radius: $turnex-spacing-12;
+    padding: $turnex-spacing-24;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    &:hover { border-color: $turnex-primary-800; }
+  }
+
+  &__upload-preview {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    border-radius: $turnex-spacing-8;
+  }
+
+  &__upload-icon {
+    font-size: 36px;
+    color: $turnex-alabaster-300;
+  }
+
+  &__upload-text {
+    font-size: $turnex-spacing-12;
+    @include Rubik();
+    color: $turnex-alabaster-400;
+    text-align: center;
+    margin: 0;
+  }
+
   &__form {
     display: flex;
     flex-direction: column;
@@ -38,7 +71,7 @@
   &__field {
     display: flex;
     flex-direction: column;
-    gap: $turnex-spacing-6;
+    gap: $turnex-spacing-4;
   }
 
   &__label {
@@ -68,71 +101,7 @@
     background: $turnex-white-50;
     box-sizing: border-box;
     transition: border-color 0.15s;
-    &:focus { outline: none; border-color: $turnex-primary-500; }
-  }
-
-  &__days {
-    display: flex;
-    flex-wrap: wrap;
-    gap: $turnex-spacing-8;
-  }
-
-  &__day-chip {
-    padding: $turnex-spacing-8 $turnex-spacing-12;
-    border-radius: 20px;
-    border: 1px solid $turnex-alabaster-200;
-    background: $turnex-white-50;
-    font-size: $turnex-spacing-14;
-    @include Rubik();
-    color: $turnex-alabaster-600;
-    cursor: pointer;
-    transition: background 0.15s, border-color 0.15s, color 0.15s;
-
-    &--selected {
-      background: $turnex-primary-800;
-      border-color: $turnex-primary-800;
-      color: #fff;
-    }
-  }
-
-  &__time-row {
-    display: flex;
-    gap: $turnex-spacing-12;
-  }
-
-  &__time-field {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: $turnex-spacing-4;
-  }
-
-  &__time-label {
-    font-size: $turnex-spacing-12;
-    @include Rubik();
-    color: $turnex-alabaster-500;
-  }
-
-  &__packs {
-    display: flex;
-    flex-direction: column;
-    gap: $turnex-spacing-10;
-  }
-
-  &__pack-check {
-    display: flex;
-    align-items: center;
-    gap: $turnex-spacing-10;
-    font-size: $turnex-spacing-14;
-    @include Rubik();
-    color: $turnex-alabaster-700;
-    cursor: pointer;
-
-    input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
-      accent-color: $turnex-primary-800;
-    }
+    &:focus { outline: none; border-color: $turnex-primary-800; }
   }
 
   &__save-btn {
@@ -147,7 +116,7 @@
     cursor: pointer;
     margin-top: $turnex-spacing-8;
     transition: background 0.15s, opacity 0.15s;
-    &:hover:not(:disabled) { background: $turnex-primary-700; }
+    &:hover:not(:disabled) { background: $turnex-primary-900; }
     &:disabled { opacity: 0.45; cursor: not-allowed; }
   }
 }

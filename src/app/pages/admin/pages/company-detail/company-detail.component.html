@@ -10,55 +10,55 @@
 
   <!-- Tabs -->
   <div class="empresa-detail__tabs">
-    <button class="empresa-detail__tab" [class.empresa-detail__tab--active]="activeTab === 'datos'"
-            (click)="setTab('datos')">Datos</button>
-    <button class="empresa-detail__tab" [class.empresa-detail__tab--active]="activeTab === 'perfiles'"
-            (click)="setTab('perfiles')">Perfiles</button>
-    <button class="empresa-detail__tab" [class.empresa-detail__tab--active]="activeTab === 'turnos'"
-            (click)="setTab('turnos')">Turnos</button>
+    <button class="empresa-detail__tab" [class.empresa-detail__tab--active]="activeTab === 'data'"
+            (click)="setTab('data')">Datos</button>
+    <button class="empresa-detail__tab" [class.empresa-detail__tab--active]="activeTab === 'profiles'"
+            (click)="setTab('profiles')">Perfiles</button>
+    <button class="empresa-detail__tab" [class.empresa-detail__tab--active]="activeTab === 'schedules'"
+            (click)="setTab('schedules')">Turnos</button>
     <button class="empresa-detail__tab" [class.empresa-detail__tab--active]="activeTab === 'settings'"
             (click)="setTab('settings')">Settings</button>
   </div>
 
-  <!-- Tab: Datos -->
-  @if (activeTab === 'datos') {
+  <!-- Tab: Data -->
+  @if (activeTab === 'data') {
     <div class="empresa-detail__body">
       <div class="empresa-detail__actions-top">
         <button class="empresa-detail__btn empresa-detail__btn--danger" (click)="deleteCompany()">
           <span class="fi fi-rr-trash"></span> Eliminar empresa
         </button>
-        <button class="empresa-detail__btn empresa-detail__btn--primary" (click)="saveCompanyData()">
+        <button class="empresa-detail__btn empresa-detail__btn--primary" (click)="editCompany()">
           <span class="fi fi-rr-edit"></span> Editar empresa
         </button>
       </div>
 
-      <div class="empresa-detail__form">
+      <div class="empresa-detail__info">
         <div class="empresa-detail__field">
-          <label class="empresa-detail__label">Nombre de la empresa <span class="empresa-detail__required">*Campo obligatorio</span></label>
-          <input class="empresa-detail__input" [(ngModel)]="company.name" placeholder="Nombre de la empresa" />
+          <span class="empresa-detail__label">Nombre de la empresa</span>
+          <span class="empresa-detail__value">{{ company.name }}</span>
         </div>
         <div class="empresa-detail__field">
-          <label class="empresa-detail__label">CUIT de la empresa <span class="empresa-detail__required">*Campo obligatorio</span></label>
-          <input class="empresa-detail__input" [(ngModel)]="company.cuit" placeholder="00-00000000-0" />
+          <span class="empresa-detail__label">CUIT</span>
+          <span class="empresa-detail__value">{{ company.cuit }}</span>
         </div>
         <div class="empresa-detail__field">
-          <label class="empresa-detail__label">Teléfono <span class="empresa-detail__required">*Campo obligatorio</span></label>
-          <input class="empresa-detail__input" [(ngModel)]="company.phone" placeholder="Teléfono" />
+          <span class="empresa-detail__label">Teléfono</span>
+          <span class="empresa-detail__value">{{ company.phone }}</span>
         </div>
         <div class="empresa-detail__field">
-          <label class="empresa-detail__label">Domicilio <span class="empresa-detail__required">*Campo obligatorio</span></label>
-          <input class="empresa-detail__input" [(ngModel)]="company.address" placeholder="Domicilio" />
+          <span class="empresa-detail__label">Domicilio</span>
+          <span class="empresa-detail__value">{{ company.address }}</span>
         </div>
         <div class="empresa-detail__field">
-          <label class="empresa-detail__label">Servicio que ofrece <span class="empresa-detail__required">*Campo obligatorio</span></label>
-          <input class="empresa-detail__input" [(ngModel)]="company.service" placeholder="Servicio" />
+          <span class="empresa-detail__label">Servicio que ofrece</span>
+          <span class="empresa-detail__value">{{ company.service }}</span>
         </div>
       </div>
     </div>
   }
 
-  <!-- Tab: Perfiles -->
-  @if (activeTab === 'perfiles') {
+  <!-- Tab: Profiles -->
+  @if (activeTab === 'profiles') {
     <div class="empresa-detail__body">
       @if (company.profiles.length === 0) {
         <div class="empresa-detail__empty">
@@ -104,8 +104,8 @@
     </div>
   }
 
-  <!-- Tab: Turnos -->
-  @if (activeTab === 'turnos') {
+  <!-- Tab: Schedules -->
+  @if (activeTab === 'schedules') {
     <div class="empresa-detail__body">
       @if (company.shifts.length === 0) {
         <div class="empresa-detail__empty">
