@@ -14,13 +14,13 @@
       <span class="fi fi-rr-home sidebar__icon"></span>
       Inicio
     </a>
-    <a class="sidebar__item" routerLink="/admin" routerLinkActive="sidebar__item--active"
+    <a class="sidebar__item" routerLink="/admin/companies" routerLinkActive="sidebar__item--active"
        [routerLinkActiveOptions]="{ exact: false }" (click)="close()"
-       [class.sidebar__item--active]="isEmpresasRoute">
+       [class.sidebar__item--active]="isCompaniesRoute">
       <span class="fi fi-rr-building sidebar__icon"></span>
       Empresas
     </a>
-    <a class="sidebar__item" routerLink="/admin/perfil" routerLinkActive="sidebar__item--active"
+    <a class="sidebar__item" routerLink="/admin/profile" routerLinkActive="sidebar__item--active"
        (click)="close()">
       <span class="fi fi-rr-user sidebar__icon"></span>
       Perfil

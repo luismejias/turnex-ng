@@ -1,6 +1,8 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 import { AppStateService } from 'src/app/app.state.service';
+import { ConfirmModalComponent } from 'src/app/shared/components/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'turnex-admin-sidebar',
@@ -14,9 +16,10 @@ export class AdminSidebarComponent {
 
   private appStateService = inject(AppStateService);
   private router = inject(Router);
+  private dialog = inject(MatDialog);
 
-  get isEmpresasRoute(): boolean {
-    return this.router.url.startsWith('/admin/empresas');
+  get isCompaniesRoute(): boolean {
+    return this.router.url.startsWith('/admin/companies');
   }
 
   close(): void {
@@ -24,6 +27,16 @@ export class AdminSidebarComponent {
   }
 
   logout(): void {
-    this.appStateService.logout();
+    this.close();
+    this.dialog.open(ConfirmModalComponent, {
+      data: {
+        title: 'Cerrar sesión',
+        message: '¿Confirmás que querés cerrar sesión?',
+        confirmText: 'Sí, cerrar sesión',
+        cancelText: 'Cancelar',
+      },
+    }).afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) this.appStateService.logout();
+    });
   }
 }
