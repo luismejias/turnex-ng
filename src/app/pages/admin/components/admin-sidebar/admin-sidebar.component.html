@@ -9,17 +9,24 @@
   </div>
 
   <nav class="sidebar__nav">
-    <a class="sidebar__item" routerLink="/admin" routerLinkActive="sidebar__item--active"
-       [routerLinkActiveOptions]="{ exact: true }" (click)="close()">
-      <span class="fi fi-rr-home sidebar__icon"></span>
-      Inicio
-    </a>
-    <a class="sidebar__item" routerLink="/admin/companies" routerLinkActive="sidebar__item--active"
-       [routerLinkActiveOptions]="{ exact: false }" (click)="close()"
-       [class.sidebar__item--active]="isCompaniesRoute">
-      <span class="fi fi-rr-building sidebar__icon"></span>
-      Empresas
-    </a>
+    @if (isSuperAdmin) {
+      <a class="sidebar__item" routerLink="/admin" routerLinkActive="sidebar__item--active"
+         [routerLinkActiveOptions]="{ exact: true }" (click)="close()">
+        <span class="fi fi-rr-home sidebar__icon"></span>
+        Inicio
+      </a>
+      <a class="sidebar__item" routerLink="/admin/companies" routerLinkActive="sidebar__item--active"
+         [class.sidebar__item--active]="isCompaniesRoute" (click)="close()">
+        <span class="fi fi-rr-building sidebar__icon"></span>
+        Empresas
+      </a>
+    } @else {
+      <a class="sidebar__item" [routerLink]="['/admin/companies', myCompanyId]"
+         routerLinkActive="sidebar__item--active" (click)="close()">
+        <span class="fi fi-rr-building sidebar__icon"></span>
+        Mi empresa
+      </a>
+    }
     <a class="sidebar__item" routerLink="/admin/profile" routerLinkActive="sidebar__item--active"
        (click)="close()">
       <span class="fi fi-rr-user sidebar__icon"></span>

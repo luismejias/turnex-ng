@@ -334,4 +334,99 @@
 
     p { margin: 0; font-size: $turnex-spacing-14; @include Rubik(); }
   }
+
+  &__btn--secondary {
+    background: $turnex-alabaster-100;
+    color: $turnex-primary-800;
+    border: 1px solid $turnex-primary-200;
+    &:hover { background: $turnex-primary-50; }
+  }
+
+  &__btn--sm {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+
+  &__user-shifts {
+    margin-top: $turnex-spacing-12;
+    border-top: 1px solid $turnex-alabaster-100;
+    padding-top: $turnex-spacing-12;
+    display: flex;
+    flex-direction: column;
+    gap: $turnex-spacing-8;
+  }
+
+  &__shifts-loading,
+  &__shifts-empty {
+    font-size: 13px;
+    color: $turnex-alabaster-400;
+    @include Rubik();
+  }
+
+  &__shift-row {
+    display: flex;
+    flex-direction: column;
+    gap: $turnex-spacing-6;
+    padding: $turnex-spacing-8 $turnex-spacing-12;
+    border-radius: 8px;
+    background: $turnex-alabaster-50;
+    border-left: 3px solid $turnex-primary-400;
+
+    &--canceled { border-left-color: #bf360c; opacity: 0.6; }
+    &--completed { border-left-color: #2e7d32; }
+  }
+
+  &__shift-info {
+    display: flex;
+    align-items: center;
+    gap: $turnex-spacing-12;
+    flex-wrap: wrap;
+  }
+
+  &__shift-specialty {
+    font-size: 13px;
+    font-weight: 600;
+    @include Rubik-Bold();
+  }
+
+  &__shift-datetime {
+    font-size: 13px;
+    color: $turnex-alabaster-600;
+    @include Rubik();
+  }
+
+  &__shift-status {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    @include Rubik();
+
+    &--next      { background: #e8f5e9; color: #2e7d32; }
+    &--completed { background: #e3f2fd; color: #1565c0; }
+    &--canceled  { background: #fbe9e7; color: #bf360c; }
+  }
+
+  &__shift-actions {
+    display: flex;
+    gap: $turnex-spacing-8;
+    flex-wrap: wrap;
+  }
+
+  &__reschedule-form {
+    display: flex;
+    gap: $turnex-spacing-8;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: $turnex-spacing-4;
+  }
+
+  &__input {
+    border: 1px solid $turnex-alabaster-200;
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 13px;
+    @include Rubik();
+    outline: none;
+    &:focus { border-color: $turnex-primary-400; }
+  }
 }

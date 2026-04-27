@@ -1,0 +1,87 @@
+@use 'variables' as *;
+
+.edit-specialty {
+  display: flex;
+  flex-direction: column;
+  gap: $turnex-spacing-20;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: $turnex-spacing-12;
+  }
+
+  &__back {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: $turnex-spacing-20;
+    color: $turnex-primary-800;
+    padding: 4px;
+    line-height: 1;
+  }
+
+  &__title {
+    @include Rubik-Bold();
+    font-size: $turnex-spacing-20;
+    color: $turnex-primary-800;
+    margin: 0;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: $turnex-spacing-16;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: $turnex-spacing-4;
+  }
+
+  &__label {
+    @include Rubik-Bold();
+    font-size: $turnex-spacing-14;
+    color: $turnex-alabaster-700;
+  }
+
+  &__req { color: $turnex-secondary-600; }
+
+  &__hint {
+    font-size: 12px;
+    color: $turnex-alabaster-400;
+    @include Rubik();
+  }
+
+  &__input {
+    width: 100%;
+    padding: $turnex-spacing-12 $turnex-spacing-14;
+    border: 1px solid $turnex-alabaster-200;
+    border-radius: $turnex-spacing-8;
+    font-size: $turnex-spacing-16;
+    @include Rubik();
+    color: $turnex-alabaster-800;
+    background: $turnex-white-50;
+    box-sizing: border-box;
+    transition: border-color 0.15s;
+
+    &:focus { outline: none; border-color: $turnex-primary-800; }
+  }
+
+  &__submit {
+    margin-top: $turnex-spacing-8;
+    padding: $turnex-spacing-14;
+    background: $turnex-primary-800;
+    color: #fff;
+    border: none;
+    border-radius: $turnex-spacing-12;
+    font-size: $turnex-spacing-16;
+    @include Rubik-Bold();
+    cursor: pointer;
+    transition: opacity 0.15s;
+
+    &:hover:not(:disabled) { opacity: 0.85; }
+    &:disabled { opacity: 0.5; cursor: not-allowed; }
+  }
+}

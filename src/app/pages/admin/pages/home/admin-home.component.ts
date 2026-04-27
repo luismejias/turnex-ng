@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AdminService } from '../../services/admin.service';
 import { AdminCompany } from '../../models/admin.models';
@@ -12,11 +12,18 @@ import { ConfirmModalComponent } from 'src/app/shared/components/confirm-modal/c
   templateUrl: './admin-home.component.html',
   styleUrl: './admin-home.component.scss',
 })
-export class AdminHomeComponent {
+export class AdminHomeComponent implements OnInit {
   private adminService = inject(AdminService);
   private authService = inject(AuthService);
   private router = inject(Router);
   private dialog = inject(MatDialog);
+
+  ngOnInit(): void {
+    const user = this.authService.getStoredUser();
+    if (user?.role === 'ADMIN' && user.companyId) {
+      this.router.navigate(['/admin/companies', user.companyId]);
+    }
+  }
 
   get companies(): AdminCompany[] {
     return this.adminService.getCompanies();

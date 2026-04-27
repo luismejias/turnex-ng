@@ -1,0 +1,49 @@
+@if (form) {
+<div class="edit-user">
+  <div class="edit-user__header">
+    <button class="edit-user__back" (click)="goBack()">
+      <span class="fi fi-rr-arrow-left"></span>
+    </button>
+    <h1 class="edit-user__title">Editar usuario</h1>
+  </div>
+
+  <form class="edit-user__form" [formGroup]="form" (ngSubmit)="save()">
+
+    <div class="edit-user__field">
+      <label class="edit-user__label" for="eu-name">Nombre <span class="edit-user__req">*</span></label>
+      <input id="eu-name" class="edit-user__input" formControlName="name" placeholder="Nombre" />
+    </div>
+
+    <div class="edit-user__field">
+      <label class="edit-user__label" for="eu-last">Apellido <span class="edit-user__req">*</span></label>
+      <input id="eu-last" class="edit-user__input" formControlName="lastName" placeholder="Apellido" />
+    </div>
+
+    <div class="edit-user__field">
+      <label class="edit-user__label" for="eu-email">Email <span class="edit-user__req">*</span></label>
+      <input id="eu-email" class="edit-user__input" type="email" formControlName="email" placeholder="email@ejemplo.com" />
+    </div>
+
+    <div class="edit-user__field">
+      <label class="edit-user__label" for="eu-role">Rol</label>
+      <select id="eu-role" class="edit-user__input" formControlName="role">
+        <option value="USER">Cliente</option>
+        <option value="ADMIN">Administrador</option>
+      </select>
+    </div>
+
+    <div class="edit-user__toggle-row">
+      <span class="edit-user__label">Usuario activo</span>
+      <label class="edit-user__toggle">
+        <input type="checkbox" formControlName="active" />
+        <span class="edit-user__toggle-slider"></span>
+      </label>
+    </div>
+
+    <button class="edit-user__submit" type="submit" [disabled]="form.invalid">
+      Guardar cambios
+    </button>
+
+  </form>
+</div>
+}

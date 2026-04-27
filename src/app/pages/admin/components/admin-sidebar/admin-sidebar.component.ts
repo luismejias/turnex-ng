@@ -2,6 +2,7 @@ import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { AppStateService } from 'src/app/app.state.service';
+import { AuthService } from 'src/app/shared/auth.service';
 import { ConfirmModalComponent } from 'src/app/shared/components/confirm-modal/confirm-modal.component';
 
 @Component({
@@ -15,8 +16,17 @@ export class AdminSidebarComponent {
   @Output() closed = new EventEmitter<void>();
 
   private appStateService = inject(AppStateService);
+  private authService = inject(AuthService);
   private router = inject(Router);
   private dialog = inject(MatDialog);
+
+  get isSuperAdmin(): boolean {
+    return this.authService.getStoredUser()?.role === 'SUPER_ADMIN';
+  }
+
+  get myCompanyId(): number | null {
+    return this.authService.getStoredUser()?.companyId ?? null;
+  }
 
   get isCompaniesRoute(): boolean {
     return this.router.url.startsWith('/admin/companies');

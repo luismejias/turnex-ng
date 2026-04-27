@@ -16,6 +16,10 @@
             (click)="setTab('profiles')">Perfiles</button>
     <button class="empresa-detail__tab" [class.empresa-detail__tab--active]="activeTab === 'schedules'"
             (click)="setTab('schedules')">Turnos</button>
+    <button class="empresa-detail__tab" [class.empresa-detail__tab--active]="activeTab === 'specialties'"
+            (click)="setTab('specialties')">Especialidades</button>
+    <button class="empresa-detail__tab" [class.empresa-detail__tab--active]="activeTab === 'users'"
+            (click)="setTab('users')">Usuarios</button>
     <button class="empresa-detail__tab" [class.empresa-detail__tab--active]="activeTab === 'settings'"
             (click)="setTab('settings')">Settings</button>
   </div>
@@ -144,6 +148,176 @@
       }
       <button class="empresa-detail__add-btn" (click)="addShift()">
         <span class="fi fi-rr-plus"></span> Agregar nuevo turno
+      </button>
+    </div>
+  }
+
+  <!-- Tab: Specialties -->
+  @if (activeTab === 'specialties') {
+    <div class="empresa-detail__body">
+      @if (loadingSpecialties) {
+        <div class="empresa-detail__empty"><p>Cargando especialidades...</p></div>
+      } @else if (!company.specialties.length) {
+        <div class="empresa-detail__empty">
+          <span class="fi fi-rr-star empresa-detail__empty-icon"></span>
+          <p>No hay especialidades registradas</p>
+        </div>
+      } @else {
+        @for (sp of company.specialties; track sp.id) {
+          <div class="empresa-detail__shift-card">
+            <div class="empresa-detail__shift-header">
+              <div class="empresa-detail__profile-info">
+                <p class="empresa-detail__shift-name">{{ sp.name }}</p>
+                @if (sp.description) {
+                  <p class="empresa-detail__profile-type">{{ sp.description }}</p>
+                }
+              </div>
+              <label class="empresa-detail__toggle">
+                <input type="checkbox" [checked]="sp.active" (change)="toggleSpecialtyActive(sp)" />
+                <span class="empresa-detail__toggle-slider"></span>
+              </label>
+            </div>
+            <div class="empresa-detail__shift-detail">
+              <span class="fi fi-rr-users"></span>
+              Capacidad por franja: <strong>{{ sp.capacity }} personas</strong>
+            </div>
+            @if (sp.schedule) {
+              <div class="empresa-detail__shift-detail">
+                <span class="fi fi-rr-calendar-days"></span>
+                {{ sp.schedule.name }} — {{ sp.schedule.days.join(', ') }}
+              </div>
+              <div class="empresa-detail__shift-detail">
+                <span class="fi fi-rr-clock"></span>
+                {{ sp.schedule.timeFrom }} – {{ sp.schedule.timeTo }} · {{ sp.schedule.periodicity }}
+              </div>
+            } @else {
+              <div class="empresa-detail__shift-detail">
+                <span class="fi fi-rr-exclamation"></span>
+                Sin horario asignado
+              </div>
+            }
+            <div class="empresa-detail__actions-row">
+              <button class="empresa-detail__btn empresa-detail__btn--danger" (click)="deleteSpecialty(sp)">
+                <span class="fi fi-rr-trash"></span> Eliminar
+              </button>
+              <button class="empresa-detail__btn empresa-detail__btn--primary" (click)="editSpecialty(sp)">
+                <span class="fi fi-rr-edit"></span> Editar
+              </button>
+            </div>
+          </div>
+        }
+      }
+      <button class="empresa-detail__add-btn" (click)="addSpecialty()">
+        <span class="fi fi-rr-plus"></span> Agregar nueva especialidad
+      </button>
+    </div>
+  }
+
+  <!-- Tab: Users -->
+  @if (activeTab === 'users') {
+    <div class="empresa-detail__body">
+      @if (loadingUsers) {
+        <div class="empresa-detail__empty">
+          <p>Cargando usuarios...</p>
+        </div>
+      } @else if (!company.users.length) {
+        <div class="empresa-detail__empty">
+          <span class="fi fi-rr-users empresa-detail__empty-icon"></span>
+          <p>No hay usuarios registrados</p>
+        </div>
+      } @else {
+        @for (user of company.users; track user.id) {
+          <div class="empresa-detail__profile-card">
+            <div class="empresa-detail__profile-top">
+              <div class="empresa-detail__profile-avatar">
+                <span class="fi fi-rr-user"></span>
+              </div>
+              <div class="empresa-detail__profile-info">
+                <p class="empresa-detail__profile-name">{{ user.name }} {{ user.lastName }}</p>
+                <p class="empresa-detail__profile-type">{{ roleLabel(user.role) }}</p>
+              </div>
+              <label class="empresa-detail__toggle">
+                <input type="checkbox" [checked]="user.active" (change)="toggleUserActive(user)" />
+                <span class="empresa-detail__toggle-slider"></span>
+              </label>
+            </div>
+            <div class="empresa-detail__profile-data">
+              <span class="fi fi-rr-envelope"></span> {{ user.email }}
+            </div>
+            <div class="empresa-detail__actions-row">
+              <button class="empresa-detail__btn empresa-detail__btn--danger" (click)="deleteUser(user)">
+                <span class="fi fi-rr-trash"></span> Eliminar
+              </button>
+              <button class="empresa-detail__btn empresa-detail__btn--primary" (click)="editUser(user)">
+                <span class="fi fi-rr-edit"></span> Editar
+              </button>
+              <button class="empresa-detail__btn empresa-detail__btn--secondary" (click)="toggleUserShifts(user)">
+                <span class="fi fi-rr-calendar"></span>
+                {{ expandedUserId === user.id ? 'Ocultar turnos' : 'Ver turnos' }}
+              </button>
+            </div>
+
+            @if (expandedUserId === user.id) {
+              <div class="empresa-detail__user-shifts">
+                @if (loadingShiftsFor === user.id) {
+                  <p class="empresa-detail__shifts-loading">Cargando turnos...</p>
+                } @else if (!userShiftsMap[user.id]?.length) {
+                  <p class="empresa-detail__shifts-empty">Este usuario no tiene turnos registrados.</p>
+                } @else {
+                  @for (shift of userShiftsMap[user.id]; track shift.id) {
+                    <div class="empresa-detail__shift-row"
+                         [class.empresa-detail__shift-row--canceled]="shift.status === 'CANCELED'"
+                         [class.empresa-detail__shift-row--completed]="shift.status === 'COMPLETED'">
+                      <div class="empresa-detail__shift-info">
+                        <span class="empresa-detail__shift-specialty">
+                          {{ shift.companySpecialty?.name ?? 'Especialidad' }}
+                        </span>
+                        <span class="empresa-detail__shift-datetime">
+                          {{ shift.date | date:'dd/MM/yyyy' }} — {{ shift.time }}
+                        </span>
+                        <span class="empresa-detail__shift-status empresa-detail__shift-status--{{ shift.status | lowercase }}">
+                          {{ shiftStatusLabel(shift.status) }}
+                        </span>
+                      </div>
+
+                      @if (shift.status === 'NEXT') {
+                        <div class="empresa-detail__shift-actions">
+                          <button class="empresa-detail__btn empresa-detail__btn--danger empresa-detail__btn--sm"
+                                  (click)="cancelUserShift(shift, user.id)">
+                            <span class="fi fi-rr-ban"></span> Cancelar
+                          </button>
+                          <button class="empresa-detail__btn empresa-detail__btn--primary empresa-detail__btn--sm"
+                                  (click)="openReschedule(shift)">
+                            <span class="fi fi-rr-calendar-clock"></span> Reagendar
+                          </button>
+                        </div>
+
+                        @if (rescheduleShiftId === shift.id) {
+                          <div class="empresa-detail__reschedule-form">
+                            <input type="date" class="empresa-detail__input" [(ngModel)]="rescheduleDate" />
+                            <input type="time" class="empresa-detail__input" [(ngModel)]="rescheduleTime" />
+                            <button class="empresa-detail__btn empresa-detail__btn--primary empresa-detail__btn--sm"
+                                    [disabled]="!rescheduleDate || !rescheduleTime"
+                                    (click)="submitReschedule(shift, user.id)">
+                              Confirmar
+                            </button>
+                            <button class="empresa-detail__btn empresa-detail__btn--sm"
+                                    (click)="rescheduleShiftId = null">
+                              Cancelar
+                            </button>
+                          </div>
+                        }
+                      }
+                    </div>
+                  }
+                }
+              </div>
+            }
+          </div>
+        }
+      }
+      <button class="empresa-detail__add-btn" (click)="addUser()">
+        <span class="fi fi-rr-plus"></span> Agregar nuevo usuario
       </button>
     </div>
   }
