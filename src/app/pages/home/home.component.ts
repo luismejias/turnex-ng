@@ -2,48 +2,41 @@ import { Component, inject, OnInit } from '@angular/core';
 
 import { ShiftCardComponent, TitleComponent } from 'src/app/components';
 import { TypeShifts } from '../shifts/shift.enum';
-import { SelectItemsComponent } from '../shifts/components';
-import { SpecialtyService } from '../specialty';
-import { Specialty, step } from 'src/app/models';
+import { SelectSpecialtyComponent } from '../shifts/components/select-specialty/select-specialty.component';
 import { Router } from '@angular/router';
 import { UserProfileService } from '../user-profile';
 import { Shift } from '../shifts/models';
 import { ShiftsService } from '../shifts/service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmModalComponent } from 'src/app/shared/components/confirm-modal/confirm-modal.component';
+import { AuthService } from 'src/app/shared/auth.service';
+import { AdminSpecialty } from '../admin/models/admin.models';
 
 @Component({
   selector: 'turnex-home',
-  imports: [TitleComponent, ShiftCardComponent, SelectItemsComponent],
+  imports: [TitleComponent, ShiftCardComponent, SelectSpecialtyComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  private specialtyService = inject(SpecialtyService);
+  private authService = inject(AuthService);
   private userProfileService = inject(UserProfileService);
   private readonly shiftsService = inject(ShiftsService);
   private readonly dialog = inject(MatDialog);
   private router = inject(Router);
+
   shifts!: Shift[];
   nextShift!: Shift | null;
   user!: string;
+  userCompanyId: number | undefined;
   typeShifts = TypeShifts;
-  specialties!: Specialty[];
   today = new Date();
-  step = step;
-  ngOnInit(): void {
-    this.getAllSpecialties();
-    const userData = this.userProfileService.getDataUser();
-    this.user = `¡Hola,  ${userData?.name ?? ''}!`;
-    this.getShifts();
-  }
 
-  getAllSpecialties(): void {
-    this.specialtyService
-      .getAllSpecialties()
-      .subscribe((specialties: Specialty[]) => {
-        this.specialties = specialties;
-      });
+  ngOnInit(): void {
+    this.userCompanyId = this.authService.getStoredUser()?.companyId ?? undefined;
+    const userData = this.userProfileService.getDataUser();
+    this.user = `¡Hola, ${userData?.name ?? ''}!`;
+    this.getShifts();
   }
 
   getShifts(): void {
@@ -62,11 +55,11 @@ export class HomeComponent implements OnInit {
         return shift;
       }
     }
-    return null; // No hay turnos disponibles con el status "next" después de la fecha actual
+    return null;
   }
 
-  goToNewShift(itemType: 'specialty', item: Specialty) {
-    this.router.navigate([`/shifts/newShift/${item.id}`]);
+  goToNewShift(sp: AdminSpecialty): void {
+    this.router.navigate([`/shifts/newShift/${sp.id}`]);
   }
 
   onCancelShift(shift: Shift): void {

@@ -7,3 +7,23 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+// ── Toast / SnackBar styles ───────────────────────────────────────────────────
+.toast--success .mdc-snackbar__surface {
+  background: #1e7e34 !important;
+  color: #fff !important;
+}
+.toast--error .mdc-snackbar__surface {
+  background: #c0392b !important;
+  color: #fff !important;
+}
+.toast--info .mdc-snackbar__surface {
+  background: #5f3caa !important;
+  color: #fff !important;
+}
+.toast--success .mat-mdc-snack-bar-label,
+.toast--error .mat-mdc-snack-bar-label,
+.toast--info .mat-mdc-snack-bar-label { color: #fff !important; }
+.toast--success .mat-mdc-button,
+.toast--error .mat-mdc-button,
+.toast--info .mat-mdc-button { color: rgba(255,255,255,0.7) !important; }
