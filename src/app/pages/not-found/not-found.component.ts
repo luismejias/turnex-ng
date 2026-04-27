@@ -22,7 +22,7 @@ export class NotFoundComponent implements OnInit {
   goToHome(): void {
     this.appStateService.set('isChildFlow', false);
     const user = this.authService.getStoredUser();
-    const destination = user?.role === 'SUPER_ADMIN' ? '/admin' : '/home';
+    const destination = (user?.role === 'SUPER_ADMIN' || user?.role === 'ADMIN') ? '/admin' : '/home';
     this.router.navigate([destination]);
   }
 }

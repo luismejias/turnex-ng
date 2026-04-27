@@ -16,9 +16,9 @@ function signToken(userId: number, email: string): string {
   });
 }
 
-function sanitizeUser(user: { id: number; name: string; lastName: string; email: string; role: string; active: boolean; termAndConditions: boolean; createdAt: Date }) {
-  const { id, name, lastName, email, role, active, termAndConditions, createdAt } = user;
-  return { id, name, lastName, email, role, active, termAndConditions, createdAt };
+function sanitizeUser(user: { id: number; name: string; lastName: string; email: string; role: string; active: boolean; termAndConditions: boolean; createdAt: Date; companyId?: number | null }) {
+  const { id, name, lastName, email, role, active, termAndConditions, createdAt, companyId } = user;
+  return { id, name, lastName, email, role, active, termAndConditions, createdAt, companyId: companyId ?? null };
 }
 
 export async function register(dto: RegisterDto) {

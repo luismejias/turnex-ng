@@ -1,4 +1,4 @@
-export type UserRole = 'USER' | 'SUPER_ADMIN';
+export type UserRole = 'USER' | 'ADMIN' | 'SUPER_ADMIN';
 
 export interface User {
   id: number,
@@ -9,6 +9,7 @@ export interface User {
   role: UserRole,
   active: boolean,
   termAndConditions: boolean,
+  companyId?: number | null,
   createdAt?: string,
 }
 
