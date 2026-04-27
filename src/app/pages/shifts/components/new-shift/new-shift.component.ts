@@ -36,6 +36,11 @@ import { forkJoin } from 'rxjs';
   styleUrl: './new-shift.component.scss',
   providers: [NewShiftStateService],
 })
+/**
+ * Componente principal del wizard de creación de nuevo turno.
+ * Orquesta los pasos: 1-Especialidad, 2-Pack, 3-Día, 4-Horario, 5-Confirmación, 6-Resultado.
+ * Omite el paso 2 si el usuario ya tiene un pack activo.
+ */
 export class NewShiftComponent implements OnInit {
   private newShiftStateService = inject(NewShiftStateService);
   private router = inject(Router);
@@ -43,25 +48,39 @@ export class NewShiftComponent implements OnInit {
   private shiftsService = inject(ShiftsService);
   private authService = inject(AuthService);
 
+  /** ID de la especialidad de empresa preseleccionada (pasado como ruta param). */
   @Input() idSpecialty!: string;
+  /** ID del pack a preseleccionar (pasado como query param desde historial). */
   @Input() packId?: string;
 
+  /** Título principal del paso actual. */
   title: string = '';
+  /** Subtítulo descriptivo del paso actual. */
   subTitle: string = '';
+  /** Etiqueta del botón de avance. */
   nextButtonText: string = 'Siguiente';
+  /** Etiqueta del botón de retroceso. */
   previousButtonText: string = 'Anterior';
+  /** Indica si ocurrió un error al guardar los turnos en el paso 6. */
   errorOnSave: boolean = false;
+  /** Enum de pasos del wizard, expuesto al template. */
   step = step;
+  /** Controla si el botón "Siguiente" está deshabilitado. */
   isNextButtonDisabled: boolean = true;
+  /** Copia mutable de los días de la semana para gestionar la selección. */
   daysOfWeek: Day[] = daysOfWeek.map(d => ({ ...d }));
   selectedDays!: Day[];
   selectedDaysWithSelectedTimes!: Record<string, Hour[]>;
   hours: Hour[] = [];
+  /** Estado actual del wizard, sincronizado con la señal de {@link NewShiftStateService}. */
   state!: NewShiftState;
+  /** Lista de packs disponibles, cargados en `ngOnInit`. */
   packs!: Pack[];
+  /** ID de empresa del usuario autenticado (null para SUPER_ADMIN). */
   userCompanyId: number | undefined;
+  /** ID de la especialidad de empresa seleccionada. */
   selectedSpecialtyId: number | undefined;
-  /** Pack the user already has from their active shifts — skips pack-selection step */
+  /** Pack que el usuario ya tiene activo — omite el paso de selección de pack. */
   userActivePack: Pack | undefined;
 
   constructor() {
@@ -100,18 +119,29 @@ export class NewShiftComponent implements OnInit {
     });
   }
 
+  /**
+   * Actualiza el paso actual en el estado del wizard.
+   * @param step - Número de paso de destino.
+   */
   updateStep(step: number): void {
     this.newShiftStateService.set('step', step);
   }
 
+  /** Paso actualmente activo del wizard (lectura desde la señal). */
   get $step() {
     return this.newShiftStateService.state().step;
   }
 
+  /** Navega a la pantalla de lista de turnos del usuario. */
   goToShifts() {
     this.router.navigate(['/shifts']);
   }
 
+  /**
+   * Manejador del evento de selección de especialidad desde `SelectSpecialtyComponent`.
+   * Guarda la especialidad en el estado y avanza automáticamente si hay un pack activo.
+   * @param sp - Especialidad de empresa seleccionada.
+   */
   onSpecialtySelected(sp: AdminSpecialty): void {
     this.selectedSpecialtyId = sp.id;
     this.newShiftStateService.set('companySpecialty', sp);
@@ -138,6 +168,10 @@ export class NewShiftComponent implements OnInit {
     this.updateStep(id === 4 ? 4 : 3);
   }
 
+  /**
+   * Recalcula si el botón "Siguiente" debe estar habilitado según el paso actual
+   * y el estado del wizard. Llamado desde el `effect()` del constructor.
+   */
   validateNextButton(): void {
     switch (this.$step) {
       case 1: this.isNextButtonDisabled = !this._companySpecialty; break;
@@ -150,6 +184,7 @@ export class NewShiftComponent implements OnInit {
     }
   }
 
+  /** Actualiza título, subtítulo y texto del botón según el paso actual. */
   setTitleSubtitle(): void {
     switch (this.$step) {
       case 1:
@@ -266,6 +301,10 @@ export class NewShiftComponent implements OnInit {
     }
   }
 
+  /**
+   * Envía los turnos seleccionados al backend.
+   * Si la petición falla, marca `errorOnSave = true` antes de avanzar al paso 6.
+   */
   saveShifts(): void {
     this.shiftsService.saveShifts(this.state).subscribe({
       next: () => { this.errorOnSave = false; this.updateStep(6); },
@@ -281,6 +320,10 @@ export class NewShiftComponent implements OnInit {
     return this.packs?.find(pack => pack.isSelected);
   }
 
+  /**
+   * Número máximo de días que el usuario puede seleccionar para el pack activo.
+   * Calculado a partir de `classCount` o del número en `description`, limitado a 7.
+   */
   get packMaxDays(): number {
     const pack = this._pack;
     if (!pack) return 1;
@@ -288,14 +331,17 @@ export class NewShiftComponent implements OnInit {
     return Math.min(count, 7);
   }
 
+  /** Días de la semana configurados en el horario de la especialidad seleccionada. */
   get scheduleDays(): string[] {
     return this._companySpecialty?.schedule?.days ?? [];
   }
 
+  /** Hora de inicio del horario de la especialidad en formato HH:MM (por defecto "08:00"). */
   get scheduleStartTime(): string {
     return this._parseTime(this._companySpecialty?.schedule?.timeFrom) ?? '08:00';
   }
 
+  /** Intervalo en minutos entre slots del horario de la especialidad (por defecto 60). */
   get scheduleInterval(): number {
     const p = this._companySpecialty?.schedule?.periodicity;
     if (!p) return 60;
@@ -303,6 +349,7 @@ export class NewShiftComponent implements OnInit {
     return match ? parseInt(match[1], 10) : 60;
   }
 
+  /** Cantidad de horas de rango entre la hora de inicio y fin del horario (por defecto 8). */
   get scheduleHoursCount(): number {
     const sp = this._companySpecialty?.schedule;
     if (!sp) return 8;

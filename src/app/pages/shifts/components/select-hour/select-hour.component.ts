@@ -12,6 +12,7 @@ import { catchError } from 'rxjs/operators';
 import { ShiftsService } from '../../service';
 import { TypeShifts } from '../../shift.enum';
 
+/** Mapa de nombre de día → lista de horarios, usado internamente por `SelectHourComponent`. */
 export interface TimesByDay { [key: string]: Hour[]; }
 
 @Component({
@@ -20,23 +21,42 @@ export interface TimesByDay { [key: string]: Hour[]; }
   templateUrl: './select-hour.component.html',
   styleUrl: './select-hour.component.scss',
 })
+/**
+ * Componente de selección de horarios (paso 4 del wizard de nuevo turno).
+ * Carga la disponibilidad real desde el backend y marca los slots ya reservados
+ * por el usuario para evitar duplicados. Soporta modo week-pager (pack 4).
+ */
 export class SelectHourComponent implements OnInit {
+  /** Cantidad de horas de rango del horario de la especialidad. */
   @Input({ required: true }) hoursCount!: number;
+  /** Intervalo en minutos entre cada slot de horario. */
   @Input({ required: true }) interval!: number;
+  /** Hora de inicio del horario en formato HH:MM. */
   @Input({ required: true }) startTime!: string;
 
   private newShiftStateService = inject(NewShiftStateService);
   private availabilityService = inject(AvailabilityService);
   private shiftsService = inject(ShiftsService);
 
+  /** `true` cuando el pack activo es el pack 4 (clase suelta) y se muestra el week-pager. */
   weekPagerIsVisible = false;
+  /** `true` mientras se espera la respuesta del endpoint de disponibilidad. */
   loadingAvailability = false;
+  /** Días seleccionados en el paso anterior (para packs regulares). */
   selectedDays: Day[] = [];
+  /** Mapa de día → lista de horarios con disponibilidad y selección. */
   selectedDaysWithTimes!: Record<string, Hour[]>;
+  /** Mapa de nombre de día → fecha ISO concreta (usado en modo week-pager). */
   dayDates: Record<string, string> = {};
+  /** Lista base de horarios generados a partir de `startTime`, `interval` y `hoursCount`. */
   hours!: Hour[];
   step = step;
+  /** Pack activo del usuario (leído desde el estado del wizard). */
   pack!: Pack | undefined;
+  /**
+   * Set de claves compuestas para detectar turnos ya reservados en O(1).
+   * Formato: `date|YYYY-MM-DD|HH:MM` (week-pager) o `day|NombreDia|HH:MM` (regular).
+   */
   private bookedTimes = new Set<string>();
 
   ngOnInit(): void {
