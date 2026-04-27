@@ -31,8 +31,8 @@ export class CreateScheduleComponent {
 
   form: FormGroup = this.fb.group({
     name:        ['', Validators.required],
-    timeFrom:    ['8:00 hs'],
-    timeTo:      ['18:00 hs'],
+    timeFrom:    ['08:00', Validators.required],
+    timeTo:      ['18:00', Validators.required],
     periodicity: ['Cada 30 minutos'],
   });
 
