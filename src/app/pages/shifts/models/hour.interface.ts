@@ -1,5 +1,8 @@
 export interface Hour {
   date?: string;
   description: string;
-  isSelected: boolean
+  isSelected: boolean;
+  available?: number;
+  capacity?: number;
+  alreadyBooked?: boolean;
 }

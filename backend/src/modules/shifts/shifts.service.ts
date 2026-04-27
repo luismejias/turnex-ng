@@ -12,6 +12,13 @@ function createAppError(message: string, statusCode: number) {
 }
 
 export async function getShifts(userId: number) {
+  // Auto-complete any NEXT shift whose time is within 1 hour or already past
+  const cutoff = new Date(Date.now() + 60 * 60 * 1000);
+  await prisma.shift.updateMany({
+    where: { userId, status: ShiftStatus.NEXT, date: { lte: cutoff } },
+    data: { status: ShiftStatus.COMPLETED },
+  });
+
   return prisma.shift.findMany({
     where: { userId },
     include: { pack: true, specialty: true },
@@ -24,7 +31,7 @@ export async function createShifts(userId: number, dto: CreateShiftsDto) {
   if (!pack) throw createAppError('Pack not found', 404);
 
   const shiftsToCreate: {
-    userId: number; packId: number; specialtyId: number;
+    userId: number; packId: number; specialtyId?: number; companySpecialtyId?: number;
     day: string; date: Date; time: string; status: ShiftStatus;
   }[] = [];
 
@@ -43,7 +50,7 @@ export async function createShifts(userId: number, dto: CreateShiftsDto) {
         const shiftDate = new Date(date);
         shiftDate.setHours(h, m, 0, 0);
         shiftsToCreate.push({
-          userId, packId: dto.packId, specialtyId: dto.specialtyId,
+          userId, packId: dto.packId, specialtyId: dto.specialtyId, companySpecialtyId: dto.companySpecialtyId,
           day: dayName, date: shiftDate, time: hour.description,
           status: ShiftStatus.NEXT,
         });
@@ -75,7 +82,7 @@ export async function createShifts(userId: number, dto: CreateShiftsDto) {
           const shiftDate = new Date(date);
           shiftDate.setHours(h, m, 0, 0);
           shiftsToCreate.push({
-            userId, packId: dto.packId, specialtyId: dto.specialtyId,
+            userId, packId: dto.packId, specialtyId: dto.specialtyId, companySpecialtyId: dto.companySpecialtyId,
             day: dayName, date: shiftDate, time: hour.description,
             status: ShiftStatus.NEXT,
           });

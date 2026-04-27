@@ -13,8 +13,14 @@ import { NgClass } from '@angular/common';
 })
 export class SelectDayComponent {
   @Input({ required: true }) maxDays!: number;
+  @Input() availableDays: string[] = [];
 
   daysOfWeek: Day[] = daysOfWeek.map(d => ({ ...d }));
+
+  get filteredDaysOfWeek(): Day[] {
+    if (!this.availableDays.length) return this.daysOfWeek;
+    return this.daysOfWeek.filter(d => this.availableDays.includes(d.description));
+  }
   step = step;
 
   constructor(private newShiftStateService: NewShiftStateService) {}

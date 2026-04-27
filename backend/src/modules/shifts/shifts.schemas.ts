@@ -2,7 +2,8 @@ import { z } from 'zod';
 
 export const createShiftsSchema = z.object({
   packId: z.number().int().positive(),
-  specialtyId: z.number().int().positive(),
+  specialtyId: z.number().int().positive().optional(),
+  companySpecialtyId: z.number().int().positive().optional(),
   hours: z.record(
     z.string(),
     z.array(z.object({ description: z.string(), isSelected: z.boolean() }))
