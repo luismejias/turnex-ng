@@ -13,17 +13,26 @@ enum ShiftStatus {
   CANCELED
 }
 
+enum UserRole {
+  USER
+  ADMIN
+  SUPER_ADMIN
+}
+
 model User {
   id                Int      @id @default(autoincrement())
   name              String
   lastName          String
   email             String   @unique
   password          String
+  role              UserRole @default(USER)
   active            Boolean  @default(true)
   termAndConditions Boolean  @default(false)
+  companyId         Int?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
   shifts            Shift[]
+  company           Company? @relation(fields: [companyId], references: [id], onDelete: SetNull)
 
   @@map("users")
 }
@@ -50,20 +59,88 @@ model Specialty {
 }
 
 model Shift {
-  id          Int         @id @default(autoincrement())
-  userId      Int
-  packId      Int?
-  specialtyId Int?
-  day         String
-  date        DateTime
-  time        String
-  status      ShiftStatus @default(NEXT)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  id                 Int         @id @default(autoincrement())
+  userId             Int
+  packId             Int?
+  specialtyId        Int?
+  companySpecialtyId Int?
+  day                String
+  date               DateTime
+  time               String
+  status             ShiftStatus @default(NEXT)
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
 
-  user      User       @relation(fields: [userId], references: [id])
-  pack      Pack?      @relation(fields: [packId], references: [id])
-  specialty Specialty? @relation(fields: [specialtyId], references: [id])
+  user             User              @relation(fields: [userId], references: [id])
+  pack             Pack?             @relation(fields: [packId], references: [id])
+  specialty        Specialty?        @relation(fields: [specialtyId], references: [id])
+  companySpecialty CompanySpecialty? @relation(fields: [companySpecialtyId], references: [id])
 
   @@map("shifts")
+}
+
+model Company {
+  id        Int               @id @default(autoincrement())
+  name      String
+  cuit      String
+  phone     String
+  address   String
+  service   String
+  logo      String?
+  active    Boolean           @default(true)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  profiles    CompanyProfile[]
+  schedules   CompanySchedule[]
+  specialties CompanySpecialty[]
+  users       User[]
+
+  @@map("companies")
+}
+
+model CompanyProfile {
+  id        Int     @id @default(autoincrement())
+  companyId Int
+  type      String  @default("Administrador")
+  name      String
+  lastName  String
+  phone     String
+  email     String
+  active    Boolean @default(true)
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@map("company_profiles")
+}
+
+model CompanySchedule {
+  id          Int      @id @default(autoincrement())
+  companyId   Int
+  name        String
+  days        String[]
+  timeFrom    String
+  timeTo      String
+  periodicity String
+  packs       String[]
+
+  company     Company            @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  specialties CompanySpecialty[]
+
+  @@map("company_schedules")
+}
+
+model CompanySpecialty {
+  id          Int              @id @default(autoincrement())
+  companyId   Int
+  scheduleId  Int?
+  name        String
+  description String?
+  capacity    Int              @default(10)
+  active      Boolean          @default(true)
+
+  company  Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  schedule CompanySchedule? @relation(fields: [scheduleId], references: [id], onDelete: SetNull)
+  shifts   Shift[]
+
+  @@map("company_specialties")
 }

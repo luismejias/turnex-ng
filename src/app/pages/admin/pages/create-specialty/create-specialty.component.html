@@ -1,0 +1,43 @@
+<div class="create-specialty">
+  <div class="create-specialty__header">
+    <button class="create-specialty__back" (click)="goBack()">
+      <span class="fi fi-rr-arrow-left"></span>
+    </button>
+    <h1 class="create-specialty__title">Nueva especialidad</h1>
+  </div>
+
+  <form class="create-specialty__form" [formGroup]="form" (ngSubmit)="save()">
+
+    <div class="create-specialty__field">
+      <label class="create-specialty__label" for="cs-name">Nombre <span class="create-specialty__req">*</span></label>
+      <input id="cs-name" class="create-specialty__input" formControlName="name" placeholder="Ej: Yoga, Pilates, Crossfit" />
+    </div>
+
+    <div class="create-specialty__field">
+      <label class="create-specialty__label" for="cs-desc">Descripción</label>
+      <input id="cs-desc" class="create-specialty__input" formControlName="description" placeholder="Descripción opcional" />
+    </div>
+
+    <div class="create-specialty__field">
+      <label class="create-specialty__label" for="cs-cap">Capacidad por franja horaria <span class="create-specialty__req">*</span></label>
+      <input id="cs-cap" class="create-specialty__input" type="number" min="1" formControlName="capacity" placeholder="Ej: 10" />
+      <span class="create-specialty__hint">Máximo de personas que pueden reservar el mismo horario</span>
+    </div>
+
+    <div class="create-specialty__field">
+      <label class="create-specialty__label" for="cs-sched">Horario vinculado</label>
+      <select id="cs-sched" class="create-specialty__input" formControlName="scheduleId">
+        <option [value]="null">Sin horario</option>
+        @for (s of schedules; track s.id) {
+          <option [value]="s.id">{{ s.name }} ({{ s.timeFrom }} – {{ s.timeTo }})</option>
+        }
+      </select>
+      <span class="create-specialty__hint">El horario define las franjas disponibles para reservar</span>
+    </div>
+
+    <button class="create-specialty__submit" type="submit" [disabled]="form.invalid">
+      Crear especialidad
+    </button>
+
+  </form>
+</div>

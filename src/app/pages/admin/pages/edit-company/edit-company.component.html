@@ -1,0 +1,46 @@
+<div class="edit-form">
+  <div class="edit-form__header">
+    <button class="edit-form__back" (click)="goBack()"><span class="fi fi-rr-arrow-left"></span></button>
+    <h1 class="edit-form__title">Editar empresa</h1>
+  </div>
+
+  <label class="edit-form__upload-area" for="ee-logo-input">
+    @if (logoPreview) {
+      <img [src]="logoPreview" class="edit-form__upload-preview" alt="Logo" />
+      <p class="edit-form__upload-text">Click para cambiar</p>
+    } @else {
+      <span class="fi fi-rr-picture edit-form__upload-icon"></span>
+      <p class="edit-form__upload-text">
+        {{ uploading ? 'Subiendo...' : 'Cambiar logo de la empresa PNG, JPG o SVG (máximo 5 MB)' }}
+      </p>
+    }
+    <input id="ee-logo-input" type="file" accept="image/png,image/jpeg,image/svg+xml,image/webp"
+           (change)="onLogoSelected($event)" style="display:none" />
+  </label>
+
+  @if (form) {
+    <form class="edit-form__form" [formGroup]="form" (ngSubmit)="save()">
+      <div class="edit-form__field">
+        <label class="edit-form__label" for="ee-name">Nombre de la empresa <span class="edit-form__required">*Campo obligatorio</span></label>
+        <input id="ee-name" class="edit-form__input" formControlName="name" />
+      </div>
+      <div class="edit-form__field">
+        <label class="edit-form__label" for="ee-cuit">CUIT de la empresa <span class="edit-form__required">*Campo obligatorio</span></label>
+        <input id="ee-cuit" class="edit-form__input" formControlName="cuit" />
+      </div>
+      <div class="edit-form__field">
+        <label class="edit-form__label" for="ee-phone">Teléfono <span class="edit-form__required">*Campo obligatorio</span></label>
+        <input id="ee-phone" class="edit-form__input" formControlName="phone" />
+      </div>
+      <div class="edit-form__field">
+        <label class="edit-form__label" for="ee-address">Domicilio <span class="edit-form__required">*Campo obligatorio</span></label>
+        <input id="ee-address" class="edit-form__input" formControlName="address" />
+      </div>
+      <div class="edit-form__field">
+        <label class="edit-form__label" for="ee-service">Servicio que ofrece <span class="edit-form__required">*Campo obligatorio</span></label>
+        <input id="ee-service" class="edit-form__input" formControlName="service" />
+      </div>
+      <button class="edit-form__save-btn" type="submit" [disabled]="form.invalid">Guardar cambios</button>
+    </form>
+  }
+</div>

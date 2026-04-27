@@ -1,0 +1,22 @@
+<div class="admin-perfil">
+  <h1 class="admin-perfil__title">Perfil</h1>
+
+  <div class="admin-perfil__avatar">
+    <span class="fi fi-rr-user"></span>
+  </div>
+
+  <div class="admin-perfil__form">
+    <div class="admin-perfil__field">
+      <label class="admin-perfil__label" for="ap-name">Nombre</label>
+      <input id="ap-name" class="admin-perfil__input" [value]="user?.name ?? ''" readonly />
+    </div>
+    <div class="admin-perfil__field">
+      <label class="admin-perfil__label" for="ap-lastName">Apellido</label>
+      <input id="ap-lastName" class="admin-perfil__input" [value]="user?.lastName ?? ''" readonly />
+    </div>
+    <div class="admin-perfil__field">
+      <label class="admin-perfil__label" for="ap-email">Correo electrónico</label>
+      <input id="ap-email" class="admin-perfil__input" [value]="user?.email ?? ''" type="email" readonly />
+    </div>
+  </div>
+</div>

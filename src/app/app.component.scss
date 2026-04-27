@@ -1,25 +1,40 @@
 @use 'variables' as *;
+
 .app {
   display: flex;
   flex-direction: column;
   padding: $turnex-spacing-6 104px;
+
   &__principal-content {
-		margin-top: 90px;
-		background-color: #fff !important;
-	}
+    margin-top: 90px;
+    background-color: #fff !important;
+  }
 
   &__bottom-bar {
     display: none;
+  }
+
+  // Admin overrides — remove all user-layout spacing
+  &--admin {
+    padding: 0 !important;
+
+    .app__principal-content {
+      margin-top: 0 !important;
+      padding: 0 !important;
+      background-color: transparent !important;
+    }
   }
 }
 
 @media (max-width: $turnex-breakpoint-xs) {
   .app {
     padding: 0;
+
     &__principal-content {
       padding: $turnex-spacing-18;
       margin-top: 60px;
     }
+
     &__navbar {
       display: block;
     }

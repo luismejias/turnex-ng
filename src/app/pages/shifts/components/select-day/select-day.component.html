@@ -5,7 +5,7 @@
   </div>
 
   <div class="select-day__grid">
-    @for (day of daysOfWeek; track day.description) {
+    @for (day of filteredDaysOfWeek; track day.description) {
       <div
         class="select-day__card-day"
         [ngClass]="{ 'select-day__card-day-selected': day.isSelected }"

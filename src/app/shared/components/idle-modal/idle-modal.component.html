@@ -1,0 +1,23 @@
+<div class="idle-modal">
+  <div class="idle-modal__icon">
+    <span class="fi fi-rr-time-past"></span>
+  </div>
+
+  <h2 mat-dialog-title class="idle-modal__title">¿Seguís ahí?</h2>
+
+  <mat-dialog-content class="idle-modal__content">
+    <p class="idle-modal__message">
+      Tu sesión se cerrará automáticamente por inactividad en
+    </p>
+    <span class="idle-modal__countdown">{{ countdown }}s</span>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="idle-modal__actions">
+    <button class="idle-modal__btn idle-modal__btn--logout" (click)="logout()">
+      Cerrar sesión
+    </button>
+    <button class="idle-modal__btn idle-modal__btn--stay" (click)="stay()">
+      Seguir conectado
+    </button>
+  </mat-dialog-actions>
+</div>

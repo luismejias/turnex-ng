@@ -20,7 +20,6 @@ export class WeekPagerComponent implements OnInit {
   week!: string;
   ngOnInit(): void {
     this.week = this.getCurrentWeek();
-    this.currentWeekEmit();
   }
 
   nextWeek() {

@@ -1,0 +1,52 @@
+@if (form) {
+<div class="edit-specialty">
+  <div class="edit-specialty__header">
+    <button class="edit-specialty__back" (click)="goBack()">
+      <span class="fi fi-rr-arrow-left"></span>
+    </button>
+    <h1 class="edit-specialty__title">Editar especialidad</h1>
+  </div>
+
+  <form class="edit-specialty__form" [formGroup]="form" (ngSubmit)="save()">
+
+    <div class="edit-specialty__field">
+      <label class="edit-specialty__label" for="es-name">Nombre <span class="edit-specialty__req">*</span></label>
+      <input id="es-name" class="edit-specialty__input" formControlName="name" placeholder="Ej: Yoga, Pilates" />
+    </div>
+
+    <div class="edit-specialty__field">
+      <label class="edit-specialty__label" for="es-desc">Descripción</label>
+      <input id="es-desc" class="edit-specialty__input" formControlName="description" placeholder="Descripción opcional" />
+    </div>
+
+    <div class="edit-specialty__field">
+      <label class="edit-specialty__label" for="es-cap">Capacidad por franja horaria <span class="edit-specialty__req">*</span></label>
+      <input id="es-cap" class="edit-specialty__input" type="number" min="1" formControlName="capacity" />
+      <span class="edit-specialty__hint">Máximo de personas que pueden reservar el mismo horario</span>
+    </div>
+
+    <div class="edit-specialty__field">
+      <label class="edit-specialty__label" for="es-sched">Horario vinculado</label>
+      <select id="es-sched" class="edit-specialty__input" formControlName="scheduleId">
+        <option [value]="null">Sin horario</option>
+        @for (s of schedules; track s.id) {
+          <option [value]="s.id">{{ s.name }} ({{ s.timeFrom }} – {{ s.timeTo }})</option>
+        }
+      </select>
+    </div>
+
+    <div class="edit-specialty__toggle-row">
+      <span class="edit-specialty__label">Especialidad activa</span>
+      <label class="edit-specialty__toggle">
+        <input type="checkbox" formControlName="active" />
+        <span class="edit-specialty__toggle-slider"></span>
+      </label>
+    </div>
+
+    <button class="edit-specialty__submit" type="submit" [disabled]="form.invalid">
+      Guardar cambios
+    </button>
+
+  </form>
+</div>
+}

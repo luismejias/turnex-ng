@@ -8,8 +8,10 @@ import { RegisterComponent } from "./pages/register/register.component";
 import { authGuard } from "./guards/auth.guard";
 import { NotFoundComponent } from "./pages/not-found/not-found.component";
 import { UserProfileComponent } from "./pages/user-profile/user-profile.component";
+import { adminRoutes } from "./pages/admin/admin.routes";
 
 export const routes: Routes = [
+  ...adminRoutes,
   {
     path: 'login',
     component: LoginComponent,

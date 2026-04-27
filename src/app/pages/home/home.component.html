@@ -14,9 +14,12 @@
   <div class="home__detail-box-title home__detail-box-title-2">
     Agenda un nuevo turno
   </div>
-  <turnex-select-items
-    [items]="specialties"
-    (itemSelected)="
-      goToNewShift(this.step.SPECIALTY, $event)
-    "></turnex-select-items>
+  @if (userCompanyId) {
+    <turnex-select-specialty
+      [companyId]="userCompanyId"
+      (specialtySelected)="goToNewShift($event)">
+    </turnex-select-specialty>
+  } @else {
+    <p class="home__no-company">No tenés una sede asignada. Contactá a tu administrador.</p>
+  }
 </div>

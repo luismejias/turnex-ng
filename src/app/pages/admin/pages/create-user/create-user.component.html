@@ -1,0 +1,44 @@
+<div class="create-user">
+  <div class="create-user__header">
+    <button class="create-user__back" (click)="goBack()">
+      <span class="fi fi-rr-arrow-left"></span>
+    </button>
+    <h1 class="create-user__title">Nuevo usuario</h1>
+  </div>
+
+  <form class="create-user__form" [formGroup]="form" (ngSubmit)="save()">
+
+    <div class="create-user__field">
+      <label class="create-user__label" for="cu-name">Nombre <span class="create-user__req">*</span></label>
+      <input id="cu-name" class="create-user__input" formControlName="name" placeholder="Nombre" />
+    </div>
+
+    <div class="create-user__field">
+      <label class="create-user__label" for="cu-last">Apellido <span class="create-user__req">*</span></label>
+      <input id="cu-last" class="create-user__input" formControlName="lastName" placeholder="Apellido" />
+    </div>
+
+    <div class="create-user__field">
+      <label class="create-user__label" for="cu-email">Email <span class="create-user__req">*</span></label>
+      <input id="cu-email" class="create-user__input" type="email" formControlName="email" placeholder="email@ejemplo.com" />
+    </div>
+
+    <div class="create-user__field">
+      <label class="create-user__label" for="cu-pass">Contraseña <span class="create-user__req">*</span></label>
+      <input id="cu-pass" class="create-user__input" type="password" formControlName="password" placeholder="Mínimo 6 caracteres" />
+    </div>
+
+    <div class="create-user__field">
+      <label class="create-user__label" for="cu-role">Rol</label>
+      <select id="cu-role" class="create-user__input" formControlName="role">
+        <option value="USER">Cliente</option>
+        <option value="ADMIN">Administrador</option>
+      </select>
+    </div>
+
+    <button class="create-user__submit" type="submit" [disabled]="form.invalid">
+      Crear usuario
+    </button>
+
+  </form>
+</div>

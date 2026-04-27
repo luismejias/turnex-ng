@@ -1,0 +1,63 @@
+<div class="edit-form">
+  <div class="edit-form__header">
+    <button class="edit-form__back" (click)="goBack()"><span class="fi fi-rr-arrow-left"></span></button>
+    <h1 class="edit-form__title">Editar turno</h1>
+  </div>
+
+  @if (form) {
+    <form class="edit-form__form" [formGroup]="form" (ngSubmit)="save()">
+      <div class="edit-form__field">
+        <label class="edit-form__label" for="et-name">Nombre del turno <span class="edit-form__required">*Campo obligatorio</span></label>
+        <input id="et-name" class="edit-form__input" formControlName="name" placeholder="Ej: Pilates" />
+      </div>
+
+      <div class="edit-form__field">
+        <label class="edit-form__label">Selecciona los días en los que estará disponible</label>
+        <div class="edit-form__days">
+          @for (day of days; track day) {
+            <button type="button" class="edit-form__day-chip"
+                    [class.edit-form__day-chip--selected]="selectedDays.includes(day)"
+                    (click)="toggleDay(day)">{{ day }}</button>
+          }
+        </div>
+      </div>
+
+      <div class="edit-form__field">
+        <label class="edit-form__label">Selecciona la franja horaria</label>
+        <div class="edit-form__time-row">
+          <div class="edit-form__time-field">
+            <span class="edit-form__time-label">Desde</span>
+            <input type="time" class="edit-form__input" formControlName="timeFrom" />
+          </div>
+          <div class="edit-form__time-field">
+            <span class="edit-form__time-label">Hasta</span>
+            <input type="time" class="edit-form__input" formControlName="timeTo" />
+          </div>
+        </div>
+      </div>
+
+      <div class="edit-form__field">
+        <label class="edit-form__label" for="et-periodicity">Periodicidad del turno</label>
+        <select id="et-periodicity" class="edit-form__input" formControlName="periodicity">
+          @for (p of periodicity; track p) {
+            <option [value]="p">{{ p }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="edit-form__field">
+        <label class="edit-form__label">Selecciona los packs disponibles</label>
+        <div class="edit-form__packs">
+          @for (pack of packs; track pack) {
+            <label class="edit-form__pack-check">
+              <input type="checkbox" [checked]="selectedPacks.includes(pack)" (change)="togglePack(pack)" />
+              {{ pack }}
+            </label>
+          }
+        </div>
+      </div>
+
+      <button class="edit-form__save-btn" type="submit" [disabled]="!canSave">Guardar cambios</button>
+    </form>
+  }
+</div>
