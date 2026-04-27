@@ -51,7 +51,8 @@ export class ShiftsService {
   private _buildPayload(state: NewShiftState): CreateShiftsPayload {
     return {
       packId: state.pack!.id,
-      specialtyId: state.specialty!.id,
+      specialtyId: state.specialty?.id,
+      companySpecialtyId: state.companySpecialty?.id,
       hours: state.hours ?? {},
       ...(state.dates ? { dates: state.dates } : {}),
     };

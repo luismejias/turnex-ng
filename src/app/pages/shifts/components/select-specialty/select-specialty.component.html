@@ -1,1 +1,39 @@
-<p>select-specialty works!</p>
+@if (loading) {
+  <div class="select-specialty__loading">
+    <span class="fi fi-rr-spinner select-specialty__spinner"></span>
+    <p>Cargando especialidades...</p>
+  </div>
+} @else if (!specialties.length) {
+  <div class="select-specialty__empty">
+    <p>No hay especialidades disponibles</p>
+  </div>
+} @else {
+  <div class="select-specialty__list">
+    @for (sp of specialties; track sp.id) {
+      <button
+        class="select-specialty__card"
+        [ngClass]="{ 'select-specialty__card--selected': isSelected(sp) }"
+        (click)="select(sp)">
+        <div class="select-specialty__card-icon">
+          <span class="fi fi-rr-star"></span>
+        </div>
+        <div class="select-specialty__card-info">
+          <p class="select-specialty__card-name">{{ sp.name }}</p>
+          @if (sp.description) {
+            <p class="select-specialty__card-desc">{{ sp.description }}</p>
+          }
+          @if (sp.schedule) {
+            <p class="select-specialty__card-schedule">
+              <span class="fi fi-rr-clock"></span>
+              {{ sp.schedule.timeFrom }} – {{ sp.schedule.timeTo }} · {{ sp.schedule.periodicity }}
+            </p>
+          }
+        </div>
+        <div class="select-specialty__card-capacity">
+          <span class="fi fi-rr-users"></span>
+          <span>{{ sp.capacity }} cupos/turno</span>
+        </div>
+      </button>
+    }
+  </div>
+}

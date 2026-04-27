@@ -15,9 +15,10 @@ export class NewShiftStateService extends SimpleStoreService<NewShiftState> {
       step: 1,
       pack: undefined,
       specialty: undefined,
+      companySpecialty: undefined,
       days: undefined,
-      hours: undefined
-    })
+      hours: undefined,
+    });
   }
 
 }

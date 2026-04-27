@@ -14,31 +14,28 @@
     </div>
   </div>
 
-  @if ($step === 1) {
-    <turnex-select-items
-      [items]="specialties"
-      (itemSelected)="
-        toggleSelection(this.step.SPECIALTY, $event)
-      "></turnex-select-items>
+  @if ($step === 1 && userCompanyId) {
+    <turnex-select-specialty
+      [companyId]="userCompanyId"
+      [selectedId]="selectedSpecialtyId"
+      (specialtySelected)="onSpecialtySelected($event)"></turnex-select-specialty>
   }
 
   @if ($step === 2) {
     <turnex-select-items
       [items]="packs"
-      (itemSelected)="
-        toggleSelection(this.step.PACK, $event)
-      "></turnex-select-items>
+      (itemSelected)="toggleSelection($any($event))"></turnex-select-items>
   }
 
   @if ($step === 3) {
-    <turnex-select-day [maxDays]="packMaxDays"></turnex-select-day>
+    <turnex-select-day [maxDays]="packMaxDays" [availableDays]="scheduleDays"></turnex-select-day>
   }
 
   @if ($step === 4) {
     <turnex-select-hour
-      [hoursCount]="8"
-      [interval]="60"
-      [startTime]="'8:00'"></turnex-select-hour>
+      [hoursCount]="scheduleHoursCount"
+      [interval]="scheduleInterval"
+      [startTime]="scheduleStartTime"></turnex-select-hour>
   }
 
   @if ($step === 5) {

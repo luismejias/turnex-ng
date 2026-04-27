@@ -8,12 +8,14 @@ export interface Shift {
   time: string;
   pack?: Pack;
   specialty?: Specialty;
+  companySpecialtyId?: number | null;
   status: TypeShifts;
 }
 
 export interface CreateShiftsPayload {
   packId: number;
-  specialtyId: number;
+  specialtyId?: number;
+  companySpecialtyId?: number;
   hours: Record<string, { description: string; isSelected: boolean }[]>;
-  dates?: Record<string, string>; // dayName -> ISO date string (clase suelta)
+  dates?: Record<string, string>;
 }
