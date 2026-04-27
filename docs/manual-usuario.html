@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Turnex — Manual de Usuario</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --purple: #6c3fe0;
+    --purple-light: #ede7f6;
+    --purple-dark: #4527a0;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-400: #9ca3af;
+    --gray-600: #4b5563;
+    --gray-800: #1f2937;
+    --green: #16a34a;
+    --red: #dc2626;
+    --blue: #2563eb;
+    --orange: #d97706;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    font-size: 10pt;
+    line-height: 1.6;
+    color: var(--gray-800);
+    background: #fff;
+  }
+
+  /* ── Cover page ── */
+  .cover {
+    page-break-after: always;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--purple-dark) 0%, var(--purple) 60%, #9c6fe8 100%);
+    color: #fff;
+    text-align: center;
+    padding: 60px;
+  }
+  .cover-logo {
+    font-size: 52pt;
+    font-weight: 800;
+    letter-spacing: -2px;
+    margin-bottom: 12px;
+  }
+  .cover-beta {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 20px;
+    padding: 3px 14px;
+    font-size: 8pt;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 48px;
+  }
+  .cover h1 {
+    font-size: 28pt;
+    font-weight: 700;
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+  .cover p {
+    font-size: 13pt;
+    opacity: 0.85;
+    max-width: 500px;
+    margin-bottom: 60px;
+  }
+  .cover-meta {
+    font-size: 9pt;
+    opacity: 0.65;
+    border-top: 1px solid rgba(255,255,255,0.3);
+    padding-top: 24px;
+    width: 100%;
+  }
+
+  /* ── TOC page ── */
+  .toc-page {
+    page-break-after: always;
+    padding: 60px 70px;
+  }
+  .toc-title {
+    font-size: 18pt;
+    font-weight: 700;
+    color: var(--purple);
+    margin-bottom: 32px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--purple-light);
+  }
+  .toc-section {
+    margin-bottom: 8px;
+  }
+  .toc-h1 {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    font-size: 10.5pt;
+    color: var(--gray-800);
+    padding: 6px 0;
+    border-bottom: 1px dotted var(--gray-200);
+  }
+  .toc-h2 {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9.5pt;
+    color: var(--gray-600);
+    padding: 3px 0 3px 20px;
+  }
+  .toc-num { color: var(--gray-400); }
+
+  /* ── Page layout ── */
+  .page {
+    padding: 50px 60px 40px;
+  }
+  .page:not(:last-child) {
+    page-break-after: always;
+  }
+
+  /* ── Section headings ── */
+  .section-label {
+    font-size: 7.5pt;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--purple);
+    margin-bottom: 8px;
+  }
+  h1.page-title {
+    font-size: 22pt;
+    font-weight: 800;
+    color: var(--gray-800);
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  .page-subtitle {
+    font-size: 10.5pt;
+    color: var(--gray-600);
+    margin-bottom: 32px;
+    max-width: 600px;
+  }
+  h2 {
+    font-size: 14pt;
+    font-weight: 700;
+    color: var(--gray-800);
+    margin: 28px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--purple-light);
+  }
+  h3 {
+    font-size: 11pt;
+    font-weight: 600;
+    color: var(--purple-dark);
+    margin: 20px 0 8px;
+  }
+  h4 {
+    font-size: 10pt;
+    font-weight: 600;
+    color: var(--gray-800);
+    margin: 14px 0 6px;
+  }
+  p { margin-bottom: 10px; }
+
+  /* ── Divider ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--gray-200);
+    margin: 20px 0;
+  }
+
+  /* ── Callout boxes ── */
+  .callout {
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 14px 0;
+    font-size: 9.5pt;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .callout-icon { font-size: 14pt; flex-shrink: 0; line-height: 1.4; }
+  .callout.info { background: #eff6ff; border-left: 4px solid var(--blue); }
+  .callout.warn { background: #fffbeb; border-left: 4px solid var(--orange); }
+  .callout.tip  { background: #f0fdf4; border-left: 4px solid var(--green); }
+  .callout.note { background: var(--purple-light); border-left: 4px solid var(--purple); }
+
+  /* ── Steps / numbered list ── */
+  .steps { list-style: none; margin: 12px 0 18px; }
+  .steps li {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 10px;
+    align-items: flex-start;
+    font-size: 9.5pt;
+  }
+  .step-num {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--purple);
+    color: #fff;
+    font-size: 8pt;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+
+  /* ── Bullet list ── */
+  ul.bullet { padding-left: 18px; margin: 8px 0 14px; }
+  ul.bullet li { margin-bottom: 5px; font-size: 9.5pt; }
+  ul.bullet li strong { color: var(--gray-800); }
+
+  /* ── Field table ── */
+  .field-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0 18px;
+    font-size: 9pt;
+  }
+  .field-table th {
+    background: var(--purple);
+    color: #fff;
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 600;
+  }
+  .field-table td {
+    padding: 7px 12px;
+    border-bottom: 1px solid var(--gray-200);
+    vertical-align: top;
+  }
+  .field-table tr:nth-child(even) td { background: var(--gray-50); }
+  .field-table .req { color: var(--purple); font-weight: 700; }
+  .field-table .opt { color: var(--gray-400); }
+
+  /* ── Badge ── */
+  .badge {
+    display: inline-block;
+    border-radius: 999px;
+    padding: 2px 10px;
+    font-size: 7.5pt;
+    font-weight: 600;
+  }
+  .badge-next     { background: #dbeafe; color: #1e40af; }
+  .badge-done     { background: #d1fae5; color: #065f46; }
+  .badge-canceled { background: #fee2e2; color: #991b1b; }
+  .badge-admin    { background: var(--purple-light); color: var(--purple-dark); }
+  .badge-super    { background: #fef9c3; color: #854d0e; }
+  .badge-client   { background: var(--gray-100); color: var(--gray-600); }
+
+  /* ── Role pill row ── */
+  .role-row {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0 18px;
+    flex-wrap: wrap;
+  }
+  .role-pill {
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 9pt;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .rp-super  { background: #fef9c3; color: #854d0e; }
+  .rp-admin  { background: var(--purple-light); color: var(--purple-dark); }
+  .rp-client { background: #f0fdf4; color: #065f46; }
+
+  /* ── Flow diagram ── */
+  .flow {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 14px 0;
+    font-size: 9pt;
+  }
+  .flow-step {
+    background: var(--purple-light);
+    color: var(--purple-dark);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-weight: 600;
+  }
+  .flow-arrow { color: var(--gray-400); font-size: 14pt; }
+
+  /* ── Tab preview ── */
+  .tabs-preview {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin: 10px 0 18px;
+  }
+  .tab-chip {
+    border: 1.5px solid var(--purple);
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-size: 8.5pt;
+    font-weight: 600;
+    color: var(--purple);
+  }
+  .tab-chip.active {
+    background: var(--purple);
+    color: #fff;
+  }
+
+  /* ── Two column ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 14px 0;
+  }
+  .col-card {
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .col-card h4 { margin-top: 0; }
+
+  /* ── Page header strip ── */
+  .page-header-strip {
+    background: linear-gradient(90deg, var(--purple) 0%, #9c6fe8 100%);
+    color: #fff;
+    padding: 18px 60px;
+    margin: -50px -60px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .page-header-strip h1 { font-size: 16pt; font-weight: 700; }
+  .page-header-strip .strip-logo { font-size: 13pt; font-weight: 800; opacity: 0.85; }
+
+  /* ── Print rules ── */
+  @media print {
+    .cover { height: 100vh; }
+    h2 { page-break-before: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════ COVER -->
+<div class="cover">
+  <div class="cover-logo">Turnex</div>
+  <div class="cover-beta">Versión Beta</div>
+  <h1>Manual de Usuario</h1>
+  <p>Guía completa para clientes, administradores y super administradores de la plataforma de gestión de turnos Turnex.</p>
+  <div class="cover-meta">
+    Turnex &nbsp;|&nbsp; Plataforma de Gestión de Turnos &nbsp;|&nbsp; 2026
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ TOC -->
+<div class="toc-page">
+  <div class="toc-title">Tabla de Contenidos</div>
+
+  <div class="toc-section">
+    <div class="toc-h1"><span>1. Introducción a Turnex</span><span class="toc-num">3</span></div>
+    <div class="toc-h2"><span>1.1 ¿Qué es Turnex?</span></div>
+    <div class="toc-h2"><span>1.2 Roles de usuario</span></div>
+    <div class="toc-h2"><span>1.3 Conceptos clave</span></div>
+  </div>
+
+  <div class="toc-section">
+    <div class="toc-h1"><span>2. Primeros pasos — Acceso a la plataforma</span><span class="toc-num">4</span></div>
+    <div class="toc-h2"><span>2.1 Crear una cuenta</span></div>
+    <div class="toc-h2"><span>2.2 Iniciar sesión</span></div>
+    <div class="toc-h2"><span>2.3 Cerrar sesión</span></div>
+    <div class="toc-h2"><span>2.4 Sesión inactiva</span></div>
+  </div>
+
+  <div class="toc-section">
+    <div class="toc-h1"><span>3. Flujo del Cliente</span><span class="toc-num">6</span></div>
+    <div class="toc-h2"><span>3.1 Pantalla de inicio</span></div>
+    <div class="toc-h2"><span>3.2 Mis turnos</span></div>
+    <div class="toc-h2"><span>3.3 Agendar un nuevo turno (wizard de 6 pasos)</span></div>
+    <div class="toc-h2"><span>3.4 Cancelar un turno</span></div>
+    <div class="toc-h2"><span>3.5 Reagendar un turno</span></div>
+    <div class="toc-h2"><span>3.6 Mi perfil</span></div>
+  </div>
+
+  <div class="toc-section">
+    <div class="toc-h1"><span>4. Flujo del Administrador</span><span class="toc-num">11</span></div>
+    <div class="toc-h2"><span>4.1 Inicio del panel de administración</span></div>
+    <div class="toc-h2"><span>4.2 Detalle de empresa — Pestaña Datos</span></div>
+    <div class="toc-h2"><span>4.3 Detalle de empresa — Pestaña Perfiles</span></div>
+    <div class="toc-h2"><span>4.4 Detalle de empresa — Pestaña Turnos</span></div>
+    <div class="toc-h2"><span>4.5 Detalle de empresa — Pestaña Especialidades</span></div>
+    <div class="toc-h2"><span>4.6 Detalle de empresa — Pestaña Usuarios</span></div>
+    <div class="toc-h2"><span>4.7 Gestión de turnos de usuarios</span></div>
+    <div class="toc-h2"><span>4.8 Mi perfil (administrador)</span></div>
+  </div>
+
+  <div class="toc-section">
+    <div class="toc-h1"><span>5. Flujo del Super Administrador</span><span class="toc-num">16</span></div>
+    <div class="toc-h2"><span>5.1 Diferencias con el Administrador</span></div>
+    <div class="toc-h2"><span>5.2 Crear una empresa (wizard de 3 pasos)</span></div>
+    <div class="toc-h2"><span>5.3 Editar empresa</span></div>
+    <div class="toc-h2"><span>5.4 Eliminar empresa</span></div>
+  </div>
+
+  <div class="toc-section">
+    <div class="toc-h1"><span>6. Referencia rápida de estados de turno</span><span class="toc-num">19</span></div>
+  </div>
+
+  <div class="toc-section">
+    <div class="toc-h1"><span>7. Preguntas frecuentes</span><span class="toc-num">20</span></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ CAP 1 -->
+<div class="page">
+  <div class="page-header-strip">
+    <h1>1. Introducción a Turnex</h1>
+    <span class="strip-logo">Turnex</span>
+  </div>
+
+  <h2>1.1 ¿Qué es Turnex?</h2>
+  <p>
+    <strong>Turnex</strong> es una plataforma web de gestión de turnos diseñada para centros de actividad física, estudios de pilates, yoga, crossfit y disciplinas similares. Permite a los clientes reservar, cancelar y reagendar sus clases, mientras que los administradores gestionan la oferta de especialidades, horarios, perfiles de instructores y usuarios.
+  </p>
+
+  <div class="callout note">
+    <span class="callout-icon">ℹ️</span>
+    <div>La plataforma se encuentra en <strong>Versión Beta</strong>. Algunas funcionalidades están en desarrollo y pueden variar en futuras versiones.</div>
+  </div>
+
+  <h2>1.2 Roles de usuario</h2>
+  <p>Existen tres roles en Turnex, cada uno con permisos y vistas diferentes:</p>
+
+  <div class="role-row">
+    <div class="role-pill rp-super">⭐ Super Administrador</div>
+    <div class="role-pill rp-admin">🏢 Administrador</div>
+    <div class="role-pill rp-client">👤 Cliente</div>
+  </div>
+
+  <table class="field-table">
+    <thead>
+      <tr>
+        <th>Rol</th>
+        <th>Descripción</th>
+        <th>Acceso principal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="badge badge-super">SUPER_ADMIN</span></td>
+        <td>Gestiona <strong>todas las empresas</strong> del sistema. Puede crear, editar y eliminar empresas, y ver los turnos de cualquier usuario.</td>
+        <td>Panel Admin completo + todas las empresas</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-admin">ADMIN</span></td>
+        <td>Gestiona <strong>su propia empresa</strong>: perfiles, horarios, especialidades y usuarios. Puede ver y gestionar los turnos de sus clientes.</td>
+        <td>Panel Admin → solo su empresa</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-client">CLIENT</span></td>
+        <td>Gestiona sus propios turnos: reservar, cancelar y reagendar clases de las especialidades disponibles en su empresa.</td>
+        <td>Home, Mis Turnos, Mi Perfil</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>1.3 Conceptos clave</h2>
+  <table class="field-table">
+    <thead>
+      <tr><th>Concepto</th><th>Definición</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Especialidad</strong></td>
+        <td>Disciplina ofrecida por la empresa (ej. Yoga, Pilates, Crossfit). Tiene una capacidad máxima por franja horaria y un horario asociado.</td>
+      </tr>
+      <tr>
+        <td><strong>Horario (Schedule)</strong></td>
+        <td>Configuración de días y franjas en que se dicta una especialidad. Define hora de inicio, hora de fin y periodicidad de los turnos.</td>
+      </tr>
+      <tr>
+        <td><strong>Pack</strong></td>
+        <td>Tipo de contratación que determina cuántas clases por mes puede reservar el cliente (ej. 4 clases, 8 clases, clase suelta).</td>
+      </tr>
+      <tr>
+        <td><strong>Turno</strong></td>
+        <td>Reserva de una clase en un día y horario específico. Puede tener estado Próximo, Completado o Cancelado.</td>
+      </tr>
+      <tr>
+        <td><strong>Perfil</strong></td>
+        <td>Instructor, recepcionista o administrador que trabaja en la empresa.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ CAP 2 -->
+<div class="page">
+  <div class="page-header-strip">
+    <h1>2. Primeros pasos — Acceso a la plataforma</h1>
+    <span class="strip-logo">Turnex</span>
+  </div>
+
+  <h2>2.1 Crear una cuenta</h2>
+  <p>Si no tenés cuenta en Turnex, podés registrarte de forma gratuita.</p>
+
+  <ol class="steps">
+    <li><span class="step-num">1</span>Ingresá a la plataforma y hacé clic en <strong>"¿No tenés cuenta?"</strong> o <strong>"Registrate"</strong>.</li>
+    <li><span class="step-num">2</span>Completá el formulario de registro con los datos solicitados.</li>
+    <li><span class="step-num">3</span>Marcá la casilla de <strong>términos y condiciones</strong>.</li>
+    <li><span class="step-num">4</span>Hacé clic en <strong>"Registrarme"</strong>.</li>
+    <li><span class="step-num">5</span>Si el registro fue exitoso, serás redirigido a la pantalla de inicio de sesión.</li>
+  </ol>
+
+  <table class="field-table">
+    <thead>
+      <tr><th>Campo</th><th>Requerido</th><th>Descripción</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Nombre</td><td class="req">✓</td><td>Tu nombre de pila.</td></tr>
+      <tr><td>Apellido</td><td class="req">✓</td><td>Tu apellido.</td></tr>
+      <tr><td>Correo electrónico</td><td class="req">✓</td><td>Email válido, será tu usuario en el sistema.</td></tr>
+      <tr><td>Contraseña</td><td class="req">✓</td><td>Mínimo 6 caracteres.</td></tr>
+      <tr><td>Repetir contraseña</td><td class="req">✓</td><td>Debe coincidir con el campo anterior.</td></tr>
+      <tr><td>Términos y condiciones</td><td class="req">✓</td><td>Debe estar marcado para completar el registro.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout warn">
+    <span class="callout-icon">⚠️</span>
+    <div>Si el email ya está registrado, el sistema mostrará el mensaje <em>"¡Email ya registrado!"</em>. Intentá iniciar sesión o utilizá otro correo.</div>
+  </div>
+
+  <h2>2.2 Iniciar sesión</h2>
+  <ol class="steps">
+    <li><span class="step-num">1</span>Ingresá tu <strong>correo electrónico</strong> en el campo correspondiente.</li>
+    <li><span class="step-num">2</span>Ingresá tu <strong>contraseña</strong>. Podés usar el ícono del ojo para mostrarla u ocultarla.</li>
+    <li><span class="step-num">3</span>Hacé clic en <strong>"Iniciar sesión"</strong>.</li>
+    <li><span class="step-num">4</span>Según tu rol, serás redirigido automáticamente:
+      <ul class="bullet" style="margin-top:6px">
+        <li>Cliente → <strong>Inicio</strong> (<code>/home</code>)</li>
+        <li>Administrador / Super Administrador → <strong>Panel de administración</strong> (<code>/admin</code>)</li>
+      </ul>
+    </li>
+  </ol>
+
+  <div class="callout info">
+    <span class="callout-icon">💡</span>
+    <div>Si ingresás credenciales incorrectas, el sistema mostrará el mensaje <em>"¡Usuario o clave inválido!"</em>. Verificá tus datos e intentá nuevamente.</div>
+  </div>
+
+  <h2>2.3 Cerrar sesión</h2>
+  <ul class="bullet">
+    <li><strong>Clientes:</strong> Desde el menú superior (desktop) hacé clic en <strong>"Cerrar sesión"</strong>. En la pantalla de Perfil también encontrarás esta opción.</li>
+    <li><strong>Administradores:</strong> En el sidebar del panel de admin, al pie, hacé clic en <strong>"Cerrar sesión"</strong>. Se abrirá un modal de confirmación.</li>
+  </ul>
+  <p>En ambos casos, la sesión se elimina del navegador y el sistema redirige al login.</p>
+
+  <h2>2.4 Sesión inactiva</h2>
+  <p>
+    Por razones de seguridad, si permanecés inactivo durante un período determinado, el sistema mostrará una alerta de inactividad con una cuenta regresiva. Tenés dos opciones:
+  </p>
+  <ul class="bullet">
+    <li><strong>"Seguir conectado"</strong> → reinicia el temporizador de inactividad.</li>
+    <li><strong>"Cerrar sesión"</strong> → cierra la sesión inmediatamente.</li>
+  </ul>
+  <p>Si no respondés antes de que el contador llegue a cero, la sesión se cerrará automáticamente.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ CAP 3 -->
+<div class="page">
+  <div class="page-header-strip">
+    <h1>3. Flujo del Cliente</h1>
+    <span class="strip-logo">Turnex</span>
+  </div>
+
+  <p>Este capítulo describe todo lo que puede hacer un usuario con rol <span class="badge badge-client">Cliente</span> dentro de Turnex.</p>
+
+  <h2>3.1 Pantalla de inicio</h2>
+  <p>Al iniciar sesión, el cliente ve su pantalla de inicio con la siguiente información:</p>
+
+  <ul class="bullet">
+    <li><strong>Saludo personalizado:</strong> "¡Hola, [Tu nombre]!"</li>
+    <li><strong>Próximo turno:</strong> Muestra el siguiente turno agendado con opciones de cancelar o reagendar.</li>
+    <li><strong>Agenda un nuevo turno:</strong> Selector de especialidades disponibles en tu empresa para iniciar el flujo de reserva.</li>
+  </ul>
+
+  <div class="callout info">
+    <span class="callout-icon">ℹ️</span>
+    <div>Si tu cuenta todavía no tiene una empresa asignada, el sistema mostrará el mensaje: <em>"No tenés una sede asignada. Contactá a tu administrador."</em> Comunicate con el administrador de tu centro para que te vincule.</div>
+  </div>
+
+  <h3>Navegación del cliente</h3>
+  <p>En el escritorio utilizás la barra superior. En el celular, la barra de navegación inferior:</p>
+  <ul class="bullet">
+    <li>🏠 <strong>Inicio</strong> → pantalla principal</li>
+    <li>📅 <strong>Turnos</strong> → lista de todos tus turnos</li>
+    <li>👤 <strong>Perfil</strong> → tus datos personales</li>
+  </ul>
+
+  <h2>3.2 Mis turnos</h2>
+  <p>Desde <strong>Turnos</strong> podés ver el historial completo de tus reservas, organizadas en tres pestañas:</p>
+
+  <div class="tabs-preview">
+    <span class="tab-chip active">Próximos</span>
+    <span class="tab-chip">Completados</span>
+    <span class="tab-chip">Cancelados</span>
+  </div>
+
+  <table class="field-table">
+    <thead>
+      <tr><th>Pestaña</th><th>Descripción</th><th>Acciones disponibles</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="badge badge-next">Próximos</span></td>
+        <td>Turnos confirmados que aún no ocurrieron.</td>
+        <td>Cancelar · Reagendar</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-done">Completados</span></td>
+        <td>Turnos que ya se realizaron. Se marcan automáticamente 1 hora antes de la clase si no fueron cancelados.</td>
+        <td>Solo lectura</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-canceled">Cancelados</span></td>
+        <td>Turnos cancelados (por vos o por tu administrador).</td>
+        <td>Solo lectura</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout tip">
+    <span class="callout-icon">✅</span>
+    <div>Los turnos se marcan como <strong>Completados automáticamente</strong> cuando faltan menos de 60 minutos para su inicio. No es necesario que hagas ninguna acción.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ CAP 3 cont -->
+<div class="page">
+  <div class="page-header-strip">
+    <h1>3.3 Agendar un nuevo turno</h1>
+    <span class="strip-logo">Turnex</span>
+  </div>
+
+  <p>El proceso de reserva de turno es un <strong>wizard de hasta 6 pasos</strong> que te guía en la selección de especialidad, pack, días y horarios.</p>
+
+  <div class="flow">
+    <span class="flow-step">Paso 1<br/>Especialidad</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step">Paso 2<br/>Pack*</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step">Paso 3<br/>Días*</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step">Paso 4<br/>Horarios</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step">Paso 5<br/>Confirmación</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step">Paso 6<br/>Resultado</span>
+  </div>
+  <p style="font-size:8.5pt;color:var(--gray-400);margin-top:-8px">* El Paso 2 se omite si ya tenés un pack activo. El Paso 3 se omite si elegiste una clase suelta (pack 4).</p>
+
+  <h3>Paso 1 — Elegir especialidad</h3>
+  <p>Seleccioná la especialidad (disciplina) en la que querés reservar. Solo verás las especialidades activas de tu empresa. Hacé clic en <strong>"Siguiente"</strong> para continuar.</p>
+
+  <div class="callout info">
+    <span class="callout-icon">💡</span>
+    <div>Si venís desde la pantalla de inicio habiendo seleccionado una especialidad, este paso ya estará pre-completado.</div>
+  </div>
+
+  <h3>Paso 2 — Elegir pack (se omite si ya tenés uno activo)</h3>
+  <p>Seleccioná el pack de clases que mejor se adapte a tu ritmo:</p>
+  <ul class="bullet">
+    <li><strong>Pack semanal / mensual:</strong> Determina cuántos días por semana podés reservar. Por ejemplo, un pack de 4 clases te habilita 4 días.</li>
+    <li><strong>Clase suelta:</strong> Elegís un único día y horario de la semana en curso.</li>
+  </ul>
+  <p>Solo podés tener un pack seleccionado a la vez. Una vez seleccionado, hacé clic en <strong>"Siguiente"</strong>.</p>
+
+  <h3>Paso 3 — Elegir días (se omite en clase suelta)</h3>
+  <p>Seleccioná exactamente la cantidad de días que permite tu pack. El sistema solo muestra los días en los que la especialidad tiene horario disponible.</p>
+  <ul class="bullet">
+    <li>Si tu pack permite <strong>1 día</strong>, al hacer clic en uno nuevo se deselecciona el anterior automáticamente.</li>
+    <li>Si tu pack permite <strong>varios días</strong>, debés seleccionar todos para poder avanzar. El contador te muestra cuántos llevas.</li>
+  </ul>
+
+  <h3>Paso 4 — Elegir horarios</h3>
+  <p>Para cada día seleccionado verás los horarios disponibles. Los horarios muestran:</p>
+  <ul class="bullet">
+    <li>🟢 <strong>Disponible:</strong> podés seleccionarlo.</li>
+    <li>🟣 <strong>Ya tenés turno:</strong> ya reservaste este horario. No podés seleccionarlo nuevamente.</li>
+    <li>🔴 <strong>Sin cupos:</strong> la capacidad está completa para ese horario.</li>
+  </ul>
+  <p>Debés seleccionar al menos un horario por día para poder avanzar.</p>
+
+  <div class="callout warn">
+    <span class="callout-icon">⚠️</span>
+    <div>En el modo <strong>Clase suelta</strong> se muestra el navegador de semanas. Podés avanzar o retroceder semanas para elegir la fecha exacta de tu clase.</div>
+  </div>
+
+  <h3>Paso 5 — Confirmar la solicitud</h3>
+  <p>Revisá el resumen de tu reserva:</p>
+  <ul class="bullet">
+    <li>Especialidad seleccionada</li>
+    <li>Pack seleccionado</li>
+    <li>Días y horarios elegidos con sus fechas</li>
+  </ul>
+  <p>Si todo está correcto, hacé clic en <strong>"Agendar"</strong>. Si necesitás cambiar algo, usá el botón <strong>"Anterior"</strong> para volver.</p>
+
+  <h3>Paso 6 — Resultado</h3>
+  <p>El sistema te informará el resultado:</p>
+  <div class="two-col">
+    <div class="col-card">
+      <h4>✅ Éxito</h4>
+      <p>Tus turnos fueron agendados. Hacé clic en <strong>"Ver mis Turnos"</strong> para verlos en tu lista o en <strong>"Volver al inicio"</strong>.</p>
+    </div>
+    <div class="col-card">
+      <h4>❌ Error</h4>
+      <p>Hubo un problema al guardar. Hacé clic en <strong>"Volver al inicio"</strong> e intentalo nuevamente. Si el problema persiste, contactá a tu administrador.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ CAP 3 cont 2 -->
+<div class="page">
+  <div class="page-header-strip">
+    <h1>3.4 – 3.6 Cancelar, Reagendar y Perfil</h1>
+    <span class="strip-logo">Turnex</span>
+  </div>
+
+  <h2>3.4 Cancelar un turno</h2>
+  <p>Podés cancelar un turno desde <strong>Mis Turnos</strong> o desde la tarjeta de próximo turno en el <strong>Inicio</strong>.</p>
+
+  <ol class="steps">
+    <li><span class="step-num">1</span>Encontrá el turno en la lista de <strong>Próximos</strong>.</li>
+    <li><span class="step-num">2</span>Hacé clic en el botón <strong>"Cancelar"</strong>.</li>
+    <li><span class="step-num">3</span>Se abrirá un modal de confirmación. Hacé clic en <strong>"Sí, cancelar"</strong> para confirmar.</li>
+    <li><span class="step-num">4</span>El turno pasará al estado <span class="badge badge-canceled">Cancelado</span> y aparecerá en la pestaña correspondiente.</li>
+  </ol>
+
+  <div class="callout warn">
+    <span class="callout-icon">⚠️</span>
+    <div>Se recomienda cancelar con al menos <strong>24 horas de anticipación</strong>. Verificá la política de tu centro.</div>
+  </div>
+
+  <h2>3.5 Reagendar un turno</h2>
+  <p>Si necesitás cambiar el día u horario de un turno próximo, podés reagendarlo.</p>
+
+  <ol class="steps">
+    <li><span class="step-num">1</span>En <strong>Mis Turnos → Próximos</strong>, hacé clic en <strong>"Reagendar"</strong>.</li>
+    <li><span class="step-num">2</span>Verás el <strong>navegador de semanas</strong>. Usá las flechas ← → para cambiar de semana.</li>
+    <li><span class="step-num">3</span>Seleccioná el <strong>día</strong> y el <strong>horario</strong> deseados haciendo clic en el slot correspondiente.</li>
+    <li><span class="step-num">4</span>Hacé clic en <strong>"Confirmar reagendado"</strong>.</li>
+    <li><span class="step-num">5</span>El turno original se cancelará y se creará uno nuevo con la nueva fecha y hora.</li>
+  </ol>
+
+  <div class="two-col">
+    <div class="col-card">
+      <h4>✅ Reagendado exitosamente</h4>
+      <p>Verás un mensaje de éxito. Hacé clic en <strong>"Ver mis turnos"</strong> para confirmar.</p>
+    </div>
+    <div class="col-card">
+      <h4>❌ Error al reagendar</h4>
+      <p>Hacé clic en <strong>"Volver a mis turnos"</strong> e intentalo nuevamente.</p>
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <span class="callout-icon">💡</span>
+    <div>El botón <strong>"Confirmar reagendado"</strong> permanece deshabilitado hasta que seleccionés un día y un horario.</div>
+  </div>
+
+  <hr class="divider"/>
+
+  <h2>3.6 Mi perfil</h2>
+  <p>En la sección <strong>Perfil</strong> podés consultar tus datos personales:</p>
+  <ul class="bullet">
+    <li><strong>Nombre</strong></li>
+    <li><strong>Apellido</strong></li>
+    <li><strong>Correo electrónico</strong></li>
+  </ul>
+  <p>Los datos son de solo lectura. Si necesitás modificarlos, contactá al administrador de tu empresa.</p>
+
+  <h3>Cerrar sesión desde perfil</h3>
+  <ol class="steps">
+    <li><span class="step-num">1</span>Hacé clic en el botón <strong>"Cerrar sesión"</strong>.</li>
+    <li><span class="step-num">2</span>Se abrirá un modal de confirmación: <em>"¿Estás seguro que querés cerrar la sesión?"</em></li>
+    <li><span class="step-num">3</span>Hacé clic en <strong>"Sí, salir"</strong> para confirmar o <strong>"Cancelar"</strong> para volver.</li>
+  </ol>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ CAP 4 -->
+<div class="page">
+  <div class="page-header-strip">
+    <h1>4. Flujo del Administrador</h1>
+    <span class="strip-logo">Turnex</span>
+  </div>
+
+  <p>Este capítulo describe las funciones disponibles para el rol <span class="badge badge-admin">Administrador</span>. El administrador gestiona todos los aspectos de <strong>su empresa</strong>.</p>
+
+  <h2>4.1 Inicio del panel de administración</h2>
+  <p>Al iniciar sesión como administrador, ingresás directamente al detalle de <strong>tu empresa</strong>. Desde el sidebar lateral podés navegar entre:</p>
+
+  <ul class="bullet">
+    <li>🏢 <strong>Mi empresa</strong> → Detalle y gestión de tu empresa</li>
+    <li>👤 <strong>Perfil</strong> → Tus datos personales</li>
+    <li>🚪 <strong>Cerrar sesión</strong> → Sale del sistema</li>
+  </ul>
+
+  <h2>4.2 Detalle de empresa — Pestaña "Datos"</h2>
+  <p>Muestra la información general de la empresa en modo lectura:</p>
+  <ul class="bullet">
+    <li>Nombre de la empresa</li>
+    <li>CUIT</li>
+    <li>Teléfono</li>
+    <li>Domicilio</li>
+    <li>Servicio que ofrece</li>
+  </ul>
+
+  <div class="tabs-preview">
+    <span class="tab-chip active">Datos</span>
+    <span class="tab-chip">Perfiles</span>
+    <span class="tab-chip">Turnos</span>
+    <span class="tab-chip">Especialidades</span>
+    <span class="tab-chip">Usuarios</span>
+    <span class="tab-chip">Settings</span>
+  </div>
+
+  <div class="callout note">
+    <span class="callout-icon">🔒</span>
+    <div>Los botones <strong>"Editar empresa"</strong> y <strong>"Eliminar empresa"</strong> solo están disponibles para el rol <span class="badge badge-super">SUPER_ADMIN</span>. Los administradores pueden ver los datos pero no modificarlos desde esta pestaña.</div>
+  </div>
+
+  <h2>4.3 Detalle de empresa — Pestaña "Perfiles"</h2>
+  <p>Gestión del equipo de trabajo (instructores, recepcionistas, etc.).</p>
+
+  <h3>Ver perfiles</h3>
+  <p>Cada tarjeta de perfil muestra: nombre, apellido, tipo, email, teléfono y estado activo/inactivo.</p>
+
+  <h3>Crear perfil</h3>
+  <ol class="steps">
+    <li><span class="step-num">1</span>Hacé clic en <strong>"Agregar nuevo perfil"</strong>.</li>
+    <li><span class="step-num">2</span>Completá los datos del nuevo perfil.</li>
+    <li><span class="step-num">3</span>Hacé clic en <strong>"Crear perfil"</strong>.</li>
+  </ol>
+
+  <table class="field-table">
+    <thead><tr><th>Campo</th><th>Req.</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td>Foto</td><td class="opt">—</td><td>PNG / JPG / SVG. Máximo 5 MB.</td></tr>
+      <tr><td>Tipo de perfil</td><td class="opt">—</td><td>Administrador, Instructor o Recepcionista.</td></tr>
+      <tr><td>Nombre</td><td class="req">✓</td><td>Nombre de pila del profesional.</td></tr>
+      <tr><td>Apellido</td><td class="req">✓</td><td>Apellido del profesional.</td></tr>
+      <tr><td>Teléfono</td><td class="req">✓</td><td>Número de contacto.</td></tr>
+      <tr><td>Correo electrónico</td><td class="req">✓</td><td>Email de contacto.</td></tr>
+      <tr><td>Contraseña</td><td class="opt">—</td><td>Contraseña de acceso (si aplica).</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Editar / Eliminar perfil</h3>
+  <ul class="bullet">
+    <li><strong>Editar:</strong> Hacé clic en "Editar perfil" en la tarjeta → modificá los datos → "Editar perfil".</li>
+    <li><strong>Eliminar:</strong> Hacé clic en "Eliminar perfil" → confirmá en el modal.</li>
+    <li><strong>Activar/Desactivar:</strong> Usá el toggle en la tarjeta para habilitar o deshabilitar el perfil.</li>
+  </ul>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ CAP 4 cont -->
+<div class="page">
+  <div class="page-header-strip">
+    <h1>4.4 – 4.6 Turnos, Especialidades y Usuarios</h1>
+    <span class="strip-logo">Turnex</span>
+  </div>
+
+  <h2>4.4 Detalle de empresa — Pestaña "Turnos" (Horarios)</h2>
+  <p>Gestión de los horarios disponibles para reservar. Un horario define en qué días y franjas horarias los clientes pueden sacar turnos.</p>
+
+  <h3>Crear horario</h3>
+  <ol class="steps">
+    <li><span class="step-num">1</span>Hacé clic en <strong>"Agregar nuevo turno"</strong>.</li>
+    <li><span class="step-num">2</span>Completá el formulario.</li>
+    <li><span class="step-num">3</span>Hacé clic en <strong>"Crear turno"</strong>.</li>
+  </ol>
+
+  <table class="field-table">
+    <thead><tr><th>Campo</th><th>Req.</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td>Nombre del turno</td><td class="req">✓</td><td>Nombre descriptivo (ej. "Pilates mañana").</td></tr>
+      <tr><td>Días disponibles</td><td class="req">✓</td><td>Seleccioná los días de la semana (Lun–Dom).</td></tr>
+      <tr><td>Hora desde</td><td class="req">✓</td><td>Inicio de la franja horaria (ej. 08:00).</td></tr>
+      <tr><td>Hora hasta</td><td class="req">✓</td><td>Fin de la franja horaria (ej. 18:00).</td></tr>
+      <tr><td>Periodicidad</td><td class="req">✓</td><td>Intervalo entre turnos: 15, 30, 45 o 60 minutos.</td></tr>
+      <tr><td>Packs disponibles</td><td class="opt">—</td><td>Packs habilitados para este horario.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>4.5 Detalle de empresa — Pestaña "Especialidades"</h2>
+  <p>Las especialidades son las disciplinas ofrecidas en la empresa (Yoga, Pilates, etc.). Cada una tiene capacidad máxima y puede vincularse a un horario.</p>
+
+  <h3>Crear especialidad</h3>
+  <ol class="steps">
+    <li><span class="step-num">1</span>Hacé clic en <strong>"Agregar nueva especialidad"</strong>.</li>
+    <li><span class="step-num">2</span>Completá el formulario.</li>
+    <li><span class="step-num">3</span>Hacé clic en <strong>"Crear especialidad"</strong>.</li>
+  </ol>
+
+  <table class="field-table">
+    <thead><tr><th>Campo</th><th>Req.</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td>Nombre</td><td class="req">✓</td><td>Nombre de la especialidad (ej. "Yoga avanzado").</td></tr>
+      <tr><td>Descripción</td><td class="opt">—</td><td>Descripción breve opcional.</td></tr>
+      <tr><td>Capacidad por franja</td><td class="req">✓</td><td>Máximo de personas que pueden reservar el mismo slot horario.</td></tr>
+      <tr><td>Horario vinculado</td><td class="opt">—</td><td>Horario que define las franjas disponibles. Sin horario, los clientes no pueden reservar.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout warn">
+    <span class="callout-icon">⚠️</span>
+    <div>Una especialidad sin horario vinculado no estará disponible para reservas por parte de los clientes.</div>
+  </div>
+
+  <h2>4.6 Detalle de empresa — Pestaña "Usuarios"</h2>
+  <p>Gestión de los clientes registrados en la empresa.</p>
+
+  <h3>Crear usuario</h3>
+  <ol class="steps">
+    <li><span class="step-num">1</span>Hacé clic en <strong>"Agregar nuevo usuario"</strong>.</li>
+    <li><span class="step-num">2</span>Completá los datos.</li>
+    <li><span class="step-num">3</span>Hacé clic en <strong>"Crear usuario"</strong>.</li>
+  </ol>
+
+  <table class="field-table">
+    <thead><tr><th>Campo</th><th>Req.</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td>Nombre</td><td class="req">✓</td><td>Nombre de pila del cliente.</td></tr>
+      <tr><td>Apellido</td><td class="req">✓</td><td>Apellido del cliente.</td></tr>
+      <tr><td>Email</td><td class="req">✓</td><td>Correo electrónico único del cliente.</td></tr>
+      <tr><td>Contraseña</td><td class="req">✓</td><td>Mínimo 6 caracteres. El cliente puede cambiarla luego.</td></tr>
+      <tr><td>Rol</td><td class="opt">—</td><td>Cliente (predeterminado) o Administrador.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout info">
+    <span class="callout-icon">ℹ️</span>
+    <div>Si el email ingresado ya existe en el sistema, el usuario existente será vinculado a tu empresa en lugar de crear uno nuevo.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ CAP 4 cont 2 -->
+<div class="page">
+  <div class="page-header-strip">
+    <h1>4.7 Gestión de turnos de usuarios</h1>
+    <span class="strip-logo">Turnex</span>
+  </div>
+
+  <p>Desde la pestaña <strong>Usuarios</strong>, el administrador puede visualizar y gestionar los turnos de cada cliente de su empresa.</p>
+
+  <h2>Ver los turnos de un usuario</h2>
+  <ol class="steps">
+    <li><span class="step-num">1</span>En la pestaña <strong>Usuarios</strong>, encontrá la tarjeta del usuario.</li>
+    <li><span class="step-num">2</span>Hacé clic en el botón <strong>"Ver turnos"</strong>.</li>
+    <li><span class="step-num">3</span>Se expandirá una lista con todos los turnos del usuario: próximos, completados y cancelados.</li>
+    <li><span class="step-num">4</span>Para cerrar la lista, hacé clic en <strong>"Ocultar turnos"</strong>.</li>
+  </ol>
+
+  <p>Cada turno muestra:</p>
+  <ul class="bullet">
+    <li>Nombre de la especialidad</li>
+    <li>Fecha y hora</li>
+    <li>Estado: <span class="badge badge-next">Próximo</span> <span class="badge badge-done">Completado</span> <span class="badge badge-canceled">Cancelado</span></li>
+  </ul>
+
+  <h2>Cancelar el turno de un usuario</h2>
+  <ol class="steps">
+    <li><span class="step-num">1</span>En la lista expandida de turnos, encontrá el turno <span class="badge badge-next">Próximo</span> a cancelar.</li>
+    <li><span class="step-num">2</span>Hacé clic en el botón <strong>"Cancelar"</strong>.</li>
+    <li><span class="step-num">3</span>Confirmá la acción en el modal.</li>
+    <li><span class="step-num">4</span>El turno cambiará a estado <span class="badge badge-canceled">Cancelado</span> en tiempo real.</li>
+  </ol>
+
+  <h2>Reagendar el turno de un usuario</h2>
+  <ol class="steps">
+    <li><span class="step-num">1</span>En la lista de turnos del usuario, hacé clic en <strong>"Reagendar"</strong> en el turno deseado.</li>
+    <li><span class="step-num">2</span>Se desplegará un formulario en línea con dos campos:</li>
+  </ol>
+
+  <table class="field-table">
+    <thead><tr><th>Campo</th><th>Req.</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td>Nueva fecha</td><td class="req">✓</td><td>Fecha del nuevo turno (selector de fecha).</td></tr>
+      <tr><td>Nuevo horario</td><td class="req">✓</td><td>Hora del nuevo turno en formato HH:MM.</td></tr>
+    </tbody>
+  </table>
+
+  <ol class="steps" style="counter-reset: step-counter 2">
+    <li><span class="step-num">3</span>Completá fecha y hora y hacé clic en <strong>"Confirmar"</strong>.</li>
+    <li><span class="step-num">4</span>El turno original se cancelará y se creará uno nuevo con el estado <span class="badge badge-next">Próximo</span>.</li>
+  </ol>
+
+  <div class="callout tip">
+    <span class="callout-icon">💡</span>
+    <div>El botón <strong>"Confirmar"</strong> permanece deshabilitado hasta que completes ambos campos (fecha y hora).</div>
+  </div>
+
+  <hr class="divider"/>
+
+  <h2>4.8 Mi perfil (administrador)</h2>
+  <p>Desde <strong>Perfil</strong> en el sidebar, el administrador puede ver sus datos personales:</p>
+  <ul class="bullet">
+    <li>Nombre y apellido</li>
+    <li>Correo electrónico</li>
+  </ul>
+  <p>Los datos son de solo lectura en esta versión.</p>
+
+  <h3>Cerrar sesión</h3>
+  <p>Al pie del sidebar encontrarás el botón <strong>"Cerrar sesión"</strong>. Se abrirá un modal de confirmación. Confirmá haciendo clic en <strong>"Sí, cerrar sesión"</strong>.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ CAP 5 -->
+<div class="page">
+  <div class="page-header-strip">
+    <h1>5. Flujo del Super Administrador</h1>
+    <span class="strip-logo">Turnex</span>
+  </div>
+
+  <p>El <span class="badge badge-super">SUPER_ADMIN</span> tiene acceso irrestricto a todas las empresas del sistema. Además de todas las funciones del Administrador, puede <strong>crear, editar y eliminar empresas</strong>.</p>
+
+  <h2>5.1 Diferencias con el Administrador</h2>
+
+  <table class="field-table">
+    <thead>
+      <tr><th>Función</th><th><span class="badge badge-admin">ADMIN</span></th><th><span class="badge badge-super">SUPER_ADMIN</span></th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Ver detalle de empresa</td><td>Solo la propia</td><td>Cualquier empresa</td></tr>
+      <tr><td>Crear empresa</td><td>❌</td><td>✅</td></tr>
+      <tr><td>Editar empresa</td><td>❌</td><td>✅</td></tr>
+      <tr><td>Eliminar empresa</td><td>❌</td><td>✅</td></tr>
+      <tr><td>Ver lista de empresas</td><td>❌</td><td>✅ (pantalla Inicio)</td></tr>
+      <tr><td>Ver turnos de usuarios</td><td>Solo empresa propia</td><td>Cualquier empresa</td></tr>
+      <tr><td>Cancelar / Reagendar turnos</td><td>Solo empresa propia</td><td>Cualquier empresa</td></tr>
+      <tr><td>Gestionar perfiles</td><td>Solo empresa propia</td><td>Cualquier empresa</td></tr>
+      <tr><td>Gestionar usuarios</td><td>Solo empresa propia (rol USER)</td><td>Cualquier empresa (todos los roles)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5.2 Crear una empresa — Wizard de 3 pasos</h2>
+  <p>Desde la pantalla de inicio del panel, hacé clic en <strong>"Crear nueva empresa"</strong>.</p>
+
+  <div class="flow">
+    <span class="flow-step">Paso 1<br/>Datos empresa</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step">Paso 2<br/>Crear perfil</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step">Paso 3<br/>Crear horario</span>
+  </div>
+
+  <h3>Paso 1 — Datos de la empresa</h3>
+  <table class="field-table">
+    <thead><tr><th>Campo</th><th>Req.</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td>Logo</td><td class="opt">—</td><td>Imagen PNG/JPG/SVG/WebP. Máx. 5 MB. Previsualización inmediata.</td></tr>
+      <tr><td>Nombre de la empresa</td><td class="req">✓</td><td>Nombre comercial o razón social.</td></tr>
+      <tr><td>CUIT</td><td class="req">✓</td><td>Número de CUIT (ej. 30-12345678-9).</td></tr>
+      <tr><td>Teléfono</td><td class="req">✓</td><td>Número de contacto de la empresa.</td></tr>
+      <tr><td>Domicilio</td><td class="req">✓</td><td>Dirección física de la empresa.</td></tr>
+      <tr><td>Servicio que ofrece</td><td class="req">✓</td><td>Descripción del servicio principal (ej. "Pilates y Yoga").</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Paso 2 — Crear el primer perfil de staff</h3>
+  <p>Podés crear un perfil ahora. Podrás agregar más desde la pestaña <strong>Perfiles</strong> una vez creada la empresa.</p>
+  <p>Completá los campos de nombre, apellido, tipo, teléfono y email del perfil. Hacé clic en <strong>"Siguiente"</strong>.</p>
+
+  <h3>Paso 3 — Crear el primer horario</h3>
+  <p>Configurá el primer horario disponible para la empresa. Podrás agregar más desde la pestaña <strong>Turnos</strong>.</p>
+  <p>Seleccioná días, franja horaria, periodicidad y packs habilitados. Hacé clic en <strong>"Crear empresa"</strong>.</p>
+
+  <div class="callout tip">
+    <span class="callout-icon">✅</span>
+    <div>Al finalizar el wizard, el sistema crea la empresa, el perfil y el horario en un único flujo. Luego podrás vincular especialidades y agregar usuarios.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ CAP 5 cont -->
+<div class="page">
+  <div class="page-header-strip">
+    <h1>5.3 – 5.4 Editar y Eliminar empresa</h1>
+    <span class="strip-logo">Turnex</span>
+  </div>
+
+  <h2>5.3 Editar una empresa</h2>
+  <ol class="steps">
+    <li><span class="step-num">1</span>Desde la lista de empresas o desde el detalle de la empresa, hacé clic en <strong>"Editar empresa"</strong>.</li>
+    <li><span class="step-num">2</span>Se abrirá el formulario de edición con los datos actuales pre-cargados.</li>
+    <li><span class="step-num">3</span>Modificá los campos que necesités. También podés cambiar o reemplazar el logo.</li>
+    <li><span class="step-num">4</span>Hacé clic en <strong>"Editar empresa"</strong> para guardar los cambios.</li>
+  </ol>
+
+  <div class="callout info">
+    <span class="callout-icon">ℹ️</span>
+    <div>El formulario de edición es idéntico al del paso 1 de creación, con los datos actuales ya completados.</div>
+  </div>
+
+  <h2>5.4 Eliminar una empresa</h2>
+
+  <div class="callout warn">
+    <span class="callout-icon">⚠️</span>
+    <div><strong>Acción irreversible.</strong> Eliminar una empresa borra permanentemente todos sus datos del sistema. Esta acción no se puede deshacer.</div>
+  </div>
+
+  <ol class="steps">
+    <li><span class="step-num">1</span>Accedé al detalle de la empresa (pestaña <strong>Datos</strong>).</li>
+    <li><span class="step-num">2</span>Hacé clic en el botón rojo <strong>"Eliminar empresa"</strong>.</li>
+    <li><span class="step-num">3</span>Se abrirá un modal de confirmación mostrando el nombre de la empresa.</li>
+    <li><span class="step-num">4</span>Hacé clic en <strong>"Sí, eliminar"</strong> para confirmar.</li>
+    <li><span class="step-num">5</span>La empresa será eliminada y serás redirigido al inicio del panel.</li>
+  </ol>
+
+  <p>También podés eliminar una empresa directamente desde la lista de empresas usando el ícono de papelera en la tarjeta correspondiente.</p>
+
+  <hr class="divider"/>
+
+  <h2>Navegación del Super Administrador</h2>
+  <p>El sidebar del Super Administrador muestra:</p>
+  <ul class="bullet">
+    <li>🏠 <strong>Inicio</strong> → Lista de todas las empresas registradas</li>
+    <li>🏢 <strong>Empresas</strong> → Acceso alternativo a la lista de empresas</li>
+    <li>👤 <strong>Perfil</strong> → Datos personales del Super Admin</li>
+    <li>🚪 <strong>Cerrar sesión</strong> → Al pie del sidebar</li>
+  </ul>
+
+  <div class="callout note">
+    <span class="callout-icon">🔑</span>
+    <div>El Super Administrador puede acceder al detalle de cualquier empresa haciendo clic sobre su tarjeta en la lista. Desde ahí tiene control total sobre perfiles, horarios, especialidades, usuarios y turnos.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ CAP 6 -->
+<div class="page">
+  <div class="page-header-strip">
+    <h1>6. Referencia rápida de estados de turno</h1>
+    <span class="strip-logo">Turnex</span>
+  </div>
+
+  <p>Los turnos en Turnex pasan por distintos estados a lo largo de su ciclo de vida. Esta tabla resume cada estado, cuándo ocurre y qué acciones son posibles.</p>
+
+  <table class="field-table">
+    <thead>
+      <tr>
+        <th>Estado</th>
+        <th>Cuándo ocurre</th>
+        <th>Acciones disponibles</th>
+        <th>Quién puede actuar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="badge badge-next">Próximo</span></td>
+        <td>Inmediatamente al agendar un turno. Permanece así hasta 1 hora antes del inicio.</td>
+        <td>Cancelar · Reagendar</td>
+        <td>Cliente · Administrador · Super Admin</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-done">Completado</span></td>
+        <td>Se asigna automáticamente cuando faltan menos de 60 minutos para el inicio del turno (y no fue cancelado previamente).</td>
+        <td>Solo lectura</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-canceled">Cancelado</span></td>
+        <td>Cuando el cliente o un administrador cancela el turno manualmente. También ocurre al reagendar (el turno original se cancela y se crea uno nuevo).</td>
+        <td>Solo lectura</td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Diagrama de ciclo de vida</h2>
+
+  <div style="background:var(--gray-50);border-radius:12px;padding:24px;margin:16px 0;text-align:center;">
+    <div style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;font-size:10pt;">
+      <div style="background:var(--purple);color:#fff;border-radius:8px;padding:10px 20px;font-weight:700;">Agendar turno</div>
+      <div style="font-size:18pt;color:var(--gray-400)">→</div>
+      <span class="badge badge-next" style="font-size:10pt;padding:8px 16px">PRÓXIMO</span>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="font-size:16pt;color:var(--gray-400)">→</div>
+          <div style="font-size:8.5pt;color:var(--gray-600);background:var(--gray-100);border-radius:4px;padding:3px 8px">Cancelación manual</div>
+          <div style="font-size:16pt;color:var(--gray-400)">→</div>
+          <span class="badge badge-canceled" style="font-size:10pt;padding:8px 16px">CANCELADO</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:6px">
+          <div style="font-size:16pt;color:var(--gray-400)">→</div>
+          <div style="font-size:8.5pt;color:var(--gray-600);background:var(--gray-100);border-radius:4px;padding:3px 8px">Auto (−60 min)</div>
+          <div style="font-size:16pt;color:var(--gray-400)">→</div>
+          <span class="badge badge-done" style="font-size:10pt;padding:8px 16px">COMPLETADO</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Sobre el reagendado</h2>
+  <p>Al reagendar un turno, el sistema realiza automáticamente dos operaciones:</p>
+  <ol class="steps">
+    <li><span class="step-num">1</span>El turno original cambia su estado a <span class="badge badge-canceled">Cancelado</span>.</li>
+    <li><span class="step-num">2</span>Se crea un turno nuevo con la fecha y hora seleccionadas, con estado <span class="badge badge-next">Próximo</span>.</li>
+  </ol>
+
+  <div class="callout tip">
+    <span class="callout-icon">💡</span>
+    <div>Tanto el turno cancelado como el nuevo reagendado aparecerán en tu historial. El turno original en la pestaña <strong>Cancelados</strong> y el nuevo en <strong>Próximos</strong>.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ CAP 7 -->
+<div class="page">
+  <div class="page-header-strip">
+    <h1>7. Preguntas frecuentes</h1>
+    <span class="strip-logo">Turnex</span>
+  </div>
+
+  <h3>¿Puedo tener más de un turno en el mismo horario?</h3>
+  <p>No. El sistema detecta automáticamente si ya tenés un turno reservado en un horario específico y lo marca como <em>"Ya tenés turno"</em>. No podrás seleccionarlo nuevamente.</p>
+
+  <hr class="divider"/>
+
+  <h3>¿Cuándo se marca un turno como Completado?</h3>
+  <p>Un turno pasa a <span class="badge badge-done">Completado</span> automáticamente cuando faltan menos de <strong>60 minutos</strong> para su inicio. No necesitás hacer nada.</p>
+
+  <hr class="divider"/>
+
+  <h3>¿Puedo cancelar un turno que ya está Completado?</h3>
+  <p>No. Los turnos con estado <span class="badge badge-done">Completado</span> o <span class="badge badge-canceled">Cancelado</span> son de solo lectura y no admiten modificaciones.</p>
+
+  <hr class="divider"/>
+
+  <h3>¿Qué pasa si intento agendar pero no tengo empresa asignada?</h3>
+  <p>El sistema mostrará el mensaje <em>"No tenés una sede asignada. Contactá a tu administrador."</em> Comunicáte con el administrador de tu centro para que vincule tu cuenta a la empresa.</p>
+
+  <hr class="divider"/>
+
+  <h3>¿Por qué no veo ciertos días al elegir mis turnos?</h3>
+  <p>El sistema solo muestra los días en los que la especialidad tiene horario configurado. Si no aparece el día que buscás, consultá a tu administrador para que revise la configuración del horario.</p>
+
+  <hr class="divider"/>
+
+  <h3>¿Puedo cambiar mi contraseña?</h3>
+  <p>En la versión actual, la contraseña no se puede modificar desde la plataforma. Contactá al administrador de tu empresa si necesitás restablecerla.</p>
+
+  <hr class="divider"/>
+
+  <h3>¿Puedo tener dos packs activos al mismo tiempo?</h3>
+  <p>No. El sistema detecta si ya tenés turnos con un pack activo y lo pre-selecciona automáticamente, omitiendo el paso de selección de pack. Solo podés operar con un pack a la vez.</p>
+
+  <hr class="divider"/>
+
+  <h3>¿Qué significa "Versión BETA"?</h3>
+  <p>Turnex está en desarrollo activo. Algunas funcionalidades pueden estar incompletas (como la pestaña <strong>Settings</strong>) y el sistema puede recibir actualizaciones frecuentes.</p>
+
+  <hr class="divider"/>
+
+  <h3>¿Con quién me contacto si tengo un problema?</h3>
+  <p>Comunicáte con el administrador de tu empresa. Si sos administrador y el problema es técnico, contactá al equipo de soporte de Turnex.</p>
+
+  <hr class="divider"/>
+
+  <div style="margin-top:40px;padding:24px;background:var(--purple-light);border-radius:12px;text-align:center;">
+    <div style="font-size:24pt;margin-bottom:8px">Turnex</div>
+    <div style="font-size:9pt;color:var(--gray-600)">Plataforma de Gestión de Turnos &nbsp;|&nbsp; Versión Beta &nbsp;|&nbsp; 2026</div>
+    <div style="font-size:8.5pt;color:var(--gray-400);margin-top:8px">Este documento es de uso interno. Para soporte técnico contactá al equipo de Turnex.</div>
+  </div>
+</div>
+
+</body>
+</html>
