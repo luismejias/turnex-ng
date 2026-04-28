@@ -342,16 +342,20 @@ export async function deleteSpecialty(companyId: number, specialtyId: number) {
  * @param periodicity - Periodicidad como texto (ej. "Cada 30 minutos").
  * @returns Lista de horarios en formato HH:MM.
  */
+function parseTimeToMinutes(time: string): number {
+  const m = time.match(/(\d{1,2}):(\d{2})/);
+  if (!m) return 0;
+  return parseInt(m[1], 10) * 60 + parseInt(m[2], 10);
+}
+
 function generateSlots(timeFrom: string, timeTo: string, periodicity: string): string[] {
   const periodicityMinutes: Record<string, number> = {
     'Cada 15 minutos': 15, 'Cada 30 minutos': 30,
     'Cada 45 minutos': 45, 'Cada 60 minutos': 60,
   };
   const interval = periodicityMinutes[periodicity] ?? 30;
-  const [fH, fM] = timeFrom.split(':').map(Number);
-  const [tH, tM] = timeTo.split(':').map(Number);
-  const startMin = fH * 60 + fM;
-  const endMin   = tH * 60 + tM;
+  const startMin = parseTimeToMinutes(timeFrom);
+  const endMin   = parseTimeToMinutes(timeTo);
   const slots: string[] = [];
   for (let m = startMin; m < endMin; m += interval) {
     const h  = Math.floor(m / 60).toString().padStart(2, '0');
