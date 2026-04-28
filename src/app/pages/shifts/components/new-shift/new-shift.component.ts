@@ -388,8 +388,11 @@ export class NewShiftComponent implements OnInit {
     if (this._pack?.id === 4) {
       return Object.values(hours).some(dayHours => dayHours.some(h => h.isSelected));
     }
-    const selectedDays = this.newShiftStateService.state().days ?? [];
-    if (!selectedDays.length) return false;
-    return selectedDays.every(day => hours[day.description]?.some(h => h.isSelected) ?? false);
+    // Only consider days that have at least one selectable slot (available > 0)
+    const selectableDays = Object.keys(hours).filter(day =>
+      hours[day]?.some(h => (h.available ?? 0) > 0)
+    );
+    if (!selectableDays.length) return false;
+    return selectableDays.every(day => hours[day]?.some(h => h.isSelected) ?? false);
   }
 }

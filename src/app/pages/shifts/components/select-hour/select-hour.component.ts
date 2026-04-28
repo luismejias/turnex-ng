@@ -157,23 +157,33 @@ export class SelectHourComponent implements OnInit {
         daysWithSlots.push(day.description);
         const slotMap: Record<string, AvailabilitySlot> = {};
         slots.forEach(s => { slotMap[s.time] = s; });
+        const dateKey = this.dayDates[day.description];
+        const dayIsBooked = this.hours.some(h => {
+          return this.weekPagerIsVisible
+            ? this.bookedTimes.has(`date|${dateKey}|${h.description}`)
+            : this.bookedTimes.has(`day|${day.description}|${h.description}`);
+        });
+
         this.selectedDaysWithTimes[day.description] = this.selectedDaysWithTimes[day.description]
           .map(h => {
             const slot = slotMap[h.description];
             const base = slot
               ? { ...h, available: slot.available, capacity: slot.capacity }
               : { ...h, available: 0, capacity: 0 };
-            const dateKey = this.dayDates[day.description];
-            const isBooked = this.weekPagerIsVisible
+            const isThisSlotBooked = this.weekPagerIsVisible
               ? this.bookedTimes.has(`date|${dateKey}|${h.description}`)
               : this.bookedTimes.has(`day|${day.description}|${h.description}`);
-            return isBooked ? { ...base, available: 0, alreadyBooked: true } : base;
+            if (isThisSlotBooked) return { ...base, available: 0, alreadyBooked: true };
+            if (dayIsBooked) return { ...base, available: 0 };
+            return base;
           });
       });
 
       // Hide days that had no slots (applies to week pager and regular packs)
       this.selectedDays = this.selectedDays.filter(d => daysWithSlots.includes(d.description));
       this.loadingAvailability = false;
+      // Sync state so validateNextButton sees the updated availability
+      this.newShiftStateService.set(this.step.HOURS, this.selectedDaysWithTimes);
     });
   }
 
