@@ -42,6 +42,10 @@ export class HomeComponent implements OnInit {
   getShifts(): void {
     this.shiftsService.getShifts().subscribe({
       next: (shifts) => {
+        if (!shifts.length) {
+          this.router.navigate(['/shifts/newShift']);
+          return;
+        }
         this.shifts = shifts;
         this.nextShift = this.getNextShift(this.shifts, this.today);
       },
