@@ -7,6 +7,7 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
+import {MatTooltipModule} from '@angular/material/tooltip';
 import { ButtonComponent, TitleComponent } from 'src/app/components';
 import Swal from 'sweetalert2';
 import { NgClass } from '@angular/common';
@@ -17,7 +18,7 @@ import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
   selector: 'turnex-login',
-  imports: [TitleComponent, ButtonComponent, ReactiveFormsModule, NgClass],
+  imports: [TitleComponent, ButtonComponent, ReactiveFormsModule, NgClass, MatTooltipModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
