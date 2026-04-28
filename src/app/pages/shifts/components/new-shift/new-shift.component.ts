@@ -307,7 +307,7 @@ export class NewShiftComponent implements OnInit {
    */
   saveShifts(): void {
     this.shiftsService.saveShifts(this.state).subscribe({
-      next: () => { this.errorOnSave = false; this.updateStep(6); },
+      next: () => { this.errorOnSave = false; this.authService.refreshUser(); this.updateStep(6); },
       error: () => { this.errorOnSave = true; this.updateStep(6); },
     });
   }

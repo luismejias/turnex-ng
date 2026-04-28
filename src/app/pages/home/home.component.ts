@@ -40,6 +40,10 @@ export class HomeComponent implements OnInit {
   }
 
   getShifts(): void {
+    if (this.authService.getStoredUser()?.firstLogin) {
+      this.router.navigate(['/shifts/newShift']);
+      return;
+    }
     this.shiftsService.getShifts().subscribe({
       next: (shifts) => {
         this.shifts = shifts;

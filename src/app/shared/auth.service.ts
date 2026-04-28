@@ -49,6 +49,16 @@ export class AuthService {
   }
 
   /**
+   * Refresca el usuario en localStorage consultando el backend.
+   * Útil tras acciones que modifican campos del usuario (ej. `firstLogin`).
+   */
+  refreshUser(): void {
+    this.getMe().subscribe(user => {
+      localStorage.setItem(USER_KEY, JSON.stringify(user));
+    });
+  }
+
+  /**
    * Cierra la sesión del usuario eliminando el token y los datos del localStorage.
    */
   logout(): void {

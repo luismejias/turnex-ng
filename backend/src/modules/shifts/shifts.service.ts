@@ -118,6 +118,7 @@ export async function createShifts(userId: number, dto: CreateShiftsDto) {
   }
 
   await prisma.shift.createMany({ data: shiftsToCreate });
+  await prisma.user.update({ where: { id: userId }, data: { firstLogin: false } });
   return prisma.shift.findMany({
     where: { userId, status: ShiftStatus.NEXT },
     include: { pack: true, specialty: true },
