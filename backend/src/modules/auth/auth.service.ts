@@ -4,6 +4,8 @@ import { prisma } from '../../config/prisma';
 import { env } from '../../config/env';
 import type { RegisterDto, LoginDto } from './auth.schemas';
 
+type PrismaUser = Awaited<ReturnType<typeof prisma.user.findUniqueOrThrow>>;
+
 const SALT_ROUNDS = 10;
 
 /**
@@ -33,7 +35,7 @@ function signToken(userId: number, email: string): string {
  * @param user - Objeto usuario completo desde Prisma.
  * @returns Objeto usuario sin contraseña.
  */
-function sanitizeUser(user: { id: number; name: string; lastName: string; email: string; role: string; active: boolean; firstLogin: boolean; termAndConditions: boolean; createdAt: Date; companyId?: number | null }) {
+function sanitizeUser(user: PrismaUser) {
   const { id, name, lastName, email, role, active, firstLogin, termAndConditions, createdAt, companyId } = user;
   return { id, name, lastName, email, role, active, firstLogin, termAndConditions, createdAt, companyId: companyId ?? null };
 }
