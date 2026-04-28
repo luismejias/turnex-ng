@@ -1,8 +1,9 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, computed, inject, Input } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { AppStateService } from 'src/app/app.state.service';
 import { ConfirmModalComponent } from 'src/app/shared/components/confirm-modal/confirm-modal.component';
+import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
   selector: 'turnex-navbar',
@@ -18,7 +19,10 @@ export class NavbarComponent {
   }
 
   private appStateService = inject(AppStateService);
+  private authService = inject(AuthService);
   private dialog = inject(MatDialog);
+
+  readonly companyName = computed(() => this.authService.currentUser()?.companyName ?? null);
 
   logout(): void {
     const ref = this.dialog.open(ConfirmModalComponent, {

@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { AuthResponse, User } from 'src/app/models';
@@ -14,6 +14,8 @@ const USER_KEY = 'user';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private http = inject(HttpClient);
+
+  readonly currentUser = signal<User | null>(this.getStoredUser());
 
   /**
    * Autentica al usuario con email y contraseña.
@@ -53,8 +55,12 @@ export class AuthService {
    * Útil tras acciones que modifican campos del usuario (ej. `firstLogin`).
    */
   refreshUser(): void {
-    this.getMe().subscribe(user => {
-      localStorage.setItem(USER_KEY, JSON.stringify(user));
+    this.getMe().subscribe({
+      next: (user) => {
+        localStorage.setItem(USER_KEY, JSON.stringify(user));
+        this.currentUser.set(user);
+      },
+      error: (err) => console.error('[AuthService] refreshUser failed:', err),
     });
   }
 
@@ -64,6 +70,7 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
+    this.currentUser.set(null);
   }
 
   /**
@@ -98,5 +105,6 @@ export class AuthService {
   private _storeSession(res: AuthResponse): void {
     localStorage.setItem(TOKEN_KEY, res.token);
     localStorage.setItem(USER_KEY, JSON.stringify(res.user));
+    this.currentUser.set(res.user);
   }
 }

@@ -3,7 +3,7 @@
     <div class="navbar__title-box" routerLink="/home">
       <span class="navbar__title">Turnex</span>
       <span class="navbar__title">|</span>
-      <span class="navbar__client-name"> OStudio</span>
+        <span class="navbar__client-name"> {{ companyName() || '-' }}</span>
     </div>
     @if (!isChildFlow && !_isMobile) {
       <div class="navbar__menu">

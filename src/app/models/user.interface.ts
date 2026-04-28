@@ -23,6 +23,8 @@ export interface User {
   termAndConditions: boolean;
   /** ID de la empresa a la que pertenece el usuario (null para SUPER_ADMIN). */
   companyId?: number | null;
+  /** Nombre de la empresa a la que pertenece el usuario (null si no tiene empresa). */
+  companyName?: string | null;
   /** Fecha de creación de la cuenta en formato ISO. */
   createdAt?: string;
 }

@@ -4,7 +4,9 @@ import { prisma } from '../../config/prisma';
 import { env } from '../../config/env';
 import type { RegisterDto, LoginDto } from './auth.schemas';
 
-type PrismaUser = Awaited<ReturnType<typeof prisma.user.findUniqueOrThrow>>;
+type PrismaUser = Awaited<ReturnType<typeof prisma.user.findUniqueOrThrow>> & {
+  company?: { name: string } | null;
+};
 
 const SALT_ROUNDS = 10;
 
@@ -37,7 +39,11 @@ function signToken(userId: number, email: string): string {
  */
 function sanitizeUser(user: PrismaUser) {
   const { id, name, lastName, email, role, active, firstLogin, termAndConditions, createdAt, companyId } = user;
-  return { id, name, lastName, email, role, active, firstLogin, termAndConditions, createdAt, companyId: companyId ?? null };
+  return {
+    id, name, lastName, email, role, active, firstLogin, termAndConditions, createdAt,
+    companyId: companyId ?? null,
+    companyName: user.company?.name ?? null,
+  };
 }
 
 /**
@@ -75,7 +81,7 @@ export async function register(dto: RegisterDto) {
  * @returns Objeto con el usuario sanitizado y el JWT de sesión.
  */
 export async function login(dto: LoginDto) {
-  const user = await prisma.user.findUnique({ where: { email: dto.email } });
+  const user = await prisma.user.findUnique({ where: { email: dto.email }, include: { company: { select: { name: true } } } });
   if (!user) {
     throw createAppError('Invalid credentials', 401);
   }
@@ -100,7 +106,7 @@ export async function login(dto: LoginDto) {
  * @returns Datos del usuario sanitizados.
  */
 export async function getMe(userId: number) {
-  const user = await prisma.user.findUnique({ where: { id: userId } });
+  const user = await prisma.user.findUnique({ where: { id: userId }, include: { company: { select: { name: true } } } });
   if (!user) {
     throw createAppError('User not found', 404);
   }

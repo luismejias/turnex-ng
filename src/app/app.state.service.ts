@@ -27,6 +27,7 @@ export class AppStateService extends SimpleStoreService<AppState> {
   private _restoreSession(): void {
     if (this.authService.isAuthenticated()) {
       this.state.set({ isLoggedIn: true, isChildFlow: false });
+      this.authService.refreshUser();
     } else {
       this.state.set({ isLoggedIn: false, isChildFlow: false });
     }
