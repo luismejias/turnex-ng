@@ -81,15 +81,16 @@ export async function createShifts(userId: number, dto: CreateShiftsDto) {
   } else {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
+    const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+    endOfMonth.setHours(23, 59, 59, 999);
     let createdCount = 0;
 
-    // Start from today and search up to 60 days ahead to fill the pack
-    for (let offset = 0; offset < 60 && createdCount < pack.classCount; offset++) {
-      const date = new Date(today);
-      date.setDate(today.getDate() + offset);
-
-      const dayIndex = date.getDay();
-      const dayName = Object.keys(DAYS_OF_WEEK).find(k => DAYS_OF_WEEK[k] === dayIndex);
+    for (
+      const d = new Date(today);
+      d <= endOfMonth && createdCount < pack.classCount;
+      d.setDate(d.getDate() + 1)
+    ) {
+      const dayName = Object.keys(DAYS_OF_WEEK).find(k => DAYS_OF_WEEK[k] === d.getDay());
       if (!dayName) continue;
 
       const hoursForDay = dto.hours[dayName];
@@ -101,7 +102,7 @@ export async function createShifts(userId: number, dto: CreateShiftsDto) {
       for (const hour of selectedHours) {
         if (createdCount >= pack.classCount) break;
         const [h, m] = hour.description.split(':').map(Number);
-        const shiftDate = new Date(date);
+        const shiftDate = new Date(d);
         shiftDate.setHours(h, m, 0, 0);
         shiftsToCreate.push({
           userId, packId: dto.packId, specialtyId: dto.specialtyId, companySpecialtyId: dto.companySpecialtyId,
