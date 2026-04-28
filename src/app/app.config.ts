@@ -5,6 +5,7 @@ import { routes } from './app.routes';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { ErrorResponseInterceptor } from './shared/error-response.interceptor';
 import { authInterceptor } from './shared/auth.interceptor';
+import { loadingInterceptor } from './shared/loading.interceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
@@ -12,7 +13,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(
       withFetch(),
-      withInterceptors([authInterceptor, ErrorResponseInterceptor])
+      withInterceptors([authInterceptor, loadingInterceptor, ErrorResponseInterceptor])
     ),
     provideAnimationsAsync(),
   ]

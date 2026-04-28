@@ -1,0 +1,40 @@
+@use 'variables' as *;
+
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+
+  &__box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $turnex-spacing-12;
+    background: #fff;
+    border-radius: $turnex-spacing-12;
+    padding: $turnex-spacing-32 $turnex-spacing-48;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  }
+
+  &__spinner {
+    font-size: $turnex-spacing-32;
+    color: $turnex-primary-700;
+    animation: overlay-spin 0.9s linear infinite;
+  }
+
+  &__text {
+    color: $turnex-primary-800;
+    font-size: $turnex-spacing-14;
+    @include Rubik();
+  }
+}
+
+@keyframes overlay-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}

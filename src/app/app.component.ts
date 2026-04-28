@@ -1,6 +1,7 @@
 import { Component, effect, inject, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { BottomBarComponent, NavbarComponent } from './components';
+import { LoadingOverlayComponent } from './shared/components/loading-overlay/loading-overlay.component';
 import { AppStateService } from './app.state.service';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { IdleService } from './shared/services/idle.service';
@@ -13,7 +14,7 @@ import { filter } from 'rxjs/operators';
   selector: 'turnex-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  imports: [RouterOutlet, NavbarComponent, BottomBarComponent],
+  imports: [RouterOutlet, NavbarComponent, BottomBarComponent, LoadingOverlayComponent],
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'turnex';
