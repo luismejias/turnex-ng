@@ -72,7 +72,7 @@ export class SelectHourComponent implements OnInit {
       shifts
         .filter(s => s.status === TypeShifts.NEXT && s.companySpecialtyId === spId)
         .forEach(s => {
-          const dateKey = new Date(s.date).toISOString().split('T')[0];
+          const dateKey = this._toLocalDateString(new Date(s.date));
           this.bookedTimes.add(`date|${dateKey}|${s.time}`);
           this.bookedTimes.add(`day|${s.day}|${s.time}`);
         });
@@ -107,6 +107,10 @@ export class SelectHourComponent implements OnInit {
 
   // ── Availability loading ──────────────────────────────────────────────────
 
+  private _toLocalDateString(d: Date): string {
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  }
+
   private _computeDayDatesForRegularPack(): void {
     const DAY_INDEX: Record<string, number> = {
       Domingo: 0, Lunes: 1, Martes: 2, Miércoles: 3,
@@ -119,7 +123,7 @@ export class SelectHourComponent implements OnInit {
       const diff = (target - current + 7) % 7 || 7;
       const next = new Date(today);
       next.setDate(today.getDate() + diff);
-      this.dayDates[day.description] = next.toISOString().split('T')[0];
+      this.dayDates[day.description] = this._toLocalDateString(next);
     });
   }
 
@@ -212,7 +216,7 @@ export class SelectHourComponent implements OnInit {
 
     daysRange.forEach(day => {
       if (day.date) {
-        this.dayDates[day.description] = new Date(day.date).toISOString().split('T')[0];
+        this.dayDates[day.description] = this._toLocalDateString(new Date(day.date));
       }
     });
     this._loadAvailability();
