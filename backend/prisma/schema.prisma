@@ -27,6 +27,7 @@ model User {
   password          String
   role              UserRole @default(USER)
   active            Boolean  @default(true)
+  firstLogin        Boolean  @default(true)
   termAndConditions Boolean  @default(false)
   companyId         Int?
   createdAt         DateTime @default(now())

@@ -17,6 +17,8 @@ export interface User {
   role: UserRole;
   /** Indica si la cuenta del usuario está habilitada. */
   active: boolean;
+  /** `true` hasta que el usuario completa su primera reserva de turno. */
+  firstLogin?: boolean;
   /** Indica si el usuario aceptó los términos y condiciones. */
   termAndConditions: boolean;
   /** ID de la empresa a la que pertenece el usuario (null para SUPER_ADMIN). */

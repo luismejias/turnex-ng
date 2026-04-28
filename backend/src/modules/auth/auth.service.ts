@@ -33,9 +33,9 @@ function signToken(userId: number, email: string): string {
  * @param user - Objeto usuario completo desde Prisma.
  * @returns Objeto usuario sin contraseña.
  */
-function sanitizeUser(user: { id: number; name: string; lastName: string; email: string; role: string; active: boolean; termAndConditions: boolean; createdAt: Date; companyId?: number | null }) {
-  const { id, name, lastName, email, role, active, termAndConditions, createdAt, companyId } = user;
-  return { id, name, lastName, email, role, active, termAndConditions, createdAt, companyId: companyId ?? null };
+function sanitizeUser(user: { id: number; name: string; lastName: string; email: string; role: string; active: boolean; firstLogin: boolean; termAndConditions: boolean; createdAt: Date; companyId?: number | null }) {
+  const { id, name, lastName, email, role, active, firstLogin, termAndConditions, createdAt, companyId } = user;
+  return { id, name, lastName, email, role, active, firstLogin, termAndConditions, createdAt, companyId: companyId ?? null };
 }
 
 /**
