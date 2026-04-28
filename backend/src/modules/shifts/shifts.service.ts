@@ -80,35 +80,35 @@ export async function createShifts(userId: number, dto: CreateShiftsDto) {
     }
   } else {
     const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    today.setHours(0, 0, 0, 0);
     let createdCount = 0;
 
-    for (const [dayName, hours] of Object.entries(dto.hours)) {
-      const dayIndex = DAYS_OF_WEEK[dayName];
-      if (dayIndex === undefined) continue;
+    // Start from today and search up to 60 days ahead to fill the pack
+    for (let offset = 0; offset < 60 && createdCount < pack.classCount; offset++) {
+      const date = new Date(today);
+      date.setDate(today.getDate() + offset);
 
-      const selectedHours = hours.filter((h) => h.isSelected);
+      const dayIndex = date.getDay();
+      const dayName = Object.keys(DAYS_OF_WEEK).find(k => DAYS_OF_WEEK[k] === dayIndex);
+      if (!dayName) continue;
+
+      const hoursForDay = dto.hours[dayName];
+      if (!hoursForDay) continue;
+
+      const selectedHours = hoursForDay.filter((h) => h.isSelected);
       if (!selectedHours.length) continue;
 
-      for (let d = 1; d <= daysInMonth; d++) {
+      for (const hour of selectedHours) {
         if (createdCount >= pack.classCount) break;
-        const date = new Date(year, month, d);
-        if (date.getDay() !== dayIndex) continue;
-
-        for (const hour of selectedHours) {
-          if (createdCount >= pack.classCount) break;
-          const [h, m] = hour.description.split(':').map(Number);
-          const shiftDate = new Date(date);
-          shiftDate.setHours(h, m, 0, 0);
-          shiftsToCreate.push({
-            userId, packId: dto.packId, specialtyId: dto.specialtyId, companySpecialtyId: dto.companySpecialtyId,
-            day: dayName, date: shiftDate, time: hour.description,
-            status: ShiftStatus.NEXT,
-          });
-          createdCount++;
-        }
+        const [h, m] = hour.description.split(':').map(Number);
+        const shiftDate = new Date(date);
+        shiftDate.setHours(h, m, 0, 0);
+        shiftsToCreate.push({
+          userId, packId: dto.packId, specialtyId: dto.specialtyId, companySpecialtyId: dto.companySpecialtyId,
+          day: dayName, date: shiftDate, time: hour.description,
+          status: ShiftStatus.NEXT,
+        });
+        createdCount++;
       }
     }
   }
