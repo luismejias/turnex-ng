@@ -55,7 +55,7 @@ export class AuthService {
    * Útil tras acciones que modifican campos del usuario (ej. `firstLogin`).
    */
   refreshUser(): void {
-    this.getMe().subscribe({
+    this.http.get<User>(`${API_URL}/auth/me`, { headers: { 'X-Skip-Loading': 'true' } }).subscribe({
       next: (user) => {
         localStorage.setItem(USER_KEY, JSON.stringify(user));
         this.currentUser.set(user);
