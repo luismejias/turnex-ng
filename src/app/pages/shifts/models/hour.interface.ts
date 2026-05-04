@@ -12,4 +12,6 @@ export interface Hour {
   capacity?: number;
   /** `true` cuando el usuario ya tiene un turno agendado en este horario. */
   alreadyBooked?: boolean;
+  /** `true` cuando la fecha y hora del slot ya pasaron. */
+  pastTime?: boolean;
 }

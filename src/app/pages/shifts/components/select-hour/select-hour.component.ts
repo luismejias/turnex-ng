@@ -144,6 +144,8 @@ export class SelectHourComponent implements OnInit {
       );
     });
 
+    const now = new Date();
+
     forkJoin(requests).subscribe(results => {
       const daysWithSlots: string[] = [];
 
@@ -170,6 +172,13 @@ export class SelectHourComponent implements OnInit {
             const base = slot
               ? { ...h, available: slot.available, capacity: slot.capacity }
               : { ...h, available: 0, capacity: 0 };
+
+            // Disable slots whose date+time is already in the past
+            if (dateKey) {
+              const slotDateTime = new Date(`${dateKey}T${h.description}:00`);
+              if (slotDateTime <= now) return { ...base, available: 0, pastTime: true };
+            }
+
             const isThisSlotBooked = this.weekPagerIsVisible
               ? this.bookedTimes.has(`date|${dateKey}|${h.description}`)
               : this.bookedTimes.has(`day|${day.description}|${h.description}`);

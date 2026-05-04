@@ -35,7 +35,9 @@
 
               <span class="select-hour__time">{{ hour.description }}</span>
 
-              @if (hour.alreadyBooked) {
+              @if (hour.pastTime) {
+                <span class="select-hour__badge select-hour__badge--past">Hora pasada</span>
+              } @else if (hour.alreadyBooked) {
                 <span class="select-hour__badge select-hour__badge--booked">Ya tienes turno</span>
               } @else if (hour.capacity !== undefined) {
                 <span class="select-hour__badge"
