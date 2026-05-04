@@ -1,5 +1,8 @@
 <div style="display: flex; padding: 24px; background: #F9FAFC; border-radius: 8px; align-items: center; justify-content: center; width: 430px; height: 36px; box-sizing: border-box;">
-  <span class="fi-rr-less-than" style="cursor: pointer;" (click)="previousWeek()"></span>
+  <span class="fi-rr-less-than"
+    [style.cursor]="canGoPrevious ? 'pointer' : 'not-allowed'"
+    [style.opacity]="canGoPrevious ? '1' : '0.3'"
+    (click)="previousWeek()"></span>
   <div style="display: flex; justify-content: space-around; margin: 0 10px;">
     <span style="color:  #1E2533;
     text-align: center;

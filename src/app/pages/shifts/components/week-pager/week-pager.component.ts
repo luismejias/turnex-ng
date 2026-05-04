@@ -15,9 +15,12 @@ import { CurrentWeek } from '../../models';
 export class WeekPagerComponent implements OnInit {
   @Output() currentWeekData = new EventEmitter<CurrentWeek>();
   private currentDate = new Date();
+  private readonly thisWeekStart = this.getStartOfWeek(this.currentDate);
   private currentWeekStart = this.getStartOfWeek(this.currentDate);
   private currentWeekEnd = this.getEndOfWeek(this.currentDate);
   week!: string;
+  canGoPrevious = false;
+
   ngOnInit(): void {
     this.week = this.getCurrentWeek();
   }
@@ -26,13 +29,16 @@ export class WeekPagerComponent implements OnInit {
     this.currentWeekStart = this.adjustDateByDays(this.currentWeekStart, 7);
     this.currentWeekEnd = this.getEndOfWeek(this.currentWeekStart);
     this.week = this.getCurrentWeek();
+    this.canGoPrevious = this.currentWeekStart > this.thisWeekStart;
     this.currentWeekEmit();
   }
 
   previousWeek() {
+    if (!this.canGoPrevious) return;
     this.currentWeekStart = this.adjustDateByDays(this.currentWeekStart, -7);
     this.currentWeekEnd = this.getEndOfWeek(this.currentWeekStart);
     this.week = this.getCurrentWeek();
+    this.canGoPrevious = this.currentWeekStart > this.thisWeekStart;
     this.currentWeekEmit();
   }
 

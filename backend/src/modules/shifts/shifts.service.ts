@@ -58,6 +58,10 @@ export async function createShifts(userId: number, dto: CreateShiftsDto) {
     day: string; date: Date; time: string; status: ShiftStatus;
   }[] = [];
 
+  const now = new Date();
+  const todayMidnight = new Date(now);
+  todayMidnight.setHours(0, 0, 0, 0);
+
   if (pack.id === 4) {
     for (const [dayName, hours] of Object.entries(dto.hours)) {
       const selectedHours = hours.filter((h) => h.isSelected);
@@ -67,10 +71,15 @@ export async function createShifts(userId: number, dto: CreateShiftsDto) {
       if (!isoDate) continue;
 
       const date = new Date(isoDate);
+      // Reject past dates
+      if (date < todayMidnight) continue;
+
       for (const hour of selectedHours) {
         const [h, m] = hour.description.split(':').map(Number);
         const shiftDate = new Date(date);
         shiftDate.setHours(h, m, 0, 0);
+        // Reject if the exact datetime is already in the past
+        if (shiftDate <= now) continue;
         shiftsToCreate.push({
           userId, packId: dto.packId, specialtyId: dto.specialtyId, companySpecialtyId: dto.companySpecialtyId,
           day: dayName, date: shiftDate, time: hour.description,
@@ -79,14 +88,16 @@ export async function createShifts(userId: number, dto: CreateShiftsDto) {
       }
     }
   } else {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+    // Start from tomorrow to avoid creating shifts for today that may already be in the past
+    const startDate = new Date(now);
+    startDate.setDate(now.getDate() + 1);
+    startDate.setHours(0, 0, 0, 0);
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
     endOfMonth.setHours(23, 59, 59, 999);
     let createdCount = 0;
 
     for (
-      const d = new Date(today);
+      const d = new Date(startDate);
       d <= endOfMonth && createdCount < pack.classCount;
       d.setDate(d.getDate() + 1)
     ) {
