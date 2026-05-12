@@ -25,9 +25,10 @@ function createAppError(message: string, statusCode: number) {
  * @returns Lista de turnos ordenados por fecha ascendente.
  */
 export async function getShifts(userId: number) {
-  const cutoff = new Date(Date.now() + 60 * 60 * 1000);
+  const todayMidnight = new Date();
+  todayMidnight.setUTCHours(0, 0, 0, 0);
   await prisma.shift.updateMany({
-    where: { userId, status: ShiftStatus.NEXT, date: { lte: cutoff } },
+    where: { userId, status: ShiftStatus.NEXT, date: { lt: todayMidnight } },
     data: { status: ShiftStatus.COMPLETED },
   });
 

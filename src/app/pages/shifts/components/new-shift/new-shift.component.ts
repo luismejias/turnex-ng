@@ -1,5 +1,5 @@
 import { CommonModule, NgClass } from '@angular/common';
-import { Component, effect, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { ButtonComponent, TitleComponent } from 'src/app/components';
 import { daysOfWeek } from 'src/app/pages/constants';
 import { SelectItemsComponent } from '../select-items/select-items.component';
@@ -10,7 +10,6 @@ import { AdminSpecialty } from 'src/app/pages/admin/models/admin.models';
 import { NewShiftStateService } from './new-shift.state.service';
 import { SelectHourComponent } from '../select-hour/select-hour.component';
 import { NewShiftSummaryComponent } from '../new-shift-summary/new-shift-summary.component';
-import { NewShiftState } from '../../models/new-shift-state.interface';
 import { Router } from '@angular/router';
 import { SelectDayComponent } from '../select-day/select-day.component';
 import { PacksService } from 'src/app/pages/packs';
@@ -53,27 +52,15 @@ export class NewShiftComponent implements OnInit {
   /** ID del pack a preseleccionar (pasado como query param desde historial). */
   @Input() packId?: string;
 
-  /** Título principal del paso actual. */
-  title: string = '';
-  /** Subtítulo descriptivo del paso actual. */
-  subTitle: string = '';
-  /** Etiqueta del botón de avance. */
-  nextButtonText: string = 'Siguiente';
-  /** Etiqueta del botón de retroceso. */
-  previousButtonText: string = 'Anterior';
   /** Indica si ocurrió un error al guardar los turnos en el paso 6. */
   errorOnSave: boolean = false;
   /** Enum de pasos del wizard, expuesto al template. */
   step = step;
-  /** Controla si el botón "Siguiente" está deshabilitado. */
-  isNextButtonDisabled: boolean = true;
   /** Copia mutable de los días de la semana para gestionar la selección. */
   daysOfWeek: Day[] = daysOfWeek.map(d => ({ ...d }));
   selectedDays!: Day[];
   selectedDaysWithSelectedTimes!: Record<string, Hour[]>;
   hours: Hour[] = [];
-  /** Estado actual del wizard, sincronizado con la señal de {@link NewShiftStateService}. */
-  state!: NewShiftState;
   /** Lista de packs disponibles, cargados en `ngOnInit`. */
   packs!: Pack[];
   /** ID de empresa del usuario autenticado (null para SUPER_ADMIN). */
@@ -85,11 +72,60 @@ export class NewShiftComponent implements OnInit {
 
   constructor() {
     this.updateStep(1);
-    effect(() => {
-      this.state = this.newShiftStateService.state();
-      this.setTitleSubtitle();
-      this.validateNextButton();
-    });
+  }
+
+  get title(): string {
+    const specialtyName = this.newShiftStateService.state().companySpecialty?.name ?? '';
+    switch (this.$step) {
+      case 1: return 'Agenda un nuevo turno';
+      case 2: return 'Elige tu pack de clases';
+      case 3: return 'Elige los días de tus turnos';
+      case 4: return 'Te mostramos los horarios disponibles para cada día seleccionado, elige los que más te convengan.';
+      case 5: return '¡Ya casi estamos!';
+      case 6: return this.errorOnSave
+        ? `¡Hubo un error al agendar tus turnos de ${specialtyName}!`
+        : `¡Has agendado tus turnos de ${specialtyName} con éxito!`;
+      default: return 'Agenda un nuevo turno';
+    }
+  }
+
+  get subTitle(): string {
+    switch (this.$step) {
+      case 1: return 'Elige la especialidad de tu nuevo turno.';
+      case 2: return 'Podrás cambiar de pack siempre que lo necesites. Al solicitar el cambio de pack se verá reflejado al mes siguiente. En caso de requerir clases adicionales, siempre podrás adquirir clases sueltas.';
+      case 3: {
+        const n = this.packMaxDays;
+        return `Tenés el pack "${this._pack?.description}" activo. Elegí exactamente ${n} día${n > 1 ? 's' : ''} de la semana.`;
+      }
+      case 4: return 'Podrás cancelar, reagendar o pedir un turno nuevo siempre que lo necesites con un mínimos de 24hs de antelación.';
+      case 5: return 'Confirma los datos de tu solicitud y, si está todo bien, presiona el botón "Agendar".';
+      case 6: return this.errorOnSave
+        ? 'Por favor intenta de nuevo más tarde.'
+        : 'Puedes cancelar o re-agendar tus clases siempre que lo necesites desde la sección "Turnos" con un mínimo de 24 hs de anticipación.';
+      default: return 'Elige la especialidad de tu nuevo turno.';
+    }
+  }
+
+  get nextButtonText(): string {
+    switch (this.$step) {
+      case 5: return 'Agendar';
+      case 6: return this.errorOnSave ? 'Volver al inicio' : 'Ver mis Turnos';
+      default: return 'Siguiente';
+    }
+  }
+
+  get previousButtonText(): string { return 'Anterior'; }
+
+  get isNextButtonDisabled(): boolean {
+    switch (this.$step) {
+      case 1: return !this._companySpecialty;
+      case 2: return !this._pack;
+      case 3: return !this._days;
+      case 4: return !this._selectedDaysWithSelectedTimes;
+      case 5:
+      case 6: return false;
+      default: return true;
+    }
   }
 
   ngOnInit(): void {
@@ -168,59 +204,6 @@ export class NewShiftComponent implements OnInit {
     this.updateStep(id === 4 ? 4 : 3);
   }
 
-  /**
-   * Recalcula si el botón "Siguiente" debe estar habilitado según el paso actual
-   * y el estado del wizard. Llamado desde el `effect()` del constructor.
-   */
-  validateNextButton(): void {
-    switch (this.$step) {
-      case 1: this.isNextButtonDisabled = !this._companySpecialty; break;
-      case 2: this.isNextButtonDisabled = !this._pack; break;
-      case 3: this.isNextButtonDisabled = !this._days; break;
-      case 4: this.isNextButtonDisabled = !this._selectedDaysWithSelectedTimes; break;
-      case 5:
-      case 6: this.isNextButtonDisabled = false; break;
-      default: this.isNextButtonDisabled = true;
-    }
-  }
-
-  /** Actualiza título, subtítulo y texto del botón según el paso actual. */
-  setTitleSubtitle(): void {
-    switch (this.$step) {
-      case 1:
-        this.title = 'Agenda un nuevo turno';
-        this.subTitle = 'Elige la especialidad de tu nuevo turno.';
-        this.nextButtonText = 'Siguiente';
-        break;
-      case 2:
-        this.title = 'Elige tu pack de clases';
-        this.subTitle =
-          'Podrás cambiar de pack siempre que lo necesites. Al solicitar el cambio de pack se verá reflejado al mes siguiente. En caso de requerir clases adicionales, siempre podrás adquirir clases sueltas.';
-        break;
-      case 3: {
-        const n = this.packMaxDays;
-        this.title = 'Elige los días de tus turnos';
-        this.subTitle = `Tenés el pack "${this._pack?.description}" activo. Elegí exactamente ${n} día${n > 1 ? 's' : ''} de la semana.`;
-        break;
-      }
-      case 4:
-        this.title = 'Te mostramos los horarios disponibles para cada día seleccionado, elige los que más te convengan.';
-        this.subTitle = 'Podrás cancelar, reagendar o pedir un turno nuevo siempre que lo necesites con un mínimos de 24hs de antelación.';
-        break;
-      case 5:
-        this.title = '¡Ya casi estamos!';
-        this.subTitle = 'Confirma los datos de tu solicitud y, si está todo bien, presiona el botón "Agendar".';
-        this.nextButtonText = 'Agendar';
-        break;
-      case 6:
-        this.getShiftSchedulingResult();
-        break;
-      default:
-        this.title = 'Agenda un nuevo turno';
-        this.subTitle = 'Elige la especialidad de tu nuevo turno.';
-    }
-  }
-
   setInitialState() {
     this.newShiftStateService.setInitialState();
     this.daysOfWeek.map(day => (day.isSelected = false));
@@ -287,26 +270,8 @@ export class NewShiftComponent implements OnInit {
     }
   }
 
-  getShiftSchedulingResult() {
-    const specialtyName = this.state.companySpecialty?.name ?? '';
-    if (this.errorOnSave) {
-      this.title = `¡Hubo un error al agendar tus turnos de ${specialtyName}!`;
-      this.subTitle = 'Por favor intenta de nuevo más tarde.';
-      this.nextButtonText = 'Volver al inicio';
-    } else {
-      this.title = `¡Has agendado tus turnos de ${specialtyName} con éxito!`;
-      this.subTitle = 'Puedes cancelar o re-agendar tus clases siempre que lo necesites desde la sección "Turnos" con un mínimo de 24 hs de anticipación.';
-      this.nextButtonText = 'Ver mis Turnos';
-      this.previousButtonText = 'Volver al inicio';
-    }
-  }
-
-  /**
-   * Envía los turnos seleccionados al backend.
-   * Si la petición falla, marca `errorOnSave = true` antes de avanzar al paso 6.
-   */
   saveShifts(): void {
-    this.shiftsService.saveShifts(this.state).subscribe({
+    this.shiftsService.saveShifts(this.newShiftStateService.state()).subscribe({
       next: () => { this.errorOnSave = false; this.authService.refreshUser(); this.updateStep(6); },
       error: () => { this.errorOnSave = true; this.updateStep(6); },
     });
